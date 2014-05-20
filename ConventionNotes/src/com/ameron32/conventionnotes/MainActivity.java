@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ameron32.conventionnotes.scripture.*;
 
 /**
  * An activity representing the represents a a list of Talks and its details in
@@ -26,7 +28,7 @@ import android.widget.Toast;
  * This activity also implements the required {@link TalkListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class MainActivity extends FragmentActivity implements TalkListFragment.Callbacks, TalkDetailFragment.Callbacks, NotetakingFragment.NoteCallbacks {
+public class MainActivity extends FragmentActivity implements TalkListFragment.Callbacks, TalkDetailFragment.Callbacks, NotetakingFragment.NoteCallbacks, ScriptureDialog.OnScriptureGeneratedListener {
   
   private SlidingPaneLayout mSlidingLayout;
   private ActionBar         mActionBar;
@@ -114,8 +116,8 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   /**
-   * Callback method from {@link TalkDetailFragment.Callbacks} indicating that the
-   * the previous talk button was clicked.
+   * Callback method from {@link NoteTakingFragment.NoteCallbacks} indicating that the
+   * the a note should be passed.
    */
   @Override
   public void onAddNote(Note note) {
@@ -126,6 +128,26 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // SwitchTalks
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
     talkFragment.addNote(note);
+  }
+  
+  /**
+   * Callback method from {@link NoteTakingFragment.NoteCallbacks} indicating that the
+   * a scripture dialog should be opened.
+   */
+  @Override
+  public void onAddScripture() {
+    // 
+    
+    // ***********************************************
+    // SwitchTalks
+    FragmentManager fm = getSupportFragmentManager();
+    ScriptureDialog createScriptureDialog = new ScriptureDialog();
+    createScriptureDialog.show(fm, "fragment_create_scripture");
+  }
+  
+  @Override
+  public void onScriptureGenerated(Scripture scripture) {
+    onAddNote(Note.createNote(scripture));
   }
   
   @Override

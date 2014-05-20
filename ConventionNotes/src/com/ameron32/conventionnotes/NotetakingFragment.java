@@ -34,6 +34,7 @@ public class NotetakingFragment extends Fragment {
   private View mRootView;
   private EditText editNote;
   private ImageButton buttonAdd;
+  private ImageButton buttonAddScripture;
   
   /**
    * Use this factory method to create a new instance of this fragment using the
@@ -76,8 +77,8 @@ public class NotetakingFragment extends Fragment {
   }
   
   private void initEditor() {
-    editNote = (EditText) mRootView.findViewById(R.id.editText1);
-    buttonAdd = (ImageButton) mRootView.findViewById(R.id.imageButton1);
+    editNote = (EditText) mRootView.findViewById(R.id.edit_text_note_editor);
+    buttonAdd = (ImageButton) mRootView.findViewById(R.id.image_button_add_note);
     buttonAdd.setOnClickListener(new OnClickListener() {
       
       @Override
@@ -85,6 +86,15 @@ public class NotetakingFragment extends Fragment {
         String note = editNote.getText().toString();
         addNote(Note.createNote(note));
         resetEditor();
+      }
+    });
+    
+    buttonAddScripture = (ImageButton) mRootView.findViewById(R.id.image_button_add_scripture);
+    buttonAddScripture.setOnClickListener(new OnClickListener() {
+      
+      @Override
+      public void onClick(View v) {
+        addScripture();
       }
     });
   }
@@ -97,6 +107,14 @@ public class NotetakingFragment extends Fragment {
   public void addNote(Note note) {
     if (mListener != null) {
       mListener.onAddNote(note);
+    } else {
+      Log.d(this.getClass().getSimpleName(), "mListener failed: null");
+    }
+  }
+  
+  public void addScripture() {
+    if (mListener != null) {
+      mListener.onAddScripture();
     } else {
       Log.d(this.getClass().getSimpleName(), "mListener failed: null");
     }
@@ -132,6 +150,8 @@ public class NotetakingFragment extends Fragment {
     
     // TODO: Update argument type and name
     public void onAddNote(Note note);
+    
+    public void onAddScripture();
   }
   
 }

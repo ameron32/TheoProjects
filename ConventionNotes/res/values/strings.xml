@@ -8,6 +8,6 @@
     <string name="action_add">Add</string>
     <string name="sliding_pane_titleClosed">Sliding pane closed</string>
     <string name="sliding_pane_titleOpened">Sliding pane opened</string>
-    <string name="hello_blank_fragment">Type a note then press add:</string>
+    <string name="text_view_note_editor_hint">Type a note then press add:</string>
 
 </resources>

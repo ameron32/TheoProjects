@@ -22,6 +22,13 @@ public class ScriptureNote extends Note {
     }
   }
   
+  public ScriptureNote(Scripture scripture) {
+    super(scripture);
+    this.book = scripture.book;
+    this.chapter = scripture.chapter;
+    this.verses = scripture.verses;
+  }
+
   /**
    * FORMAT: CCC # #-#, 
    * Examples: 
