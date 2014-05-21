@@ -15,6 +15,7 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ameron32.conventionnotes.notes.Note;
 import com.ameron32.conventionnotes.scripture.*;
 
 /**
@@ -70,7 +71,8 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // ***********************************************
     // SwitchTalks
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
-    talkFragment.setTalk(Integer.decode(id));
+    Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();
+    talkFragment.showTalk(Integer.decode(id));
     
     // ***********************************************
     
@@ -89,7 +91,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // ***********************************************
     // SwitchTalks
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
-    talkFragment.setTalk(talkFragment.getTalkId() + 1);
+    talkFragment.showTalk(talkFragment.getTalkId() + 1);
     
     // ***********************************************
     
@@ -108,7 +110,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // ***********************************************
     // SwitchTalks
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
-    talkFragment.setTalk(talkFragment.getTalkId() - 1);
+    talkFragment.showTalk(talkFragment.getTalkId() - 1);
     
     // ***********************************************
     
@@ -179,14 +181,14 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     
     @Override
     public void onPanelOpened(View panel) {
-      Toast.makeText(panel.getContext(), "Opened", Toast.LENGTH_SHORT).show();
+//      Toast.makeText(panel.getContext(), "Opened", Toast.LENGTH_SHORT).show();
       
       panelOpened();
     }
     
     @Override
     public void onPanelClosed(View panel) {
-      Toast.makeText(panel.getContext(), "Closed", Toast.LENGTH_SHORT).show();
+//      Toast.makeText(panel.getContext(), "Closed", Toast.LENGTH_SHORT).show();
       
       panelClosed();
     }

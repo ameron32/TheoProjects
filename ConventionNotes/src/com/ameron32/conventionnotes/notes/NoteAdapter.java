@@ -1,4 +1,9 @@
-package com.ameron32.conventionnotes;
+package com.ameron32.conventionnotes.notes;
+
+import com.ameron32.conventionnotes.R;
+import com.ameron32.conventionnotes.R.id;
+import com.ameron32.conventionnotes.R.layout;
+import com.ameron32.conventionnotes.program.Talk;
 
 import android.content.Context;
 import android.view.LayoutInflater;

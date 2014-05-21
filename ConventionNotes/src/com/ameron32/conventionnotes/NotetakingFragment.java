@@ -10,6 +10,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.ameron32.conventionnotes.notes.Note;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -20,15 +23,6 @@ import android.widget.ImageButton;
  * 
  */
 public class NotetakingFragment extends Fragment {
-  
-  // TODO: Rename parameter arguments, choose names that match
-  // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-  private static final String           ARG_PARAM1 = "param1";
-  private static final String           ARG_PARAM2 = "param2";
-  
-  // TODO: Rename and change types of parameters
-  private String                        mParam1;
-  private String                        mParam2;
   
   private NoteCallbacks mListener;
   private View mRootView;
@@ -46,13 +40,13 @@ public class NotetakingFragment extends Fragment {
    *          Parameter 2.
    * @return A new instance of fragment NotetakingFragment.
    */
-  // TODO: Rename and change types and number of parameters
+  // : Rename and change types and number of parameters
   public static NotetakingFragment newInstance(String param1, String param2) {
     NotetakingFragment fragment = new NotetakingFragment();
-    Bundle args = new Bundle();
-    args.putString(ARG_PARAM1, param1);
-    args.putString(ARG_PARAM2, param2);
-    fragment.setArguments(args);
+//    Bundle args = new Bundle();
+//    args.putString(ARG_PARAM1, param1);
+//    args.putString(ARG_PARAM2, param2);
+//    fragment.setArguments(args);
     return fragment;
   }
   
@@ -64,8 +58,8 @@ public class NotetakingFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
-      mParam1 = getArguments().getString(ARG_PARAM1);
-      mParam2 = getArguments().getString(ARG_PARAM2);
+//      mParam1 = getArguments().getString(ARG_PARAM1);
+//      mParam2 = getArguments().getString(ARG_PARAM2);
     }
   }
   
@@ -103,7 +97,6 @@ public class NotetakingFragment extends Fragment {
     editNote.setText("");    
   }
 
-  // TODO: Rename method, update argument and hook method into UI event
   public void addNote(Note note) {
     if (mListener != null) {
       mListener.onAddNote(note);
@@ -148,10 +141,19 @@ public class NotetakingFragment extends Fragment {
    */
   public interface NoteCallbacks {
     
-    // TODO: Update argument type and name
     public void onAddNote(Note note);
     
     public void onAddScripture();
   }
   
+  // : Rename parameter arguments, choose names that match
+  // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+//  private static final String           ARG_PARAM1 = "param1";
+//  private static final String           ARG_PARAM2 = "param2";
+  
+  // : Rename and change types of parameters
+//  private String                        mParam1;
+//  private String                        mParam2;
+  
+
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.ameron32.conventionnotes.Note;
+import com.ameron32.conventionnotes.notes.Note;
 
 public class ScriptureNote extends Note {
   

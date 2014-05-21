@@ -1,4 +1,4 @@
-package com.ameron32.conventionnotes;
+package com.ameron32.conventionnotes.notes;
 
 import android.util.Log;
 

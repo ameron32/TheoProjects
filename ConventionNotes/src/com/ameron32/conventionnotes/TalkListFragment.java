@@ -9,6 +9,11 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.ameron32.conventionnotes.program.ProgramAdapter;
+import com.ameron32.conventionnotes.program.ProgramEvent;
+import com.ameron32.conventionnotes.program.Talk;
 
 /**
  * A list fragment representing a list of Talks. This fragment also supports
@@ -60,6 +65,8 @@ public class TalkListFragment extends ListFragment {
                                              @Override
                                              public void onItemSelected(String id) {}
                                            };
+
+  private ProgramAdapter mProgramAdapter;
   
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
@@ -71,7 +78,8 @@ public class TalkListFragment extends ListFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     
-    setListAdapter(new TalkAdapter(getActivity()));
+    mProgramAdapter = new ProgramAdapter(getActivity());
+    setListAdapter(mProgramAdapter);
   }
   
   @Override
@@ -120,7 +128,13 @@ public class TalkListFragment extends ListFragment {
     
     // Notify the active callbacks interface (the activity, if the
     // fragment is attached to one) that an item has been selected.
-    mCallbacks.onItemSelected(String.valueOf(position));
+    ProgramEvent event = mProgramAdapter.getItem(position);
+    if (event instanceof Talk) {
+      Talk talk = (Talk) event;
+      mCallbacks.onItemSelected(String.valueOf(talk.getTalkNumber()));
+    } else {
+      Toast.makeText(getActivity(), "Not a Talk", Toast.LENGTH_SHORT).show();
+    }
   }
   
   @Override

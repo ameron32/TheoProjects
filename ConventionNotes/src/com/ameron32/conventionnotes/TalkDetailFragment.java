@@ -1,11 +1,12 @@
 package com.ameron32.conventionnotes;
 
-import com.ameron32.conventionnotes.scripture.ScriptureNote;
+import java.text.SimpleDateFormat;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,16 +17,24 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ameron32.conventionnotes.notes.Note;
+import com.ameron32.conventionnotes.notes.NoteAdapter;
+import com.ameron32.conventionnotes.program.ProgramEvent;
+import com.ameron32.conventionnotes.program.Talk;
+import com.ameron32.conventionnotes.scripture.ScriptureNote;
+
 /**
  * A fragment representing a single Talk detail screen.
  */
 public class TalkDetailFragment extends Fragment {
-  private static boolean DEBUG = true;
+  
+  private static boolean     DEBUG       = true;
   
   /**
    * The fragment argument representing the item ID that this fragment
@@ -85,21 +94,27 @@ public class TalkDetailFragment extends Fragment {
    */
   private Callbacks        mCallbacks      = sDummyCallbacks;
   
+  private TextView         startTime;
+  private TextView         stopTime;
+  
   /**
    * A dummy implementation of the {@link Callbacks} interface that does
    * nothing. Used only when this fragment is not attached to an activity.
    */
-  private static Callbacks sDummyCallbacks 
-     = new Callbacks() {
-
-      @Override
-      public void onNextClicked() {}
-
-      @Override
-      public void onPrevClicked() {}
-
-    };
-
+  private static Callbacks sDummyCallbacks = new Callbacks() {
+                                             
+                                             @Override
+                                             public void onNextClicked() {}
+                                             
+                                             @Override
+                                             public void onPrevClicked() {}
+                                             
+                                           };
+  
+  private TextView         countDown;
+  
+  private static CountDownTimer   cdt;
+  
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
@@ -117,13 +132,14 @@ public class TalkDetailFragment extends Fragment {
     // Reset the active callbacks interface to the dummy implementation.
     mCallbacks = sDummyCallbacks;
   }
-
+  
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     mRootView = inflater.inflate(R.layout.fragment_talk_detail, container, false);
     mNoteListView = (ListView) mRootView.findViewById(R.id.talk_detail);
     createListView();
     initNextPrevButtons(mRootView);
+    initOtherViews(mRootView);
     return mRootView;
   }
   
@@ -146,39 +162,51 @@ public class TalkDetailFragment extends Fragment {
       }
     });
   }
-
-  private void createListView() {
-    header = new TextView(getActivity());
-    header.setText(TalkList.getTalk(id).getTitle());
-    mNoteListView.addHeaderView(header);
+  
+  private void initOtherViews(View rootView) {
     
-    header2 = ((RelativeLayout) ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-        .inflate(R.layout.header_view, null, false));
+    startTime = (TextView) rootView.findViewById(R.id.textview_start_time);
+    stopTime = (TextView) rootView.findViewById(R.id.textview_stop_time);
+    countDown = (TextView) rootView.findViewById(R.id.textview_countdown);
+  }
+  
+  private void createListView() {
+    
+    View rlHeader = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.title_header_view, null, false);
+    header = (TextView) rlHeader.findViewById(R.id.textview_title);
+    header.setText(ProgramList.getTalk(id).getTitle());
+    mNoteListView.addHeaderView(rlHeader);
+    
+    header2 = ((RelativeLayout) ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.header_view, null, false));
     mNoteListView.addHeaderView(header2);
   }
   
   private void populateListView() {
-    header.setText(TalkList.getTalk(id).getTitle());
+    header.setText(ProgramList.getTalk(id).getTitle());
   }
   
-  public void setTalk(int talkId) {
-    if (talkId >= TalkList.getTalkCount()) { 
+  public void showTalk(int talkId) {
+    if (talkId >= ProgramList.getTalkCount()) {
       Toast.makeText(getActivity(), "Already at last talk.", Toast.LENGTH_LONG).show();
-      return; 
+      return;
     }
-    if (talkId < 0) { 
+    if (talkId < 0) {
       Toast.makeText(getActivity(), "Already at first talk.", Toast.LENGTH_LONG).show();
       return;
     }
     
-    Talk talk = TalkList.getTalk(talkId);
+    if (cdt != null) {
+      cdt.cancel();
+    }
+    
+    Talk talk = ProgramList.getTalk(talkId);
     id = talkId;
     
     noteAdapter = new NoteAdapter(getActivity(), talk);
     populateListView();
     mNoteListView.setAdapter(noteAdapter);
     mNoteListView.setOnItemClickListener(new OnItemClickListener() {
-
+      
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Note note = noteAdapter.getItem((int) id);
@@ -186,7 +214,8 @@ public class TalkDetailFragment extends Fragment {
           if (DEBUG) {
             Toast.makeText(getActivity(), note.toString(), Toast.LENGTH_LONG).show();
           }
-        } else {
+        }
+        else {
           if (DEBUG) {
             Toast.makeText(getActivity(), note.getNote() + "--clicked", Toast.LENGTH_SHORT).show();
           }
@@ -194,6 +223,23 @@ public class TalkDetailFragment extends Fragment {
       }
     });
     setText(talk);
+    
+    cdt = new CountDownTimer(
+        ProgramEvent.timeFromNow(System.currentTimeMillis(), talk), 
+        1000) {
+      
+      public void onTick(long millisUntilFinished) {
+        countDown.setText(ProgramEvent.convertCountdown(millisUntilFinished/1000));
+      }
+      
+      public void onFinish() {
+        countDown.setText("Overtime");
+      }
+    };
+    cdt.start();
+    
+    startTime.setText(talk.getStartTimeFormatted());
+    stopTime.setText(talk.getStopTimeFormatted());
   }
   
   private void setText(Talk talk) {
@@ -206,9 +252,9 @@ public class TalkDetailFragment extends Fragment {
   public int getTalkId() {
     return id;
   }
-
+  
   public void addNote(Note note) {
-    Talk talk = TalkList.getTalk(id);
+    Talk talk = ProgramList.getTalk(id);
     talk.addNote(note);
     noteAdapter.notifyDataSetChanged();
   }

@@ -24,7 +24,7 @@ public class ScriptureDialog extends DialogFragment {
    *          Parameter 2.
    * @return A new instance of fragment ScriptureDialog.
    */
-  // TODO: Rename and change types and number of parameters
+  // : Rename and change types and number of parameters
   public static ScriptureDialog newInstance(String param1, String param2) {
     ScriptureDialog fragment = new ScriptureDialog();
 //    Bundle args = new Bundle();
@@ -42,7 +42,7 @@ public class ScriptureDialog extends DialogFragment {
   }
   
   private void initViews(View rootView) {
-    // TODO init views
+    // TODO: init views
   }
 
   // TODO: USE ME!
@@ -80,7 +80,6 @@ public class ScriptureDialog extends DialogFragment {
    */
   public interface OnScriptureGeneratedListener {
     
-    // TODO: Update argument type and name
     public void onScriptureGenerated(Scripture scripture);
   }
   
@@ -92,13 +91,13 @@ public class ScriptureDialog extends DialogFragment {
   
   
   /*
-   * TODO: Rename parameter arguments, choose names that match the fragment
+   * : Rename parameter arguments, choose names that match the fragment
    * initialization parameters, e.g. ARG_ITEM_NUMBER
    */
   // private static final String ARG_PARAM1 = "param1";
   // private static final String ARG_PARAM2 = "param2";
   
-  /* TODO: Rename and change types of parameters */
+  /* : Rename and change types of parameters */
   // private String mParam1;
   // private String mParam2;
   public ScriptureDialog() {

@@ -11,17 +11,6 @@
         android:layout_alignParentTop="true"
         android:text="Prev" />
 
-    <Chronometer
-        android:id="@+id/chronometer1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:layout_toLeftOf="@+id/button3"
-        android:layout_toRightOf="@+id/button1"
-        android:text="Chronometer" />
-
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
@@ -29,5 +18,32 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:text="Next" />
+
+    <TextView
+        android:id="@+id/textview_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/button1"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textview_stop_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/button3"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textview_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/button3"
+        android:layout_toRightOf="@+id/button1"
+        android:gravity="center" />
 
 </RelativeLayout>
