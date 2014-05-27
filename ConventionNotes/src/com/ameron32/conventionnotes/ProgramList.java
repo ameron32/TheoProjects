@@ -143,7 +143,6 @@ public class ProgramList {
     }
     
     for (ProgramEvent event : events) {
-      
       System.out.println(event.toString());
     }
   }

@@ -53,7 +53,7 @@ public class ProgramEvent {
     catch (ParseException e) {
       e.printStackTrace();
     }
-    return lTime - 21600000L - DEBUG_TIME_OFFSET;
+    return lTime - 21600000L;
   }
   
   private long addDays(String day) {

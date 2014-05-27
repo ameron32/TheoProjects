@@ -59,6 +59,4 @@ public class Note {
   public String toString() {
     return "Note [type=" + type + ", note=" + note + "]";
   }
-  
-  
 }

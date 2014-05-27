@@ -7,19 +7,45 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import android.os.AsyncTask;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.ameron32.conventionnotes.MainActivity;
 import com.ameron32.conventionnotes.notes.Note;
 
 public class ScriptureNote extends Note {
   
-  String book;
-  int    chapter;
-  int[]  verses;
+  public String  book;
+  public int     chapter;
+  public int[]   verses;
+  
+  public Spanned scriptureText;
   
   public ScriptureNote(String note) {
     super(note);
     if (this.type == Note.Type.Scripture) {
       extractScripture(note);
     }
+    Scripture s = new Scripture(book, chapter, verses);
+    ScriptureFinder sf = new ScriptureFinder();
+    try {
+      String scrText = null;
+      scrText = sf.findScriptures(MainActivity.getContext(), s.book, s.chapter, s.verses);
+      scriptureText = Html.fromHtml(scrText);
+    }
+    catch (BookNotFoundError e) {
+      e.printStackTrace();
+    }
+    catch (ChapterNotFoundError e) {
+      e.printStackTrace();
+    }
+    catch (VerseNotFoundError e) {
+      e.printStackTrace();
+    }
+    
   }
   
   public ScriptureNote(Scripture scripture) {
@@ -28,17 +54,13 @@ public class ScriptureNote extends Note {
     this.chapter = scripture.chapter;
     this.verses = scripture.verses;
   }
-
+  
   /**
-   * FORMAT: CCC # #-#, 
-   * Examples: 
-   *   JAS 1 1,2 
-   *   REV 21 3-5 
-   *   MAT 24 3-11,14,45-47
+   * FORMAT: CCC # #-#, Examples: JAS 1 1,2 REV 21 3-5 MAT 24 3-11,14,45-47
    */
   private void extractScripture(String note) {
     String[] bcv = note.split(" ");
-    String book = bcv[0];
+    String book = bcv[0].substring(1);
     String chapter = bcv[1];
     
     this.book = book;
@@ -107,11 +129,11 @@ public class ScriptureNote extends Note {
     
     return d;
   }
-
+  
   @Override
   public String toString() {
-    return "ScriptureNote [book=" + book + ", chapter=" + chapter + ", verses=" + Arrays.toString(verses) + " | " + super.toString() + "]";
+    return "ScriptureNote [book=" + book + ", chapter=" + chapter + ", verses=" + Arrays.toString(verses) + " | "
+        + super.toString() + "]";
   }
-  
   
 }

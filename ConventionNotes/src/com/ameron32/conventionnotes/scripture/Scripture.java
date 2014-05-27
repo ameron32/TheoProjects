@@ -6,6 +6,15 @@ public class Scripture {
   public int chapter;
   public int[] verses;
   
+  
+  
+  public Scripture(String book, int chapter, int[] verses) {
+    super();
+    this.book = book;
+    this.chapter = chapter;
+    this.verses = verses;
+  }
+
   public void setVerses(int... verses) {
     this.verses = verses;
   }

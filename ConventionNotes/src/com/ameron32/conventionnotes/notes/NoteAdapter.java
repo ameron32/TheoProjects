@@ -1,17 +1,17 @@
 package com.ameron32.conventionnotes.notes;
 
-import com.ameron32.conventionnotes.R;
-import com.ameron32.conventionnotes.R.id;
-import com.ameron32.conventionnotes.R.layout;
-import com.ameron32.conventionnotes.program.Talk;
-
 import android.content.Context;
+import android.text.Spanned;
+import android.text.SpannedString;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.ameron32.conventionnotes.R;
+import com.ameron32.conventionnotes.program.Talk;
+import com.ameron32.conventionnotes.scripture.ScriptureNote;
 
 
 public class NoteAdapter extends BaseAdapter {
@@ -43,6 +43,7 @@ public class NoteAdapter extends BaseAdapter {
   
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
+    Note note = getItem(position);
     NoteViewHolder holder = null;
     if (convertView == null) {
       convertView = inflater.inflate(R.layout.standard_note, parent, false);
@@ -53,8 +54,19 @@ public class NoteAdapter extends BaseAdapter {
       holder = (NoteViewHolder) convertView.getTag();
     }
     
+    Spanned noteSpan = null;
+    String noteText = talk.getNote(position).getNote();
+    if (note instanceof ScriptureNote) {
+      ScriptureNote sNote = ((ScriptureNote) note);
+//      String combined = sNote.getNote() + "\n" +
+//          
+//          sNote.scriptureText.toString();
+//      SpannedString spannedString = new SpannedString(combined);
+      noteSpan = sNote.scriptureText;
+    }
 //    holder.noteTextView = (TextView) convertView.findViewById(R.id.textView1);
-    holder.noteTextView.setText(talk.getNote(position).getNote());
+    holder.noteTextView.setText((noteSpan != null) ? noteSpan : noteText);
+    
     
     return convertView;
   }

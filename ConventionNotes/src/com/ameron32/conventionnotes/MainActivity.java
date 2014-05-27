@@ -2,6 +2,7 @@ package com.ameron32.conventionnotes;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -34,10 +35,16 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   private SlidingPaneLayout mSlidingLayout;
   private ActionBar         mActionBar;
   
+  private static Context context;
+  public static Context getContext() {
+    return context;
+  }
+  
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    context = getApplicationContext();
     
     // List items should be given the
     // 'activated' state when touched.
@@ -57,6 +64,14 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // TODO: If exposing deep links into your app, handle intents here.
   }
   
+  
+  
+  @Override
+  protected void onDestroy() {
+    context = null;
+    super.onDestroy();
+  }
+
   /**
    * Callback method from {@link TalkListFragment.Callbacks} indicating that the
    * item with the given ID was selected.
