@@ -7,11 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.ameron32.conventionnotes.MainActivity;
 import com.ameron32.conventionnotes.notes.Note;

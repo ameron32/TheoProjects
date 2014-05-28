@@ -2,11 +2,6 @@ package com.ameron32.conventionnotes.program;
 
 import java.util.List;
 
-import com.ameron32.conventionnotes.ProgramList;
-import com.ameron32.conventionnotes.R;
-import com.ameron32.conventionnotes.R.id;
-import com.ameron32.conventionnotes.R.layout;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.ameron32.conventionnotes.ProgramList;
+import com.ameron32.conventionnotes.R;
+
 public class ProgramAdapter extends BaseAdapter {
   public static final int IDTAG = 426842684;
+  public static final int POSITION_NOT_FOUND = -777;
   
 //  private Context context;
   private List<ProgramEvent> events;
@@ -23,7 +22,7 @@ public class ProgramAdapter extends BaseAdapter {
 
   public ProgramAdapter(Context context) {
 //    this.context = context;
-    events = ProgramList.events;
+    events = ProgramList.getEvents();
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
   }
 
@@ -40,6 +39,16 @@ public class ProgramAdapter extends BaseAdapter {
   @Override
   public long getItemId(int position) {
     return position;
+  }
+  
+  public int getPosition(ProgramEvent event) {
+    int size = events.size();
+    for (int i = 0; i < size; i++) {
+      if (events.get(i).hashCode() == event.hashCode()) {
+        return i;
+      }
+    }
+    return POSITION_NOT_FOUND;
   }
 
   

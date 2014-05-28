@@ -2,7 +2,6 @@ package com.ameron32.conventionnotes.notes;
 
 import android.content.Context;
 import android.text.Spanned;
-import android.text.SpannedString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +16,11 @@ import com.ameron32.conventionnotes.scripture.ScriptureNote;
 public class NoteAdapter extends BaseAdapter {
   
   private LayoutInflater inflater;
-  private Context context;
+//  private Context context;
   private Talk talk;
 
   public NoteAdapter(Context context, Talk talk) {
-    this.context = context;
+//    this.context = context;
     this.talk = talk;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
   }

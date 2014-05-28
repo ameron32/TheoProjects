@@ -7,7 +7,8 @@ import java.util.List;
 import com.ameron32.conventionnotes.notes.Note;
 
 public class Talk extends ProgramEvent {
-  
+  private static final long serialVersionUID = -5743232377202758745L;
+
   private static StringBuilder sb;
   
   private int                  talkNumber;

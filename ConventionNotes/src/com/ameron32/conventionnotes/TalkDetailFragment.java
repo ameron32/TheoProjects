@@ -1,7 +1,5 @@
 package com.ameron32.conventionnotes;
 
-import java.text.SimpleDateFormat;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -186,14 +183,6 @@ public class TalkDetailFragment extends Fragment {
   }
   
   public void showTalk(int talkId) {
-    if (talkId >= ProgramList.getTalkCount()) {
-      Toast.makeText(getActivity(), "Already at last talk.", Toast.LENGTH_LONG).show();
-      return;
-    }
-    if (talkId < 0) {
-      Toast.makeText(getActivity(), "Already at first talk.", Toast.LENGTH_LONG).show();
-      return;
-    }
     
     if (cdt != null) {
       cdt.cancel();

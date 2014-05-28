@@ -17,7 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ameron32.conventionnotes.notes.Note;
-import com.ameron32.conventionnotes.scripture.*;
+import com.ameron32.conventionnotes.scripture.Scripture;
+import com.ameron32.conventionnotes.scripture.ScriptureDialog;
 
 /**
  * An activity representing the represents a a list of Talks and its details in
@@ -30,12 +31,17 @@ import com.ameron32.conventionnotes.scripture.*;
  * This activity also implements the required {@link TalkListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class MainActivity extends FragmentActivity implements TalkListFragment.Callbacks, TalkDetailFragment.Callbacks, NotetakingFragment.NoteCallbacks, ScriptureDialog.OnScriptureGeneratedListener {
+public class MainActivity extends FragmentActivity implements TalkListFragment.Callbacks, TalkDetailFragment.Callbacks,
+    NotetakingFragment.NoteCallbacks, ScriptureDialog.OnScriptureGeneratedListener {
   
-  private SlidingPaneLayout mSlidingLayout;
-  private ActionBar         mActionBar;
+  private static final String KEY_CURRENT_TALK_ID = "keycurrenttalkid";
+  private String              currentTalkId;
   
-  private static Context context;
+  private SlidingPaneLayout   mSlidingLayout;
+  private ActionBar           mActionBar;
+  
+  private static Context      context;
+  
   public static Context getContext() {
     return context;
   }
@@ -61,17 +67,33 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     
     mSlidingLayout.getViewTreeObserver().addOnGlobalLayoutListener(new FirstLayoutListener());
     
+    if (savedInstanceState != null) {
+      // restore current talk
+      currentTalkId = savedInstanceState.getString(KEY_CURRENT_TALK_ID);
+    }
     // TODO: If exposing deep links into your app, handle intents here.
   }
   
+  @Override
+  protected void onResume() {
+    if (currentTalkId != null) {
+      onItemSelected(currentTalkId);
+    }
+    super.onResume();
+  }
   
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString(KEY_CURRENT_TALK_ID, currentTalkId);
+  }
   
   @Override
   protected void onDestroy() {
     context = null;
     super.onDestroy();
   }
-
+  
   /**
    * Callback method from {@link TalkListFragment.Callbacks} indicating that the
    * item with the given ID was selected.
@@ -87,6 +109,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // SwitchTalks
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
     Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();
+    currentTalkId = id;
     talkFragment.showTalk(Integer.decode(id));
     
     // ***********************************************
@@ -95,18 +118,23 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   /**
-   * Callback method from {@link TalkDetailFragment.Callbacks} indicating that the
-   * the next talk button was clicked.
+   * Callback method from {@link TalkDetailFragment.Callbacks} indicating that
+   * the the next talk button was clicked.
    */
   @Override
   public void onNextClicked() {
     
-    // 
+    //
     
     // ***********************************************
     // SwitchTalks
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
-    talkFragment.showTalk(talkFragment.getTalkId() + 1);
+    int nextTalkId = talkFragment.getTalkId() + 1;
+    if (!isBlocked(nextTalkId)) {
+      ((TalkListFragment) getSupportFragmentManager().findFragmentById(R.id.talk_list))
+          .setActivatedTalk(nextTalkId);
+      talkFragment.showTalk(nextTalkId);
+    }
     
     // ***********************************************
     
@@ -114,32 +142,49 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   /**
-   * Callback method from {@link TalkDetailFragment.Callbacks} indicating that the
-   * the previous talk button was clicked.
+   * Callback method from {@link TalkDetailFragment.Callbacks} indicating that
+   * the the previous talk button was clicked.
    */
   @Override
   public void onPrevClicked() {
     
-    // 
+    //
     
     // ***********************************************
     // SwitchTalks
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
-    talkFragment.showTalk(talkFragment.getTalkId() - 1);
+    int prevTalkId = talkFragment.getTalkId() - 1;
+    if (!isBlocked(prevTalkId)) {
+      ((TalkListFragment) getSupportFragmentManager().findFragmentById(R.id.talk_list))
+          .setActivatedTalk(prevTalkId);
+      talkFragment.showTalk(prevTalkId);
+    }
     
     // ***********************************************
     
     mSlidingLayout.closePane();
   }
   
+  private boolean isBlocked(int talkId) {
+    if (talkId >= ProgramList.getTalkCount()) {
+      Toast.makeText(getContext(), "Already at last talk.", Toast.LENGTH_LONG).show();
+      return true;
+    }
+    if (talkId < 0) {
+      Toast.makeText(getContext(), "Already at first talk.", Toast.LENGTH_LONG).show();
+      return true;
+    }
+    return false;
+  }
+  
   /**
-   * Callback method from {@link NoteTakingFragment.NoteCallbacks} indicating that the
-   * the a note should be passed.
+   * Callback method from {@link NoteTakingFragment.NoteCallbacks} indicating
+   * that the the a note should be passed.
    */
   @Override
   public void onAddNote(Note note) {
     
-    // 
+    //
     
     // ***********************************************
     // SwitchTalks
@@ -148,12 +193,12 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   /**
-   * Callback method from {@link NoteTakingFragment.NoteCallbacks} indicating that the
-   * a scripture dialog should be opened.
+   * Callback method from {@link NoteTakingFragment.NoteCallbacks} indicating
+   * that the a scripture dialog should be opened.
    */
   @Override
   public void onAddScripture() {
-    // 
+    //
     
     // ***********************************************
     // SwitchTalks
@@ -196,14 +241,16 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     
     @Override
     public void onPanelOpened(View panel) {
-//      Toast.makeText(panel.getContext(), "Opened", Toast.LENGTH_SHORT).show();
+      // Toast.makeText(panel.getContext(), "Opened",
+      // Toast.LENGTH_SHORT).show();
       
       panelOpened();
     }
     
     @Override
     public void onPanelClosed(View panel) {
-//      Toast.makeText(panel.getContext(), "Closed", Toast.LENGTH_SHORT).show();
+      // Toast.makeText(panel.getContext(), "Closed",
+      // Toast.LENGTH_SHORT).show();
       
       panelClosed();
     }
@@ -270,6 +317,6 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   public static void log(String tag, String message) {
-    Log.d("MainActivity|"+tag, message);
+    Log.d("MainActivity|" + tag, message);
   }
 }

@@ -1,7 +1,8 @@
 package com.ameron32.conventionnotes.program;
 
 public class Song extends ProgramEvent {
-  
+  private static final long serialVersionUID = 5978776981241022573L;
+
   int     number;
   boolean prayer;
   boolean announcements;
@@ -28,13 +29,13 @@ public class Song extends ProgramEvent {
     
     switch (addon) {
     case "p":
-      
+      prayer = true;
       break;
     case "a":
-      
+      announcements = true;
       break;
     case "i":
-      
+      intermission = true;
       break;
     default:
     }
@@ -43,11 +44,11 @@ public class Song extends ProgramEvent {
   public String getSongText() {
     String other = "";
     if (prayer) {
-      other = " and prayer";
+      other = " and Prayer";
     } else if (announcements) {
-      other = " and announcements";
+      other = " and Announcements";
     } else if (intermission) {
-      other = " and intermission";
+      other = " and Intermission";
     }
     return "Song " + number + other; 
   }

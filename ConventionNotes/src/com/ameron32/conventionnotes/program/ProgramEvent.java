@@ -1,20 +1,25 @@
 package com.ameron32.conventionnotes.program;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class ProgramEvent {
+import com.ameron32.conventionnotes.ProgramList;
+
+public class ProgramEvent implements Serializable {
+  private static final long serialVersionUID = 3937235085748036431L;
+  
   
   private static SimpleDateFormat FULL_FORMAT = new SimpleDateFormat("M/d/yy h:mm a", Locale.getDefault());
   private static SimpleDateFormat FORMAT = new SimpleDateFormat("H:mm", Locale.getDefault());
   
-  private static long             JULY_4_12AM     = 1404450000000L;
+//  private static long             JULY_4_12AM     = 1404450000000L;
   private static long             ONE_DAY         = 86400000L;
-  private static long             CONVENTION_DATE = JULY_4_12AM;
-  
+//  private static long             CONVENTION_DATE = JULY_4_12AM;
+//  
   // TODO: remove DEBUG time offset when functional
-  private static long DEBUG_TIME_OFFSET = ONE_DAY * 44;
+//  private static long DEBUG_TIME_OFFSET = ONE_DAY * 44;
 
   private String      id;
 
@@ -58,7 +63,7 @@ public class ProgramEvent {
   
   private long addDays(String day) {
     
-    long time = CONVENTION_DATE;
+    long time = ProgramList.CONVENTION_DATE;
     
     switch (day) {
     case "Sunday":

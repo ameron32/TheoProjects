@@ -156,6 +156,13 @@ public class TalkListFragment extends ListFragment {
     getListView().setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
   }
   
+  public void setActivatedTalk(int talkId) {
+    int position = mProgramAdapter.getPosition(ProgramList.getTalk(talkId));
+    if (position != ProgramAdapter.POSITION_NOT_FOUND) {
+      setActivatedPosition(position);
+    }
+  }
+  
   private void setActivatedPosition(int position) {
     if (position == ListView.INVALID_POSITION) {
       getListView().setItemChecked(mActivatedPosition, false);

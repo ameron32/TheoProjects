@@ -10,7 +10,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.ameron32.conventionnotes.notes.Note;
 
@@ -23,6 +22,9 @@ import com.ameron32.conventionnotes.notes.Note;
  * 
  */
 public class NotetakingFragment extends Fragment {
+  
+  private static final String KEY_SAVED_EDITOR_TEXT = "keysavededitortext";
+  private String savedEditorText;
   
   private NoteCallbacks mListener;
   private View mRootView;
@@ -60,13 +62,23 @@ public class NotetakingFragment extends Fragment {
     if (getArguments() != null) {
 //      mParam1 = getArguments().getString(ARG_PARAM1);
 //      mParam2 = getArguments().getString(ARG_PARAM2);
+      savedEditorText = savedInstanceState.getString(KEY_SAVED_EDITOR_TEXT);
+      // apply String to EditText after View
     }
   }
   
   @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    savedEditorText = editNote.getText().toString();
+    outState.putString(KEY_SAVED_EDITOR_TEXT, savedEditorText);
+  }
+
+  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     mRootView = inflater.inflate(R.layout.fragment_notetaking, container, false);
     initEditor();
+    restoreSavedEditorText();
     return mRootView;
   }
   
@@ -91,6 +103,10 @@ public class NotetakingFragment extends Fragment {
         addScripture();
       }
     });
+  }
+  
+  private void restoreSavedEditorText() {
+    editNote.setText(savedEditorText);
   }
   
   private void resetEditor() {
