@@ -12,5 +12,12 @@ public class Music extends ProgramEvent {
   public String toString() {
     return "Music ["+ " SUPER" + super.toString() + "]";
   }
+
+  @Override
+  public String getExportText() {
+    return getProgramTime() + "   " + getMusicText();
+  }
+  
+  
   
 }

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.ameron32.conventionnotes.notes.Note;
 import com.ameron32.conventionnotes.notes.NoteAdapter;
 import com.ameron32.conventionnotes.program.ProgramEvent;
+import com.ameron32.conventionnotes.program.ProgramList;
 import com.ameron32.conventionnotes.program.Talk;
 import com.ameron32.conventionnotes.scripture.ScriptureNote;
 
@@ -83,34 +85,42 @@ public class TalkDetailFragment extends Fragment {
      */
     public void onPrevClicked();
     
+    /**
+     * Save
+     */
+    public void onSave();
+    
   }
   
   /**
    * The fragment's current callback object, which is notified of list item
    * clicks.
    */
-  private Callbacks        mCallbacks      = sDummyCallbacks;
+  private Callbacks             mCallbacks      = sDummyCallbacks;
   
-  private TextView         startTime;
-  private TextView         stopTime;
+  private TextView              startTime;
+  private TextView              stopTime;
   
   /**
    * A dummy implementation of the {@link Callbacks} interface that does
    * nothing. Used only when this fragment is not attached to an activity.
    */
-  private static Callbacks sDummyCallbacks = new Callbacks() {
-                                             
-                                             @Override
-                                             public void onNextClicked() {}
-                                             
-                                             @Override
-                                             public void onPrevClicked() {}
-                                             
-                                           };
+  private static Callbacks      sDummyCallbacks = new Callbacks() {
+                                                  
+                                                  @Override
+                                                  public void onNextClicked() {}
+                                                  
+                                                  @Override
+                                                  public void onPrevClicked() {}
+                                                  
+                                                  @Override
+                                                  public void onSave() {}
+                                                  
+                                                };
   
-  private TextView         countDown;
+  private TextView              countDown;
   
-  private static CountDownTimer   cdt;
+  private static CountDownTimer cdt;
   
   @Override
   public void onAttach(Activity activity) {
@@ -140,6 +150,15 @@ public class TalkDetailFragment extends Fragment {
     return mRootView;
   }
   
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == R.id.ic_save) {
+      mCallbacks.onSave();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
   private void initNextPrevButtons(View rootView) {
     Button next = (Button) rootView.findViewById(R.id.button3);
     Button prev = (Button) rootView.findViewById(R.id.button1);
@@ -213,12 +232,10 @@ public class TalkDetailFragment extends Fragment {
     });
     setText(talk);
     
-    cdt = new CountDownTimer(
-        ProgramEvent.timeFromNow(System.currentTimeMillis(), talk), 
-        1000) {
+    cdt = new CountDownTimer(ProgramEvent.timeFromNow(System.currentTimeMillis(), talk), 1000) {
       
       public void onTick(long millisUntilFinished) {
-        countDown.setText(ProgramEvent.convertCountdown(millisUntilFinished/1000));
+        countDown.setText(ProgramEvent.convertCountdown(millisUntilFinished / 1000));
       }
       
       public void onFinish() {

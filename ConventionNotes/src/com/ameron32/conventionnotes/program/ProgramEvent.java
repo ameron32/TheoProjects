@@ -5,26 +5,28 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import com.ameron32.conventionnotes.ProgramList;
-
 public class ProgramEvent implements Serializable {
-  private static final long serialVersionUID = 3937235085748036431L;
   
+  private static final long       serialVersionUID     = 3937235085748036431L;
   
-  private static SimpleDateFormat FULL_FORMAT = new SimpleDateFormat("M/d/yy h:mm a", Locale.getDefault());
-  private static SimpleDateFormat FORMAT = new SimpleDateFormat("H:mm", Locale.getDefault());
+  public static final String      EXPORT_EVENT_HEADER  = "\n*********************";
+  public static final String      EXPORT_EVENT_DIVIDER = "\n***";
   
-//  private static long             JULY_4_12AM     = 1404450000000L;
-  private static long             ONE_DAY         = 86400000L;
-//  private static long             CONVENTION_DATE = JULY_4_12AM;
-//  
+  private static SimpleDateFormat FULL_FORMAT          = new SimpleDateFormat("M/d/yy h:mm a", Locale.getDefault());
+  private static SimpleDateFormat FORMAT               = new SimpleDateFormat("H:mm", Locale.getDefault());
+  private static SimpleDateFormat PROGRAM_FORMAT       = new SimpleDateFormat("h:mm a", Locale.getDefault());
+  
+  // private static long JULY_4_12AM = 1404450000000L;
+  private static long             ONE_DAY              = 86400000L;
+  // private static long CONVENTION_DATE = JULY_4_12AM;
+  //
   // TODO: remove DEBUG time offset when functional
-//  private static long DEBUG_TIME_OFFSET = ONE_DAY * 44;
-
-  private String      id;
-
-  private long        startTime;
-  private long        stopTime;
+  // private static long DEBUG_TIME_OFFSET = ONE_DAY * 44;
+  
+  private String                  id;
+  
+  private long                    startTime;
+  private long                    stopTime;
   
   /**
    * 
@@ -88,14 +90,20 @@ public class ProgramEvent implements Serializable {
   public String getId() {
     return id;
   }
-
+  
   @Override
   public String toString() {
-    return "ProgramEvent [id=" + id + ", startTime=" + FULL_FORMAT.format(startTime) + ", stopTime=" + FULL_FORMAT.format(stopTime) + "]";
+    return "ProgramEvent [id=" + id + ", startTime=" + FULL_FORMAT.format(startTime) + ", stopTime="
+        + FULL_FORMAT.format(stopTime) + "]";
   }
   
+  public String getExportText() {
+    return "Event: " + getId();
+  }
   
-  
+  public String getProgramTime() {
+    return PROGRAM_FORMAT.format(getStartTime());
+  }
   
   public long getStartTime() {
     return startTime;
@@ -112,14 +120,15 @@ public class ProgramEvent implements Serializable {
   public String getStopTimeFormatted() {
     return FULL_FORMAT.format(getStopTime());
   }
-
+  
   public static long timeFromNow(long currentTimeMillis, Talk talk) {
     return talk.getStopTime() - currentTimeMillis;
   }
   
-  private static final int ONE_DAY_IN_SECONDS = 60*60*24;
-  private static final int ONE_HOUR_IN_SECONDS = 60*60;
+  private static final int ONE_DAY_IN_SECONDS    = 60 * 60 * 24;
+  private static final int ONE_HOUR_IN_SECONDS   = 60 * 60;
   private static final int ONE_MINUTE_IN_SECONDS = 60;
+  
   public static String convertCountdown(long secondsRemaining) {
     long days = 0;
     long hours = 0;
@@ -140,9 +149,7 @@ public class ProgramEvent implements Serializable {
     }
     seconds = secondsRemaining;
     
-    return ((days > 0) ? days + "d " : "") +
-        ((hours > 0) ? hours + ":" : "0:") + 
-        ((minutes > 0) ? minutes + " " : "0 ") + 
-        seconds + "s";
+    return ((days > 0) ? days + "d " : "") + ((hours > 0) ? hours + ":" : "0:")
+        + ((minutes > 0) ? minutes + " " : "0 ") + seconds + "s";
   }
 }

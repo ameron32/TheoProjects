@@ -4,88 +4,13 @@
     <string name="app_name">ConventionNotes</string>
     <string name="title_talk_detail">Talk Detail</string>
     <string name="action_settings">Settings</string>
+    <string name="action_export">Export</string>
     <string name="action_save">Save</string>
     <string name="action_add">Add</string>
     <string name="sliding_pane_titleClosed">Sliding pane closed</string>
     <string name="sliding_pane_titleOpened">Sliding pane opened</string>
     <string name="text_view_note_editor_hint">Type a note then press add:</string>
 
-    <string-array name="program_times">
-        <item>Friday,9:20</item>
-        <item>Friday,9:30</item>
-        <item>Friday,9:4</item>
-        <item>Friday,10:20</item>
-        <item>Friday,10:20</item>
-        <item>Friday,10:20</item>
-        <item>Friday,11:10</item>
-        <item>Friday,11:20</item>
-        <item>Friday,11:45</item>
-        <item>Friday,12:15</item>
-        <item>Friday,13:25</item>
-        <item>Friday,13:35</item>
-        <item>Friday,13:40</item>
-        <item>Friday,14:0</item>
-        <item>Friday,14:0</item>
-        <item>Friday,14:0</item>
-        <item>Friday,14:0</item>
-        <item>Friday,14:0</item>
-        <item>Friday,14:0</item>
-        <item>Friday,15:0</item>
-        <item>Friday,15:10</item>
-        <item>Friday,16:0</item>
-        <item>Friday,16:20</item>
-        <item>Friday,16:55</item>
-        <item>Saturday,9:20</item>
-        <item>Saturday,9:30</item>
-        <item>Saturday,9:40</item>
-        <item>Saturday,9:40</item>
-        <item>Saturday,9:40</item>
-        <item>Saturday,9:40</item>
-        <item>Saturday,10:20</item>
-        <item>Saturday,10:20</item>
-        <item>Saturday,10:20</item>
-        <item>Saturday,10:20</item>
-        <item>Saturday,11:0</item>
-        <item>Saturday,11:10</item>
-        <item>Saturday,11:10</item>
-        <item>Saturday,11:10</item>
-        <item>Saturday,11:45</item>
-        <item>Saturday,12:15</item>
-        <item>Saturday,13:35</item>
-        <item>Saturday,13:45</item>
-        <item>Saturday,13:50</item>
-        <item>Saturday,13:50</item>
-        <item>Saturday,13:50</item>
-        <item>Saturday,13:50</item>
-        <item>Saturday,13:50</item>
-        <item>Saturday,13:50</item>
-        <item>Saturday,14:50</item>
-        <item>Saturday,15:0</item>
-        <item>Saturday,15:20</item>
-        <item>Saturday,15:45</item>
-        <item>Saturday,16:15</item>
-        <item>Saturday,16:55</item>
-        <item>Sunday,9:20</item>
-        <item>Sunday,9:30</item>
-        <item>Sunday,9:40</item>
-        <item>Sunday,9:40</item>
-        <item>Sunday,9:40</item>
-        <item>Sunday,9:40</item>
-        <item>Sunday,9:40</item>
-        <item>Sunday,9:40</item>
-        <item>Sunday,9:40</item>
-        <item>Sunday,9:40</item>
-        <item>Sunday,11:10</item>
-        <item>Sunday,11:20</item>
-        <item>Sunday,11:50</item>
-        <item>Sunday,12:20</item>
-        <item>Sunday,13:35</item>
-        <item>Sunday,13:45</item>
-        <item>Sunday,13:50</item>
-        <item>Sunday,14:10</item>
-        <item>Sunday,14:40</item>
-        <item>Sunday,14:50</item>
-        <item>Sunday,15:50</item>
-    </string-array>
+    
 
 </resources>

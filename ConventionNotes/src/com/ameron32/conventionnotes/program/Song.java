@@ -59,5 +59,9 @@ public class Song extends ProgramEvent {
         + intermission + " SUPER" + super.toString() + "]";
   }
   
+  @Override
+  public String getExportText() {
+    return getProgramTime() + "   " + getSongText();
+  }
   
 }

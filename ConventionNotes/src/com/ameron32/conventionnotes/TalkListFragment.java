@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.ameron32.conventionnotes.program.ProgramAdapter;
 import com.ameron32.conventionnotes.program.ProgramEvent;
+import com.ameron32.conventionnotes.program.ProgramList;
 import com.ameron32.conventionnotes.program.Talk;
 
 /**

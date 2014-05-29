@@ -14,12 +14,13 @@ import com.ameron32.conventionnotes.MainActivity;
 import com.ameron32.conventionnotes.notes.Note;
 
 public class ScriptureNote extends Note {
+  private static final long serialVersionUID = -3401984122423046983L;
   
   public String  book;
   public int     chapter;
   public int[]   verses;
   
-  public Spanned scriptureText;
+  public String scriptureText;
   
   public ScriptureNote(String note) {
     super(note);
@@ -29,9 +30,7 @@ public class ScriptureNote extends Note {
     Scripture s = new Scripture(book, chapter, verses);
     ScriptureFinder sf = new ScriptureFinder();
     try {
-      String scrText = null;
-      scrText = sf.findScriptures(MainActivity.getContext(), s.book, s.chapter, s.verses);
-      scriptureText = Html.fromHtml(scrText);
+      scriptureText = sf.findScriptures(MainActivity.getContext(), s.book, s.chapter, s.verses);
     }
     catch (BookNotFoundError e) {
       e.printStackTrace();
@@ -57,8 +56,10 @@ public class ScriptureNote extends Note {
    */
   private void extractScripture(String note) {
     String[] bcv = note.split(" ");
-    String book = bcv[0].substring(1);
+    book = bcv[0].substring(1);
     String chapter = bcv[1];
+    
+    // TODO++ add book sanitizer
     
     this.book = book;
     this.chapter = Integer.valueOf(chapter);
@@ -132,5 +133,12 @@ public class ScriptureNote extends Note {
     return "ScriptureNote [book=" + book + ", chapter=" + chapter + ", verses=" + Arrays.toString(verses) + " | "
         + super.toString() + "]";
   }
+
+  @Override
+  public String getExportText() {
+    return super.getExportText();
+  }
+  
+  
   
 }

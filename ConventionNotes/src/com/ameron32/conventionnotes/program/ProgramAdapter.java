@@ -3,13 +3,13 @@ package com.ameron32.conventionnotes.program;
 import java.util.List;
 
 import android.content.Context;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.ameron32.conventionnotes.ProgramList;
 import com.ameron32.conventionnotes.R;
 
 public class ProgramAdapter extends BaseAdapter {
@@ -59,7 +59,10 @@ public class ProgramAdapter extends BaseAdapter {
     if (convertView == null) {
       convertView = inflater.inflate(R.layout.talk_list_item, parent, false);
       holder = new TalkViewHolder();
+      
+      holder.time = (TextView) convertView.findViewById(R.id.talk_time_text);
       holder.title = (TextView) convertView.findViewById(R.id.talk_title_text);
+      
       convertView.setTag(holder);
       convertView.setTag(IDTAG, getItem(position).getId());
     } else {
@@ -67,22 +70,23 @@ public class ProgramAdapter extends BaseAdapter {
     }
     
     if (event instanceof Talk) {
-      convertView.setMinimumHeight(80);
+      convertView.setMinimumHeight(120);
     } else {
-      convertView.setMinimumHeight(30);
+      convertView.setMinimumHeight(50);
     }
     
     String textToDisplay = "";
     if (event instanceof Talk) {
-      textToDisplay = ((Talk) event).getMultiLineTitle();
+      textToDisplay += ((Talk) event).getMultiLineTitle();
     }
     if (event instanceof Music) {
-      textToDisplay = ((Music) event).getMusicText();
+      textToDisplay += ((Music) event).getMusicText();
     }
     if (event instanceof Song) {
-      textToDisplay = ((Song) event).getSongText();
+      textToDisplay += ((Song) event).getSongText();
     }
-      
+    
+    holder.time.setText(event.getProgramTime());
     holder.title.setText(textToDisplay);
     
     return convertView;
@@ -90,6 +94,7 @@ public class ProgramAdapter extends BaseAdapter {
   
   public static class TalkViewHolder {
     public TextView title;
+    public TextView time;
   }
   
 }

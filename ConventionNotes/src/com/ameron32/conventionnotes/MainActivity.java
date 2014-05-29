@@ -1,5 +1,7 @@
 package com.ameron32.conventionnotes;
 
+import java.io.IOException;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
@@ -17,8 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ameron32.conventionnotes.notes.Note;
+import com.ameron32.conventionnotes.program.ProgramList;
 import com.ameron32.conventionnotes.scripture.Scripture;
 import com.ameron32.conventionnotes.scripture.ScriptureDialog;
+import com.ameron32.conventionnotes.tools.Exporter;
+import com.ameron32.conventionnotes.tools.Testing;
 
 /**
  * An activity representing the represents a a list of Talks and its details in
@@ -50,7 +55,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    context = getApplicationContext();
+    context = CustomApplication.getCustomAppContext();
     
     // List items should be given the
     // 'activated' state when touched.
@@ -77,9 +82,28 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   @Override
   protected void onResume() {
     if (currentTalkId != null) {
-      onItemSelected(currentTalkId);
+      selectItem(currentTalkId);
     }
     super.onResume();
+  }
+  
+  @Override
+  protected void onPause() {
+    Testing.startTest("PauseDelay");
+    super.onPause();
+    saveProgram();
+  }
+  
+  private boolean saveProgram() {
+    try {
+      ProgramList.saveProgram();
+      return true;
+    }
+    catch (IOException e) {
+      Toast.makeText(getContext(), "Save failed.", Toast.LENGTH_SHORT).show();
+      e.printStackTrace();
+    }
+    return false;
   }
   
   @Override
@@ -92,6 +116,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   protected void onDestroy() {
     context = null;
     super.onDestroy();
+    Testing.endTest("PauseDelay");
   }
   
   /**
@@ -101,20 +126,26 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   @Override
   public void onItemSelected(String id) {
     
+    saveProgram();
+    
     // Show the detail view in this activity by
     // adding or replacing the detail fragment using a
     // fragment transaction.
     
     // ***********************************************
     // SwitchTalks
-    TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
-    Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();
-    currentTalkId = id;
-    talkFragment.showTalk(Integer.decode(id));
+    selectItem(id);
     
     // ***********************************************
     
     mSlidingLayout.closePane();
+  }
+  
+  private void selectItem(String id) {
+    TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
+//    Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();
+    currentTalkId = id;
+    talkFragment.showTalk(Integer.decode(id));
   }
   
   /**
@@ -124,17 +155,13 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   @Override
   public void onNextClicked() {
     
+    saveProgram();
+    
     //
     
     // ***********************************************
     // SwitchTalks
-    TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
-    int nextTalkId = talkFragment.getTalkId() + 1;
-    if (!isBlocked(nextTalkId)) {
-      ((TalkListFragment) getSupportFragmentManager().findFragmentById(R.id.talk_list))
-          .setActivatedTalk(nextTalkId);
-      talkFragment.showTalk(nextTalkId);
-    }
+    nextTalk();
     
     // ***********************************************
     
@@ -148,21 +175,54 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   @Override
   public void onPrevClicked() {
     
+    saveProgram();
+    
     //
     
     // ***********************************************
     // SwitchTalks
-    TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
-    int prevTalkId = talkFragment.getTalkId() - 1;
-    if (!isBlocked(prevTalkId)) {
-      ((TalkListFragment) getSupportFragmentManager().findFragmentById(R.id.talk_list))
-          .setActivatedTalk(prevTalkId);
-      talkFragment.showTalk(prevTalkId);
-    }
+    prevTalk();
     
     // ***********************************************
     
     mSlidingLayout.closePane();
+  }
+  
+  private void nextTalk() {
+    TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
+    int nextTalkId = talkFragment.getTalkId() + 1;
+    selectTalk(nextTalkId);
+  };
+  
+  private void prevTalk() {
+    TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
+    int prevTalkId = talkFragment.getTalkId() - 1;
+    selectTalk(prevTalkId);
+  };
+  
+  private void selectTalk(int newTalkId) {
+    if (!isBlocked(newTalkId)) {
+      TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
+      ((TalkListFragment) getSupportFragmentManager().findFragmentById(R.id.talk_list)).setActivatedTalk(newTalkId);
+      talkFragment.showTalk(newTalkId);
+    }
+  }
+  
+  /**
+   * Callback method from {@link TalkDetailFragment.Callbacks} indicating that
+   * the save button was clicked.
+   */
+  @Override
+  public void onSave() {
+    
+    boolean saved = saveProgram();
+    if (saved) {
+      Toast.makeText(MainActivity.this, "Saved successfully!", Toast.LENGTH_SHORT).show();
+    }
+    //
+    
+    // ***********************************************
+    // SwitchTalks
   }
   
   private boolean isBlocked(int talkId) {
@@ -229,6 +289,10 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     if (item.getItemId() == android.R.id.home && !mSlidingLayout.isOpen()) {
       mSlidingLayout.openPane();
       return true;
+    }
+    if (item.getItemId() == R.id.action_export) {
+      saveProgram();
+      Exporter.exportProgramNotesAsEmail(MainActivity.this);
     }
     return super.onOptionsItemSelected(item);
   }
@@ -298,6 +362,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   @SuppressLint("NewApi")
   private class FirstLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
     
+    @SuppressWarnings("deprecation")
     @Override
     public void onGlobalLayout() {
       

@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/talk_title_text"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:minHeight="30dp" />
+    android:minHeight="50dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/talk_time_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:text="Test"
+        android:textColor="#FF0000" />
+
+    <TextView
+        android:id="@+id/talk_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="15dp"
+        android:text="Test" />
+
+</LinearLayout>

@@ -7,13 +7,14 @@ import java.util.List;
 import com.ameron32.conventionnotes.notes.Note;
 
 public class Talk extends ProgramEvent {
-  private static final long serialVersionUID = -5743232377202758745L;
-
+  
+  private static final long    serialVersionUID = -5743232377202758745L;
+  
   private static StringBuilder sb;
   
   private int                  talkNumber;
   private String[]             titleLines;
-  private List<Note>           notes = new ArrayList<Note>();
+  private List<Note>           notes            = new ArrayList<Note>();
   
   public Talk(String... title) {
     this.titleLines = title;
@@ -71,12 +72,29 @@ public class Talk extends ProgramEvent {
   public int getTalkNumber() {
     return talkNumber;
   }
-
+  
   @Override
   public String toString() {
-    return "Talk [talkNumber=" + talkNumber + ", titleLines=" + Arrays.toString(titleLines) + ", notes=" + notes + " SUPER" + super.toString() + "]";
+    return "Talk [talkNumber=" + talkNumber + ", titleLines=" + Arrays.toString(titleLines) + ", notes=" + notes
+        + " SUPER" + super.toString() + "]";
   }
   
+  @Override
+  public String getExportText() {
+    return getProgramTime() + "   " + getMultiLineTitle() + "\n" + getNoteExportText();
+  }
   
+  private String getNoteExportText() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(Note.EXPORT_HEADER);
+    sb.append(Note.EXPORT_NOTE_SEPARATOR);
+    for (Note n : notes) {
+      sb.append("\n");
+      sb.append(n.getExportText());
+      sb.append(Note.EXPORT_NOTE_SEPARATOR);
+    }
+    sb.append(Note.EXPORT_FOOTER);
+    return sb.toString();
+  }
   
 }

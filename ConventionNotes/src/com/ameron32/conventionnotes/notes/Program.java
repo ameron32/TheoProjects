@@ -29,4 +29,16 @@ public class Program implements Serializable {
   public void setEvents(List<ProgramEvent> events) {
     this.events = events;
   }
+  
+  public String getPlainTextNotes() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(ProgramEvent.EXPORT_EVENT_HEADER);
+    sb.append(ProgramEvent.EXPORT_EVENT_DIVIDER);
+    for (ProgramEvent event : events) {
+      sb.append("\n");
+      sb.append(event.getExportText());
+      sb.append(ProgramEvent.EXPORT_EVENT_DIVIDER);
+    }
+    return sb.toString();
+  }
 }

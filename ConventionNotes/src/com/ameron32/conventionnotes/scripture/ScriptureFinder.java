@@ -5,28 +5,41 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StreamCorruptedException;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ameron32.conventionnotes.tools.Testing;
+
 public class ScriptureFinder {
   
-  Context c;
-  String  fileName;
-  String  bookName;
-  File    chapterFile;
-  int     chapter;
-  int     verse;
+  Context                     c;
+  String                      fileName;
+  String                      bookName;
+  String                      chapterText;
+  File                        chapterFile;
+  int                         chapter;
+  int                         verse;
+  private static final String endFileMarker = "<div class=\"groupFootnote\">";
   
   public String findScriptures(Context c, String bookName, int chapter, int[] verses)
       throws ScriptureNotFoundError {
-    
+    this.c = c;
+    this.chapter = chapter;
+    this.bookName = bookName;
+    fileName = getFileName();
     StringBuilder sb = new StringBuilder();
     boolean versesNotFound = false;
     try {
+      
+      // TODO-- undo my changes
+      // readChapterTextA();
+      
+      // TODO-- undo my changes
+      readChapterTextB();
+      
       for (int verse : verses) {
         sb.append(FindScripture(c, bookName, chapter, verse));
       }
@@ -44,26 +57,24 @@ public class ScriptureFinder {
         else {
           versesNotFound = true;
         }
-      
     }
-    
     if (versesNotFound) {
       Toast.makeText(c, "Some verses not found.", Toast.LENGTH_LONG).show();
     }
     return sb.toString();
   }
   
-  public String FindScripture(Context c, String bookName, int chapter, int verse)
+  private String FindScripture(Context c, String bookName, int chapter, int verse)
       throws ScriptureNotFoundError {
-    
     String s = "";
     try {
-      this.c = c;
-      this.chapter = chapter;
       this.verse = verse;
-      this.bookName = bookName;
-      fileName = getFileName();
-      s = getVerse();
+      
+      // TODO-- undo my changes
+      // s = getVerseA();
+      
+      // TODO-- undo my changes
+      s = getVerseB();
     }
     catch (ScriptureNotFoundError e) {
       throw e;
@@ -82,7 +93,7 @@ public class ScriptureFinder {
       ChapterNotFoundError cnf = new ChapterNotFoundError();
       cnf.chapter = chapter;
       e.printStackTrace();
-      Toast.makeText(c, bookName + " " + String.valueOf(chapter) + ":" + String.valueOf(verse) + " not found.", Toast.LENGTH_LONG).show();
+      Toast.makeText(c, bookName + "" + String.valueOf(chapter) + ":" + String.valueOf(verse) + " not found.", Toast.LENGTH_LONG).show();
       throw cnf;
     }
     return epubInputStream;
@@ -94,7 +105,6 @@ public class ScriptureFinder {
     String bookAbbrev = getBookAbbrev(bookName);
     int bookNumber = getBookNumber(bookAbbrev);
     int val = 24 + (2 * bookNumber);
-    
     if (chapter == 1) {
       if (val > 99) {
         fileName = String.valueOf(val) + "_" + bookAbbrev + "-1.xhtml";
@@ -102,13 +112,11 @@ public class ScriptureFinder {
       else fileName = "0" + String.valueOf(val) + "_" + bookAbbrev + "-1.xhtml";
     }
     else {
-      
       if (val > 99) {
         fileName = String.valueOf(val) + "_" + bookAbbrev + "-1-split" + String.valueOf(chapter) + ".xhtml";
       }
       else fileName = "0" + String.valueOf(val) + "_" + bookAbbrev + "-1-split" + String.valueOf(chapter) + ".xhtml";
     }
-    
     return fileName;
   }
   
@@ -181,10 +189,9 @@ public class ScriptureFinder {
     if (bookName.equals("3 JOHN")) return "3JO";
     if (bookName.equals("JUDE")) return "JUD";
     if (bookName.equals("REVELATION")) return "RE";
-    
     BookNotFoundError bnf = new BookNotFoundError();
     bnf.book = bookName;
-    Toast.makeText(c, bookName + " " + String.valueOf(chapter) + ":" + String.valueOf(verse) + " not found.", Toast.LENGTH_LONG).show();
+    Toast.makeText(c, bookName + "" + String.valueOf(chapter) + ":" + String.valueOf(verse) + " not found.", Toast.LENGTH_LONG).show();
     throw bnf;
   }
   
@@ -257,67 +264,185 @@ public class ScriptureFinder {
     return 66;
   }
   
-  private String getVerse()
-      throws ScriptureNotFoundError {
+  /**
+   * @author Micah
+   */
+  private void readChapterTextA() {
+    Testing.startTest("readChapterTextA");
     
-    BufferedReader bsr = new BufferedReader(new InputStreamReader(openBibleFile()));
-    
-    String chapterEndMark = "<div class=\"groupFootnote\">";
-    String s = "";
-    String startMark = getStartMarkerString();
-    String endMark = getEndMarkerString();
-    char v = ' ';
-    
-    while (!s.contains(startMark)) {
-      
-      try {
-        v = (char) bsr.read();
-        s = s.concat(String.valueOf(v));
-        
-        if (s.contains(chapterEndMark)) {
-          VerseNotFoundError vnf = new VerseNotFoundError();
-          vnf.verse = verse;
-          throw vnf;
-        }
-        
+    InputStreamReader is = new InputStreamReader(openBibleFile());
+    BufferedReader bsr = new BufferedReader(is);
+    StringBuilder sb = new StringBuilder();
+    try {
+      while (loop(sb.toString(), endFileMarker)) {
+        Testing.startTest("rct/bsr.read");
+        sb.append((char) bsr.read());
+        // Testing.endTest("rct/bsr.read");
       }
-      catch (StreamCorruptedException e) {
-        e.printStackTrace();
-      }
-      catch (IOException e) {
-        e.printStackTrace();
-      }
+      bsr.close();
+      is.close();
     }
-    
-    s = "";
-    while (!s.contains(endMark) && !s.contains(chapterEndMark)) {
-      try {
-        v = (char) bsr.read();
-        s = s.concat(String.valueOf(v));
-      }
-      catch (StreamCorruptedException e) {
-        e.printStackTrace();
-      }
-      catch (IOException e) {
-        e.printStackTrace();
-      }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
+    chapterText = sb.toString();
     
-    s.replaceAll(endMark, "");
-    Log.i("Verse Text", s);
-    return s;
+    Testing.endTest("readChapterTextA");
   }
   
-  private String getStartMarkerString() {
+  /**
+   * @author Kris
+   */
+  private void readChapterTextB() {
+    Testing.startTest("readChapterTextB");
+    
+    InputStreamReader is = new InputStreamReader(openBibleFile());
+    BufferedReader bsr = new BufferedReader(is);
+    StringBuilder sb = new StringBuilder();
+    String aux = "";
+    try {
+      // while (loop(sb.toString(), endFileMarker)) {
+      // Testing.startTest("rct/bsr.read");
+      // sb.append((char) bsr.read());
+      // Testing.endTest("rct/bsr.read");
+      // }
+      while ((aux = bsr.readLine()) != null) {
+        sb.append(aux);
+      }
+      bsr.close();
+      is.close();
+    }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    chapterText = sb.toString();
+    
+    Testing.endTest("readChapterTextB");
+  }
+  
+  private boolean loop(String from, String endFileMarker) {
+    Testing.startTest("loop");
+    boolean a = !from.contains(endFileMarker);
+    
+    // Testing.endTest("loop");
+    return a;
+  }
+  
+  /**
+   * @author Kris
+   */
+  private String getVerseB()
+      throws ScriptureNotFoundError {
+    Testing.startTest("getVerseB");
+    
+    final String startVerseMark = getStartVerseMarkerString();
+    final String endVerseMark = getEndVerseMarkerString();
+    final StringBuilder verseTextBuilder = new StringBuilder();
+    String verseText = "";
+    int verseCharMarker = 0;
+    // Read to the start of the verse.
+    // edit Kris
+    int LOCATION_FAILED = -1;
+    int startLocation = chapterText.indexOf(startVerseMark);
+    if (startLocation == LOCATION_FAILED) {
+      VerseNotFoundError vnf = new VerseNotFoundError();
+      vnf.verse = verse;
+      throw vnf;
+    }
+    startLocation += startVerseMark.length();
+    verseCharMarker = startLocation;
+    
+    /*
+     * Otherwise, clear the string, and now read from where you are to the
+     * beginning of the verse.
+     */
+    verseCharMarker++;
+    verseText = "";
+    verseTextBuilder.replace(0, verseTextBuilder.length(), "");
+    // edit Kris
+    final String substring = chapterText.substring(startLocation);
+    int endLocation = substring.indexOf(endVerseMark);
+    if (endLocation == LOCATION_FAILED) {
+      VerseNotFoundError vnf = new VerseNotFoundError();
+      vnf.verse = verse;
+      throw vnf;
+    }
+    endLocation -= 10;
+    verseCharMarker = endLocation;
+    
+    verseText = substring.substring(0, endLocation);
+    
+    //
+    Testing.startTest("getVerseB/replaceText");
+    final String rep1 = "<sup>";
+    final String rep2 = "</sup>";
+    final String with1 = "<sup><small>";
+    final String with2 = "</small></sup>";
+//    verseText = verseText.replaceAll(endVerseMark, "");
+    verseText = verseText.replaceAll(rep1, with1);
+    verseText = verseText.replaceAll(rep2, with2);
+    Testing.endTest("getVerseB/replaceText");
+    Log.i("Verse Text", verseText.toString());
+    
+    Testing.endTest("getVerseB");
+    return verseText;
+  }
+  
+  /**
+   * @author Micah
+   */
+  private String getVerseA()
+      throws ScriptureNotFoundError {
+    Testing.startTest("getVerseA");
+    
+    String startVerseMark = getStartVerseMarkerString();
+    String endVerseMark = getEndVerseMarkerString();
+    StringBuilder verseTextBuilder = new StringBuilder();
+    String verseText = "";
+    int verseCharMarker = 0;
+    // Read to the start of the verse.
+    for (int i = 0; i < chapterText.length();) {
+      while (!verseText.contains(startVerseMark)) {
+        verseTextBuilder.append(chapterText.charAt(i));
+        verseCharMarker = i;
+        i++;
+        verseText = verseTextBuilder.toString();
+      }
+      i++;
+    }
+    // If you tried to do that, and got to the end of the chapter, throw a
+    // VerseNotFound error.
+    if (verseText.contains(endFileMarker)) {
+      VerseNotFoundError vnf = new VerseNotFoundError();
+      vnf.verse = verse;
+      throw vnf;
+    }
+    // Otherwise, clear the string, and now read from where you are to the
+    // beginning of the verse.
+    verseCharMarker++;
+    verseText = "";
+    verseTextBuilder.replace(0, verseTextBuilder.length(), "");
+    while (!verseText.contains(endVerseMark) && !verseText.contains(endFileMarker)) {
+      verseTextBuilder.append(chapterText.charAt(verseCharMarker));
+      verseCharMarker++;
+      verseText = verseTextBuilder.toString();
+    }
+    verseText.replaceAll(endVerseMark, "");
+    Log.i("Verse Text", verseText.toString());
+    
+    Testing.endTest("getVerseA");
+    return verseText;
+  }
+  
+  private String getStartVerseMarkerString() {
     String s = "chapter" + String.valueOf(chapter) + "_verse" + String.valueOf(verse) + "\"></span>";
     return s;
   }
   
-  private String getEndMarkerString() {
-    
+  private String getEndVerseMarkerString() {
     String s = "chapter" + String.valueOf(chapter) + "_verse" + String.valueOf(verse + 1) + "\"></span>";
     return s;
-    
   }
-  
 }
