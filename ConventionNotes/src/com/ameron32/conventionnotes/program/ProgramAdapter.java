@@ -77,7 +77,7 @@ public class ProgramAdapter extends BaseAdapter {
     
     String textToDisplay = "";
     if (event instanceof Talk) {
-      textToDisplay += ((Talk) event).getMultiLineTitle();
+      textToDisplay += ((Talk) event).getMultiLineTitle(true);
     }
     if (event instanceof Music) {
       textToDisplay += ((Music) event).getMusicText();

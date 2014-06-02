@@ -42,4 +42,8 @@ public class Testing {
       elapsed = this.stop - start;
     }
   }
+  
+  public static void report(String msg) {
+    Log.i(Testing.class.getSimpleName(), msg);
+  }
 }

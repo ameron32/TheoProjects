@@ -66,7 +66,12 @@ public class NoteAdapter extends BaseAdapter {
       //
       // sNote.scriptureText.toString();
       // SpannedString spannedString = new SpannedString(combined);
-      noteSpan = Html.fromHtml(sNote.scriptureText);
+      String text = sNote.scriptureText;
+      if (text != null) {
+        noteSpan = Html.fromHtml(text);
+      } else {
+        noteSpan = Html.fromHtml("Error parsing scripture text.");
+      }
     }
     
     holder.noteTextView.setText(noteText);
@@ -86,6 +91,10 @@ public class NoteAdapter extends BaseAdapter {
   
   public void addNote(Note note) {
     talk.addNote(note);
+  }
+  
+  public void removeNote(int position) {
+    talk.removeNote(position);
   }
   
   public static class NoteViewHolder {

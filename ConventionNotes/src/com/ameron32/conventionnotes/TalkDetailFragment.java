@@ -15,7 +15,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -90,6 +92,11 @@ public class TalkDetailFragment extends Fragment {
      */
     public void onSave();
     
+    /**
+     * 
+     */
+    public void onNoteLongPressed(AdapterView<?> parent, View view, int position, long id, Note note);
+    
   }
   
   /**
@@ -115,6 +122,9 @@ public class TalkDetailFragment extends Fragment {
                                                   
                                                   @Override
                                                   public void onSave() {}
+                                                  
+                                                  @Override
+                                                  public void onNoteLongPressed(AdapterView<?> parent, View view, int position, long id, Note note) {};
                                                   
                                                 };
   
@@ -158,10 +168,10 @@ public class TalkDetailFragment extends Fragment {
     }
     return super.onOptionsItemSelected(item);
   }
-
+  
   private void initNextPrevButtons(View rootView) {
-    Button next = (Button) rootView.findViewById(R.id.button3);
-    Button prev = (Button) rootView.findViewById(R.id.button1);
+    ImageButton next = (ImageButton) rootView.findViewById(R.id.button3);
+    ImageButton prev = (ImageButton) rootView.findViewById(R.id.button1);
     
     next.setOnClickListener(new OnClickListener() {
       
@@ -187,14 +197,16 @@ public class TalkDetailFragment extends Fragment {
   }
   
   private void createListView() {
-    
-    View rlHeader = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.title_header_view, null, false);
-    header = (TextView) rlHeader.findViewById(R.id.textview_title);
-    header.setText(ProgramList.getTalk(id).getTitle());
-    mNoteListView.addHeaderView(rlHeader);
+    mNoteListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
     
     header2 = ((RelativeLayout) ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.header_view, null, false));
     mNoteListView.addHeaderView(header2);
+    
+    View rlHeader = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.title_header_view, null, false);
+    header = (TextView) rlHeader.findViewById(R.id.textview_title);
+    String multiLineTitle = ProgramList.getTalk(id).getMultiLineTitle(true);
+    header.setText(multiLineTitle);
+    mNoteListView.addHeaderView(rlHeader);
   }
   
   private void populateListView() {
@@ -217,6 +229,8 @@ public class TalkDetailFragment extends Fragment {
       
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (id == -1) return;
+        
         Note note = noteAdapter.getItem((int) id);
         if (note instanceof ScriptureNote) {
           if (DEBUG) {
@@ -229,6 +243,17 @@ public class TalkDetailFragment extends Fragment {
           }
         }
       }
+    });
+    mNoteListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+      @Override
+      public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        if (id == -1) return false;
+        
+        mCallbacks.onNoteLongPressed(parent, view, position, id, noteAdapter.getItem((int) id));
+        return true;
+      }
+      
     });
     setText(talk);
     
@@ -251,7 +276,7 @@ public class TalkDetailFragment extends Fragment {
   private void setText(Talk talk) {
     ActionBar actionBar = getActivity().getActionBar();
     TextView titleText = (TextView) actionBar.getCustomView().findViewById(R.id.title_text);
-    titleText.setText(talk.getMultiLineTitle());
+    titleText.setText(talk.getMultiLineTitle(true));
     header.setText(talk.getTitle());
   }
   
@@ -262,6 +287,12 @@ public class TalkDetailFragment extends Fragment {
   public void addNote(Note note) {
     Talk talk = ProgramList.getTalk(id);
     talk.addNote(note);
+    noteAdapter.notifyDataSetChanged();
+  }
+  
+  public void deleteNote(int position, Note note) {
+    Talk talk = ProgramList.getTalk(id);
+    talk.removeNote(position);
     noteAdapter.notifyDataSetChanged();
   }
 }

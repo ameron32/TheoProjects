@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_note"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:gravity="center_vertical"
     android:minHeight="40dp"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:padding="8dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_margin="8dp"
+        android:background="@color/BGLight"
+        android:orientation="vertical"
+        android:padding="8dp" >
 
         <TextView
             android:id="@+id/textview_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:padding="8dp"
+            android:text="Note Text not found"
+            android:textColor="@color/Text"
+            android:typeface="sans" />
 
         <View
             android:id="@+id/view_spacer"
             android:layout_width="match_parent"
-            android:layout_height="12dp"
+            android:layout_height="4dp"
+            android:background="@color/Accent"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/textview_scripture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:layout_margin="8dp"
+            android:background="@color/AccentBG"
+            android:padding="8dp"
+            android:text="Scripture Text not found"
+            android:textColor="@color/Text"
+            android:typeface="serif"
             android:visibility="gone" />
     </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>

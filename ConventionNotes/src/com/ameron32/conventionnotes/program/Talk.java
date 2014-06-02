@@ -44,13 +44,15 @@ public class Talk extends ProgramEvent {
     return sb.toString();
   }
   
-  public String getMultiLineTitle() {
+  public String getMultiLineTitle(boolean withSpaces) {
     sb = new StringBuilder();
     for (int i = 0; i < titleLines.length; i++) {
       String line = titleLines[i];
       if (i != 0) {
         sb.append("\n");
-        sb.append("  ");
+        if (withSpaces) {
+          sb.append("  ");
+        }
       }
       sb.append(line);
     }
@@ -63,6 +65,10 @@ public class Talk extends ProgramEvent {
   
   public void addNote(Note note) {
     notes.add(note);
+  }
+  
+  public void removeNote(int position) {
+    notes.remove(position);
   }
   
   public void setTalkNumber(int talkNumber) {
@@ -81,11 +87,11 @@ public class Talk extends ProgramEvent {
   
   @Override
   public String getExportText() {
-    return getProgramTime() + "   " + getMultiLineTitle() + "\n" + getNoteExportText();
+    return getProgramTime() + "   " + getMultiLineTitle(true) + "\n" + getNoteExportText();
   }
   
   private String getNoteExportText() {
-    StringBuilder sb = new StringBuilder();
+    sb = new StringBuilder();
     sb.append(Note.EXPORT_HEADER);
     sb.append(Note.EXPORT_NOTE_SEPARATOR);
     for (Note n : notes) {
@@ -96,5 +102,4 @@ public class Talk extends ProgramEvent {
     sb.append(Note.EXPORT_FOOTER);
     return sb.toString();
   }
-  
 }

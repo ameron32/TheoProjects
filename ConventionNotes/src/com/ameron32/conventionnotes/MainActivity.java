@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -141,11 +142,39 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     mSlidingLayout.closePane();
   }
   
+  @Override
+  public void onDeleteNote(int position, Note note) {
+    TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
+    talkFragment.deleteNote(position, note);
+  }
+  
+  @Override
+  public void onEditNote(Note note) {
+    // TODO++ edit functionality or --remove
+    Toast.makeText(MainActivity.this, "Edit not functional", Toast.LENGTH_SHORT).show();
+  }
+  
   private void selectItem(String id) {
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
-//    Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();
+    // Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();
     currentTalkId = id;
     talkFragment.showTalk(Integer.decode(id));
+  }
+  
+  /**
+   * Callback method from {@link TalkDetailFragment.Callbacks} indicating that
+   * the the next talk button was clicked.
+   */
+  @Override
+  public void onNoteLongPressed(AdapterView<?> parent, View view, int position, long id, Note note) {
+    
+    //
+    
+    // ***********************************************
+    // SwitchTalks
+    
+    NotetakingFragment ntf = ((NotetakingFragment) getSupportFragmentManager().findFragmentById(R.id.note_editor));
+    ntf.requestUser(parent, view, position, id, note);
   }
   
   /**
@@ -292,7 +321,10 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     }
     if (item.getItemId() == R.id.action_export) {
       saveProgram();
-      Exporter.exportProgramNotesAsEmail(MainActivity.this);
+      Exporter.exportProgramNotesAsEmail(MainActivity.this, ProgramList.getProgram());
+    }
+    if (item.getItemId() == R.id.action_settings) {
+      Toast.makeText(MainActivity.this, "Settings not functional", Toast.LENGTH_SHORT).show();
     }
     return super.onOptionsItemSelected(item);
   }
@@ -329,6 +361,10 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
       mActionBar.setHomeButtonEnabled(true);
     }
+    TextView titleText = (TextView) mActionBar.getCustomView().findViewById(R.id.title_text);
+    TalkDetailFragment fragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
+    String talkTitle = ProgramList.getTalk(fragment.getTalkId()).getMultiLineTitle(true);
+    titleText.setText(talkTitle);
     
     getSupportFragmentManager().findFragmentById(R.id.content_pane).setHasOptionsMenu(true);
     getSupportFragmentManager().findFragmentById(R.id.talk_list).setHasOptionsMenu(false);

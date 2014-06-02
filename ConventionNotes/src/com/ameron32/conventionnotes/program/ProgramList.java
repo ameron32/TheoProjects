@@ -18,8 +18,10 @@ public class ProgramList {
    */
   public static final String CONVENTION_NAME = "Keep Seeking First God's Kingdom!";
   private static final long  JULY_4_12AM     = 1404450000000L;
-  public static final long   CONVENTION_DATE = JULY_4_12AM;
-  // private static int ONE_DAY = 86400000;
+//  private static int         ONE_DAY         = 86400000;
+  private static final long  JUNE_6_12AM     = 1402030800000L;
+  // TODO: Change for Mikey
+  public static final long   CONVENTION_DATE = JUNE_6_12AM;
   
   private static Program     program;
   
@@ -70,7 +72,7 @@ public class ProgramList {
     
     Log.i("STATIC", "begin! -- context= " + c);
     
-    program = new Program();
+    program = new Program(CONVENTION_NAME, CONVENTION_DATE);
     
     if (getEvents().isEmpty() && getTalks().isEmpty()) {
       
@@ -192,22 +194,6 @@ public class ProgramList {
         System.out.println(event.toString());
       }
     }
-    
-    // /**
-    // * TODO: remove when done | [Add random notes]
-    // */
-    //
-    // for (ProgramEvent event : getEvents()) {
-    // if (event instanceof Talk) {
-    // Talk talk = (Talk) event;
-    // Random r = new Random();
-    // int numberOfNotesToAdd = r.nextInt(7);
-    // for (int i = 0; i < numberOfNotesToAdd; i++) {
-    // talk.addNote(Note.createNote("Note" + i + ":" +
-    // talk.getTitle().substring(0, 7)));
-    // }
-    // }
-    // }
   }
   
   private static boolean findProgram(final Context c) {
@@ -236,6 +222,7 @@ public class ProgramList {
   
   private static boolean addToProgram(ProgramEvent event) {
     
+    event.setParent(program);
     boolean added = getEvents().add(event);
     if (event instanceof Talk) {
       Talk talk = (Talk) event;

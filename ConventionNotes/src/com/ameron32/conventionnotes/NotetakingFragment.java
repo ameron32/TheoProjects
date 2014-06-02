@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.ameron32.conventionnotes.notes.Note;
+import com.ameron32.conventionnotes.notes.NoteAdapter;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -146,6 +149,42 @@ public class NotetakingFragment extends Fragment {
     mListener = null;
   }
   
+  public void requestUser(final AdapterView<?> parent, final View view, final int position, final long id, final Note note) {
+    final View selectorLL = mRootView.findViewById(R.id.selector_parent_ll);
+    selectorLL.setVisibility(View.VISIBLE);
+    
+    Button edit = (Button) selectorLL.findViewById(R.id.selector_edit_button);
+    Button delete = (Button) selectorLL.findViewById(R.id.selector_delete_button);
+    OnClickListener ocl = new View.OnClickListener() {
+      
+      @Override
+      public void onClick(View v) {
+        switch(v.getId()) {
+        case R.id.selector_edit_button:
+          editNote(note);
+          break;
+        case R.id.selector_delete_button:
+          deleteNote((int) id, note);
+          break;
+        }
+        selectorLL.setVisibility(View.GONE);
+      }
+    };
+    edit.setOnClickListener(ocl);
+    delete.setOnClickListener(ocl);
+  }
+  
+  private void editNote(Note note) {
+    mListener.onEditNote(note);
+  };
+  private void deleteNote(int position, Note note) {
+    mListener.onDeleteNote(position, note);
+  };
+  
+  
+  
+  
+  
   /**
    * This interface must be implemented by activities that contain this fragment
    * to allow an interaction in this fragment to be communicated to the activity
@@ -160,6 +199,10 @@ public class NotetakingFragment extends Fragment {
     public void onAddNote(Note note);
     
     public void onAddScripture();
+    
+    public void onDeleteNote(int position, Note note);
+    
+    public void onEditNote(Note note);
   }
   
   // : Rename parameter arguments, choose names that match
@@ -171,5 +214,5 @@ public class NotetakingFragment extends Fragment {
 //  private String                        mParam1;
 //  private String                        mParam2;
   
-
+  
 }

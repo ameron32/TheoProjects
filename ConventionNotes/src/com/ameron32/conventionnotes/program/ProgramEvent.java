@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import com.ameron32.conventionnotes.notes.Program;
+
 public class ProgramEvent implements Serializable {
   
   private static final long       serialVersionUID     = 3937235085748036431L;
@@ -28,6 +30,8 @@ public class ProgramEvent implements Serializable {
   private long                    startTime;
   private long                    stopTime;
   
+  private Program parent;
+  
   /**
    * 
    * @param startDayAndTime
@@ -37,6 +41,10 @@ public class ProgramEvent implements Serializable {
     
     startTime = processDayAndTime(startDayAndTime);
     stopTime = processDayAndTime(endDayAndTime);
+  }
+  
+  public void setParent(Program parent) {
+    this.parent = parent;
   }
   
   private long processDayAndTime(String dayAndTime) {
@@ -65,7 +73,7 @@ public class ProgramEvent implements Serializable {
   
   private long addDays(String day) {
     
-    long time = ProgramList.CONVENTION_DATE;
+    long time = parent.getDate();
     
     switch (day) {
     case "Sunday":
@@ -110,7 +118,7 @@ public class ProgramEvent implements Serializable {
   }
   
   public String getStartTimeFormatted() {
-    return FULL_FORMAT.format(getStartTime());
+    return PROGRAM_FORMAT.format(getStartTime());
   }
   
   public long getStopTime() {
@@ -118,7 +126,7 @@ public class ProgramEvent implements Serializable {
   }
   
   public String getStopTimeFormatted() {
-    return FULL_FORMAT.format(getStopTime());
+    return PROGRAM_FORMAT.format(getStopTime());
   }
   
   public static long timeFromNow(long currentTimeMillis, Talk talk) {

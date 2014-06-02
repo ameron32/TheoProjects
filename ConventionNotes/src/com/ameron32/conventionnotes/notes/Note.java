@@ -23,6 +23,7 @@ public class Note implements Serializable {
   }
   
   public static Note createNote(String note) {
+    note = note.trim();
     Note.Type type = determineNoteType(note);
     
     if (type == Note.Type.Scripture) {
@@ -57,6 +58,7 @@ public class Note implements Serializable {
   }
   
   private static Note.Type determineNoteType(String note) {
+
     if (note.startsWith("@")) {
       return Note.Type.Scripture;
     }

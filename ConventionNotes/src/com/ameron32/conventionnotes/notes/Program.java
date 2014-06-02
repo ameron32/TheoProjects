@@ -14,6 +14,14 @@ public class Program implements Serializable {
   private List<ProgramEvent> events           = new ArrayList<>();
   private List<Talk>         talks            = new ArrayList<>();
   
+  private String name;
+  private long date;
+  
+  public Program(String name, long date) {
+    this.name = name;
+    this.setDate(date);
+  }
+  
   public List<Talk> getTalks() {
     return talks;
   }
@@ -40,5 +48,13 @@ public class Program implements Serializable {
       sb.append(ProgramEvent.EXPORT_EVENT_DIVIDER);
     }
     return sb.toString();
+  }
+
+  public long getDate() {
+    return date;
+  }
+
+  private void setDate(long date) {
+    this.date = date;
   }
 }
