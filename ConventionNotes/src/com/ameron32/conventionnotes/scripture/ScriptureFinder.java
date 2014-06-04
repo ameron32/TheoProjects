@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 import com.ameron32.conventionnotes.tools.Testing;
 
 import android.content.Context;
@@ -23,14 +22,24 @@ public class ScriptureFinder {
 	File chapterFile;
 	int chapter;	
 	ArrayList<String> verseArray;
-
+	String[] allowedTags;
+	private static final String[] defaultAllowedTags = {"<span ", "</span>","<sup>", "<strong>", "<p ", "</sup>", "</strong>", "</p>"};
+	
+	public void setAllowedTags(String[] tags){
+		allowedTags = tags;
+	}
+	
 	private static final String endFileMarker = "<div class=\"groupFootnote\">";	
 
-	public String findScriptures(Context c, String bookName, int chapter, int[] verses) throws ScriptureNotFoundError, Exception{
-    String result = new ScriptureFinderKris().findScriptures(c, bookName, chapter, verses);
-    if (result != null) {
-      return result;
-    }
+	public String findScriptures(Context c, String bookName, int chapter, int[] verses) throws ScriptureNotFoundError{
+		
+//	  String result = new ScriptureFinderKris().findScriptures(c, bookName, chapter, verses);
+//	  if (result != null) {
+//	    return result;
+//	  }
+	  
+	  
+		allowedTags = defaultAllowedTags;
 		
 		Testing.startTest("wholeVerseReadA");
 		
@@ -157,9 +166,9 @@ public class ScriptureFinder {
 		if (bookName.equals("JONAH")) return "JON";
 		if (bookName.equals("MICAH")) return "MIC";
 		if (bookName.equals("NAHUM")) return "NAH";
-		if (bookName.equals("HABAKUK")) return "HAB";
-		if (bookName.equals("ZEPHENIAH")) return "ZEP";
-		if (bookName.equals("HAGAI")) return "HAG";
+		if (bookName.equals("HABAKKUK")) return "HAB";
+		if (bookName.equals("ZEPHANIAH")) return "ZEP";
+		if (bookName.equals("HAGGAI")) return "HAG";
 		if (bookName.equals("ZECHARIAH")) return "ZEC";
 		if (bookName.equals("MALACHI")) return "MAL";
 		if (bookName.equals("MATTHEW")) return "MT";
@@ -172,7 +181,7 @@ public class ScriptureFinder {
 		if (bookName.equals("2 CORINTHIANS")) return "2CO";
 		if (bookName.equals("GALATIANS")) return "GAL";
 		if (bookName.equals("EPHESIANS")) return "EPH";
-		if (bookName.equals("PHILIPIANS")) return "PHP";
+		if (bookName.equals("PHILIPPIANS")) return "PHP";
 		if (bookName.equals("COLOSSIANS")) return "COL";
 		if (bookName.equals("1 THESSALONIANS")) return "1TH";
 		if (bookName.equals("2 THESSALONIANS")) return "2TH";
@@ -281,7 +290,6 @@ public class ScriptureFinder {
 
 	private  String getVerse(int v) throws ScriptureNotFoundError{		
 		
-		
 		ArrayList<Integer> included = new ArrayList<Integer>();
 		String start = getStartVerseMarkerString(v);
 		String end = getEndVerseMarkerString(v);		
@@ -303,12 +311,122 @@ public class ScriptureFinder {
 		
 		StringBuilder sb = new StringBuilder();
 		for (Integer i:included){
-			sb.append(verseArray.get(i));
+			if (included.indexOf(i)>0){
+				sb.append(" " + verseArray.get(i));	
+			}else
+				sb.append(verseArray.get(i));
+			
 		}
 		return cleanupVerse(sb.toString(), v);
 	}		
 
 	private String cleanupVerse(String rawVerse, int v){
+		
+		int start = rawVerse.indexOf(getStartVerseMarkerString(v));
+			if (start>-1)
+			{
+				String rep = rawVerse.substring(0, start);
+				rawVerse = rawVerse.replace(rep, "");
+			}
+			
+			int end = rawVerse.indexOf(getEndVerseMarkerString(v));
+			if (end>-1){
+				String rep = rawVerse.substring(end);
+				rawVerse = rawVerse.replace(rep, "");
+			}
+		
+		
+		ArrayList<String>verseParts = new ArrayList<String>();		
+		String currentChar = "";
+		String nextChar = "";
+		StringBuilder piece = new StringBuilder();
+		
+		
+		for (int i=0; i<rawVerse.length(); i++){			
+			currentChar = String.valueOf(rawVerse.charAt(i));
+			if (i<rawVerse.length()-2) nextChar = String.valueOf(rawVerse.charAt(i+1));
+			
+			piece.append(currentChar);
+			
+			if (currentChar.equals(">") || (nextChar.equals("<"))){			
+				verseParts.add(piece.toString());
+				piece.delete(0, piece.length());
+			}else if (i==rawVerse.length()-1){
+				verseParts.add(piece.toString());
+			}
+		}
+		
+		boolean [] remove = new boolean[verseParts.size()];
+		
+		for (String part:verseParts){
+			if (part.contains("<")||part.contains(">")){
+				for (String aTag:allowedTags){
+					if (part.contains(aTag)){
+						remove[verseParts.indexOf(part)]=false;
+						break;
+					}
+					remove[verseParts.indexOf(part)]=true;
+				}
+			}else{
+				remove[verseParts.indexOf(part)]=false;
+			}
+		}
+		
+		
+		for (int i=remove.length-1; i>=0; i--){
+			if (remove[i]){
+				verseParts.remove(i);
+			}
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (String finalPart:verseParts){
+			sb.append(finalPart);
+		}
+		
+		return sb.toString();
+		
+	}
+	
+	private String cleanupVerseC(String rawVerse, int v){
+		
+		boolean inATag = true;
+		String prevChar = "";
+		String currentChar = "";
+		boolean[]removeChar = new boolean[rawVerse.length()];
+		
+		for (int i=0; i<rawVerse.length(); i++){
+			
+			if (i>0){prevChar = rawVerse.substring(i-1, i);}			
+			currentChar = rawVerse.substring(i, i+1);
+			
+			if (currentChar.equals("<")){
+				inATag = true;
+			}else if (prevChar.equals(">") && (!currentChar.equals("<"))){
+				inATag = false;
+			}
+			
+			if (inATag){
+				removeChar[i]=true;
+			}else
+				removeChar[i]=false;
+			
+		}
+		
+		
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for (int i=0; i<removeChar.length; i++){
+			if (!removeChar[i]){
+				sb.append(rawVerse.charAt(i));
+			}
+		}
+		
+		return sb.toString();
+	}
+	
+	private String cleanupVerseB(String rawVerse, int v){
 		
 		int frontStartIndex = rawVerse.indexOf("<p id");
 		int frontEndIndex = rawVerse.indexOf("verse"+String.valueOf(v)+"\"></span>");
@@ -372,13 +490,13 @@ public class ScriptureFinder {
 	}
 	
 	private  String getStartVerseMarkerString(int v){		
-		String s = "chapter"+String.valueOf(chapter)+"_verse"+String.valueOf(v)+"\"></span>";
+		String s = "<span id=\"chapter"+String.valueOf(chapter)+"_verse"+String.valueOf(v)+"\"></span>";
 		return s;		
 	}
 
 	private  String getEndVerseMarkerString(int v){
 
-		String s = "chapter"+String.valueOf(chapter)+"_verse"+String.valueOf(v+1)+"\"></span>";
+		String s = "<span id=\"chapter"+String.valueOf(chapter)+"_verse"+String.valueOf(v+1)+"\"></span>";
 		return s;
 
 	}

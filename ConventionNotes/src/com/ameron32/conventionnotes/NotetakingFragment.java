@@ -1,8 +1,11 @@
 package com.ameron32.conventionnotes;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.ameron32.conventionnotes.notes.Note;
 import com.ameron32.conventionnotes.notes.NoteAdapter;
@@ -19,21 +23,21 @@ import com.ameron32.conventionnotes.notes.NoteAdapter;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
- * {@link NotetakingFragment.NoteCallbacks} interface to handle
- * interaction events. Use the {@link NotetakingFragment#newInstance} factory
- * method to create an instance of this fragment.
+ * {@link NotetakingFragment.NoteCallbacks} interface to handle interaction
+ * events. Use the {@link NotetakingFragment#newInstance} factory method to
+ * create an instance of this fragment.
  * 
  */
 public class NotetakingFragment extends Fragment {
   
   private static final String KEY_SAVED_EDITOR_TEXT = "keysavededitortext";
-  private String savedEditorText;
+  private String              savedEditorText;
   
-  private NoteCallbacks mListener;
-  private View mRootView;
-  private EditText editNote;
-  private ImageButton buttonAdd;
-  private ImageButton buttonAddScripture;
+  private NoteCallbacks       mListener;
+  private View                mRootView;
+  private EditText            editNote;
+  private ImageButton         buttonAdd;
+  private ImageButton         buttonAddScripture;
   
   /**
    * Use this factory method to create a new instance of this fragment using the
@@ -48,10 +52,10 @@ public class NotetakingFragment extends Fragment {
   // : Rename and change types and number of parameters
   public static NotetakingFragment newInstance(String param1, String param2) {
     NotetakingFragment fragment = new NotetakingFragment();
-//    Bundle args = new Bundle();
-//    args.putString(ARG_PARAM1, param1);
-//    args.putString(ARG_PARAM2, param2);
-//    fragment.setArguments(args);
+    // Bundle args = new Bundle();
+    // args.putString(ARG_PARAM1, param1);
+    // args.putString(ARG_PARAM2, param2);
+    // fragment.setArguments(args);
     return fragment;
   }
   
@@ -63,8 +67,8 @@ public class NotetakingFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
-//      mParam1 = getArguments().getString(ARG_PARAM1);
-//      mParam2 = getArguments().getString(ARG_PARAM2);
+      // mParam1 = getArguments().getString(ARG_PARAM1);
+      // mParam2 = getArguments().getString(ARG_PARAM2);
       savedEditorText = savedInstanceState.getString(KEY_SAVED_EDITOR_TEXT);
       // apply String to EditText after View
     }
@@ -76,7 +80,7 @@ public class NotetakingFragment extends Fragment {
     savedEditorText = editNote.getText().toString();
     outState.putString(KEY_SAVED_EDITOR_TEXT, savedEditorText);
   }
-
+  
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     mRootView = inflater.inflate(R.layout.fragment_notetaking, container, false);
@@ -106,20 +110,25 @@ public class NotetakingFragment extends Fragment {
         addScripture();
       }
     });
+    
+    tw = new ScriptureWatcher(getActivity());
+    editNote.addTextChangedListener(tw);
   }
+  private ScriptureWatcher tw;
   
   private void restoreSavedEditorText() {
     editNote.setText(savedEditorText);
   }
   
   private void resetEditor() {
-    editNote.setText("");    
+    editNote.setText("");
   }
-
+  
   public void addNote(Note note) {
     if (mListener != null) {
       mListener.onAddNote(note);
-    } else {
+    }
+    else {
       Log.d(this.getClass().getSimpleName(), "mListener failed: null");
     }
   }
@@ -127,7 +136,8 @@ public class NotetakingFragment extends Fragment {
   public void addScripture() {
     if (mListener != null) {
       mListener.onAddScripture();
-    } else {
+    }
+    else {
       Log.d(this.getClass().getSimpleName(), "mListener failed: null");
     }
   }
@@ -149,7 +159,8 @@ public class NotetakingFragment extends Fragment {
     mListener = null;
   }
   
-  public void requestUser(final AdapterView<?> parent, final View view, final int position, final long id, final Note note) {
+  public void requestUser(final AdapterView<?> parent, final View view, final int position, final long id,
+      final Note note) {
     final View selectorLL = mRootView.findViewById(R.id.selector_parent_ll);
     selectorLL.setVisibility(View.VISIBLE);
     
@@ -159,7 +170,7 @@ public class NotetakingFragment extends Fragment {
       
       @Override
       public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
         case R.id.selector_edit_button:
           editNote(note);
           break;
@@ -177,13 +188,90 @@ public class NotetakingFragment extends Fragment {
   private void editNote(Note note) {
     mListener.onEditNote(note);
   };
+  
   private void deleteNote(int position, Note note) {
     mListener.onDeleteNote(position, note);
   };
   
-  
-  
-  
+  public static class ScriptureWatcher implements TextWatcher {
+    
+    private Activity activity;
+    
+    public ScriptureWatcher(Activity activity) {
+      this.activity = activity;
+    }
+    
+    boolean toggle = false;
+    
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+      Log.i("onTextChanged", "s=" + s + " start=" + start + " before=" + before + " count=" + count);
+      
+      /**
+       * Logic: if the first character BECOMES '@', switch to Scripture mode. if
+       * the first character CEASES TO BE '@', switch back to Note mode. getting
+       * there was a lot of if statements.
+       */
+      
+      if (s != null) {
+        if (s.length() != 0) {
+          if (s.charAt(0) == '@') {
+            if (toggleOn()) {
+              goScriptureMode();
+            }
+          }
+        }
+      }
+      if (s != null) {
+        if (s.length() != 0) {
+          if (s.charAt(0) != '@') {
+            if (toggleOff()) {
+              goNoteMode();
+            }
+          }
+        }
+        if (s.length() == 0) {
+          if (toggleOff()) {
+            goNoteMode();
+          }
+        }
+      }
+    }
+    
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+    
+    @Override
+    public void afterTextChanged(Editable s) {}
+    
+    private boolean toggleOn() {
+      if (!toggle) {
+        toggle = true;
+        Log.i("onTextChanged", "ON");
+        return true;
+      }
+      return false;
+    }
+    
+    private boolean toggleOff() {
+      if (toggle) {
+        toggle = false;
+        Log.i("onTextChanged", "OFF");
+        return true;
+      }
+      return false;
+    }
+    
+    private void goNoteMode() {
+      TextView hintText = (TextView) activity.findViewById(R.id.text_view_note_editor_hint);
+      hintText.setText(activity.getResources().getString(R.string.text_view_note_editor_hint));
+    }
+    
+    private void goScriptureMode() {
+      TextView hintText = (TextView) activity.findViewById(R.id.text_view_note_editor_hint);
+      hintText.setText("Enter a Scripture: (e.g. @HABAKKUK 2 2)");
+    }
+  }
   
   /**
    * This interface must be implemented by activities that contain this fragment
@@ -207,12 +295,11 @@ public class NotetakingFragment extends Fragment {
   
   // : Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//  private static final String           ARG_PARAM1 = "param1";
-//  private static final String           ARG_PARAM2 = "param2";
+  // private static final String ARG_PARAM1 = "param1";
+  // private static final String ARG_PARAM2 = "param2";
   
   // : Rename and change types of parameters
-//  private String                        mParam1;
-//  private String                        mParam2;
-  
+  // private String mParam1;
+  // private String mParam2;
   
 }

@@ -49,9 +49,9 @@ public class Books {
       books.add(new Book("JONAH", "JON"));
       books.add(new Book("MICAH", "MIC"));
       books.add(new Book("NAHUM", "NAH"));
-      books.add(new Book("HABAKUK", "HAB"));
-      books.add(new Book("ZEPHENIAH", "ZEP"));
-      books.add(new Book("HAGAI", "HAG"));
+      books.add(new Book("HABAKKUK", "HAB"));
+      books.add(new Book("ZEPHANIAH", "ZEP"));
+      books.add(new Book("HAGGAI", "HAG"));
       books.add(new Book("ZECHARIAH", "ZEC"));
       books.add(new Book("MALACHI", "MAL"));
       books.add(new Book("MATTHEW", "MT"));
@@ -64,7 +64,7 @@ public class Books {
       books.add(new Book("2 CORINTHIANS", "2CO"));
       books.add(new Book("GALATIANS", "GAL"));
       books.add(new Book("EPHESIANS", "EPH"));
-      books.add(new Book("PHILIPIANS", "PHP"));
+      books.add(new Book("PHILIPPIANS", "PHP"));
       books.add(new Book("COLOSSIANS", "COL"));
       books.add(new Book("1 THESSALONIANS", "1TH"));
       books.add(new Book("2 THESSALONIANS", "2TH"));
@@ -84,12 +84,23 @@ public class Books {
     }
   }
   
+  public static String getPrimaryAbbreviation(String sBook) {
+    for (Book book : books) {
+      if (book.getTitle().equalsIgnoreCase(sBook)) {
+        return book.getPrimaryAbbreviation();
+      }
+    }
+    return null;
+  }
+  
   
   
   public static class Book {
     
-    String   bookTitle;
-    String[] knownAbbreviations;
+    public static final int PRIMARY_ABBREVIATION = 0;
+    
+    private String   bookTitle;
+    private String[] knownAbbreviations;
     
     public Book(String bookTitle, String... knownAbbreviations) {
       initBooks();
@@ -97,25 +108,36 @@ public class Books {
       this.knownAbbreviations = knownAbbreviations;
     }
     
+    /*
+     * FORCED TO UPPERCASE
+     */
     public String getBestGuess(String userInput) {
       /*
        * If the user wrote the first few letters of the book, give them the
        * book;
        */
       if (bookTitle.startsWith(userInput)) { 
-        return bookTitle; 
-        }
+        return bookTitle;
+      }
       
       /*
        * If the user wrote the abbreviation, give them the book;
        */
       for (String abbr : knownAbbreviations) {
-        if (abbr.equalsIgnoreCase(userInput)) { 
+        if (abbr.startsWith(userInput)) { 
           return bookTitle; 
-          }
+        }
       }
       
       return null;
+    }
+    
+    public String getPrimaryAbbreviation() {
+      return knownAbbreviations[PRIMARY_ABBREVIATION];
+    }
+    
+    public String getTitle() {
+      return bookTitle;
     }
   }
 }

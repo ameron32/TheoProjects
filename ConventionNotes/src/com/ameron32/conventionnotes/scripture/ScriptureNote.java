@@ -47,9 +47,7 @@ public class ScriptureNote extends Note {
   }
   
   private void loadScriptureText(Scripture s) {
-    if (s == null) { 
-      return; 
-    }
+    if (s == null) { return; }
     
     this.book = s.book;
     this.chapter = s.chapter;
@@ -94,15 +92,18 @@ public class ScriptureNote extends Note {
       sb.append(bcv[i]);
       sb.append(" ");
     }
-    book = sb.toString().trim().substring(1).replace(".", "").toUpperCase(Locale.getDefault());
+    book = sb.toString().trim().substring(1).replace(".", "")
+        .toUpperCase(Locale.getDefault());
     
     Log.i(this.getClass().getSimpleName(), "book was trimmed as: " + book);
-    // TODO++ add book sanitizer
     
     book = determineBook(book);
     Log.i(this.getClass().getSimpleName(), "book was found as: " + book);
     
-    return new Scripture(book, Integer.valueOf(sChapter), convert(extractVerseBlocks(bcv[2])));
+    Scripture scripture = new Scripture(book, Integer.valueOf(sChapter), convert(extractVerseBlocks(sVerses)));
+    Log.i("Scripture", scripture.toString());
+    return scripture;
+    
   }
   
   private List<Integer> extractVerseBlocks(final String codedVerses) {
@@ -178,6 +179,9 @@ public class ScriptureNote extends Note {
     return super.getExportText();
   }
   
+  /**
+   * FORCED TO UPPERCASE
+   */
   private String determineBook(String userInput) {
     List<Book> books = Books.getBooks();
     for (Book book : books) {

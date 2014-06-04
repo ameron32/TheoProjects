@@ -124,7 +124,8 @@ public class TalkDetailFragment extends Fragment {
                                                   public void onSave() {}
                                                   
                                                   @Override
-                                                  public void onNoteLongPressed(AdapterView<?> parent, View view, int position, long id, Note note) {};
+                                                  public void onNoteLongPressed(AdapterView<?> parent, View view,
+                                                      int position, long id, Note note) {};
                                                   
                                                 };
   
@@ -245,7 +246,7 @@ public class TalkDetailFragment extends Fragment {
       }
     });
     mNoteListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-
+      
       @Override
       public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         if (id == -1) return false;
@@ -285,14 +286,27 @@ public class TalkDetailFragment extends Fragment {
   }
   
   public void addNote(Note note) {
-    Talk talk = ProgramList.getTalk(id);
-    talk.addNote(note);
-    noteAdapter.notifyDataSetChanged();
+    if (noteAdapter != null) {
+      Talk talk = ProgramList.getTalk(id);
+      talk.addNote(note);
+      
+      noteAdapter.notifyDataSetChanged();
+    }
+    else {
+      Toast.makeText(getActivity(), "Error: Select a talk and try again.", Toast.LENGTH_SHORT).show();
+    }
   }
   
   public void deleteNote(int position, Note note) {
-    Talk talk = ProgramList.getTalk(id);
-    talk.removeNote(position);
-    noteAdapter.notifyDataSetChanged();
+    if (noteAdapter != null) {
+      Talk talk = ProgramList.getTalk(id);
+      int indexToRemove = talk.getNotes().indexOf(note);
+      talk.removeNote(indexToRemove);
+
+      noteAdapter.notifyDataSetChanged();
+    }
+    else {
+      Toast.makeText(getActivity(), "Error: Select a talk and try again.", Toast.LENGTH_SHORT).show();
+    }
   }
 }
