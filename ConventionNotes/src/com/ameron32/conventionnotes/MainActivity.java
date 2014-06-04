@@ -5,8 +5,11 @@ import java.io.IOException;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SlidingPaneLayout;
@@ -38,7 +41,7 @@ import com.ameron32.conventionnotes.tools.Testing;
  * interface to listen for item selections.
  */
 public class MainActivity extends FragmentActivity implements TalkListFragment.Callbacks, TalkDetailFragment.Callbacks,
-    NotetakingFragment.NoteCallbacks, ScriptureDialog.OnScriptureGeneratedListener {
+    NotetakingFragment.NoteCallbacks, ScriptureDialog.OnScriptureGeneratedListener, SharedPreferences.OnSharedPreferenceChangeListener {
   
   private static final String KEY_CURRENT_TALK_ID = "keycurrenttalkid";
   private String              currentTalkId;
@@ -80,6 +83,18 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // TODO: If exposing deep links into your app, handle intents here.
   }
   
+  public static final String FONT_SIZE = "FONT_SIZE";
+  private String fontSizePref;
+  @Override
+  protected void onStart() {
+    super.onStart();
+    
+    setFont();
+
+    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+    pref.registerOnSharedPreferenceChangeListener(this);
+  }
+
   @Override
   protected void onResume() {
     if (currentTalkId != null) {
@@ -93,6 +108,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     Testing.startTest("PauseDelay");
     super.onPause();
     saveProgram();
+    saveSettings();
   }
   
   private boolean saveProgram() {
@@ -105,6 +121,13 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
       e.printStackTrace();
     }
     return false;
+  }
+  
+  private void saveSettings() {
+    SharedPreferences settings = getSharedPreferences("com.ameron32.conventionnotes", Context.MODE_PRIVATE);
+    SharedPreferences.Editor settingsEdit = settings.edit();
+    settingsEdit.putString("FONT_SIZE", fontSizePref);
+    settingsEdit.commit();
   }
   
   @Override
@@ -308,6 +331,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     return true;
   }
   
+  public static final int REQUEST_SETTINGS = 3;
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     /*
@@ -324,11 +348,32 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
       Exporter.exportProgramNotesAsEmail(MainActivity.this, ProgramList.getProgram());
     }
     if (item.getItemId() == R.id.action_settings) {
-      Toast.makeText(MainActivity.this, "Settings not functional", Toast.LENGTH_SHORT).show();
+//      Toast.makeText(MainActivity.this, "Settings not functional", Toast.LENGTH_SHORT).show();
+      Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+      startActivityForResult(i, REQUEST_SETTINGS);
     }
     return super.onOptionsItemSelected(item);
   }
   
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+//    super.onActivityResult(requestCode, resultCode, data);
+    
+    if (requestCode == REQUEST_SETTINGS) {
+      if (resultCode == RESULT_OK) {
+        onSettingsClosed();
+      }
+    }
+  }
+  
+  private void onSettingsClosed() {
+    Toast.makeText(MainActivity.this, "onSettingsClosed()", Toast.LENGTH_SHORT).show();
+    // TODO++ need doing?
+  }
+  
+  
+
   /**
    * This panel slide listener updates the action bar accordingly for each panel
    * state.
@@ -419,5 +464,52 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   
   public static void log(String tag, String message) {
     Log.d("MainActivity|" + tag, message);
+  }
+
+  @Override
+  public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    Log.v("PREFERENCE CHANGE", "[" + key + "]");
+    if (key.equalsIgnoreCase(FONT_SIZE)) {
+      setFont();
+    }
+  }
+  
+  private void setFont() {
+    // Enclose everything in a try block so we can just
+    // use the default view if anything goes wrong.
+    try {
+      // Get the font size value from SharedPreferences.
+      SharedPreferences settings = getSharedPreferences("com.ameron32.conventionnotes", Context.MODE_PRIVATE);
+      
+      // Get the font size option. We use "FONT_SIZE" as the key.
+      // Make sure to use this key when you set the value in SharedPreferences.
+      // We specify "Medium" as the default value, if it does not exist.
+      fontSizePref = settings.getString("FONT_SIZE", "Medium");
+      
+      // Select the proper theme ID.
+      // These will correspond to your theme names as defined in themes.xml.
+      int themeID = R.style.FontSizeMedium;
+      if (fontSizePref == "Small") {
+        themeID = R.style.FontSizeSmall;
+      }
+      else
+        if (fontSizePref == "Large") {
+          themeID = R.style.FontSizeLarge;
+        }
+        else
+          if (fontSizePref == "XLarge") {
+            themeID = R.style.FontSizeLarge;
+          }
+          else
+            if (fontSizePref == "XXLarge") {
+              themeID = R.style.FontSizeLarge;
+            }
+      
+      // Set the theme for the activity.
+      setTheme(themeID);
+    }
+    catch (Exception ex) {
+        ex.printStackTrace();
+    }
   }
 }

@@ -10,10 +10,10 @@
     android:padding="8dp" >
 
     <LinearLayout
+        android:id="@+id/linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="@color/BGLight"
         android:orientation="vertical"
         android:padding="8dp" >
 
@@ -26,24 +26,20 @@
             android:textColor="@color/Text"
             android:typeface="sans" />
 
-        <View
-            android:id="@+id/view_spacer"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@color/Accent"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textview_scripture"
+        <LinearLayout
+            android:id="@+id/linearlayout_for_scripture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@color/AccentBG"
+            android:divider="?android:dividerVertical"
+            android:dividerPadding="8dp"
+            android:orientation="vertical"
             android:padding="8dp"
-            android:text="Scripture Text not found"
-            android:textColor="@color/Text"
-            android:typeface="serif"
-            android:visibility="gone" />
+            android:showDividers="beginning|end"
+            android:visibility="gone" >
+
+            <include layout="@layout/scripture_note" />
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

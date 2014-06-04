@@ -16,8 +16,6 @@
     <color name="blue">#0000FF</color>
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
-    
-    
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>
@@ -158,29 +156,29 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
-    
-    
     <color name="MikeyBlueBG">#1f3ff2</color>
     <color name="MikeyBlueBGLight">#ffffff</color>
     <color name="MikeyBlueAccent">#CCc5cccc</color>
-	<color name="KrisBlueBG">#bcdbf4</color>
+    <color name="KrisBlueBG">#bcdbf4</color>
     <color name="KrisBlueBGLight">#ccffffff</color>
     <color name="KrisBlueAccent">#cc96afc3</color>
-	<color name="KrisBlueAccentNoTransparent">#96afc3</color>
-
-	<color name="REDBG">#F9E8DE</color>
+    <color name="KrisBlueAccentNoTransparent">#96afc3</color>
+    <color name="REDBG">#F9E8DE</color>
     <color name="REDText">#750300</color>
     <color name="REDBGLight">#ccffffff</color>
     <color name="REDAccent">#400200</color>
     <color name="REDAccentBG">#F9C9C6</color>
     <color name="REDAccentNoTransparent">#400200</color>
-	
-    
-    <color name="BG">#E9D8BA</color>
-    <color name="Text">#50371F</color>
-    <color name="BGLight">#ccffffff</color>
-    <color name="Accent">#362515</color>
-    <color name="AccentBG">#E9C9A0</color>
-	<color name="AccentNoTransparent">#C3864B</color>
-	
+    <color name="OBG">#E9D8BA</color>
+    <color name="OText">#50371F</color>
+    <color name="OBGLight">#ccffffff</color>
+    <color name="OAccent">#362515</color>
+    <color name="OAccentBG">#E9C9A0</color>
+    <color name="OAccentNoTransparent">#C3864B</color>
+    <color name="BG">#dfdfdf</color>
+    <color name="Text">#000001</color>
+    <color name="TextAccent">#492d90</color>
+    <color name="BGLight">#efefef</color>
+    <color name="Accent">#929292</color>
+
 </resources>

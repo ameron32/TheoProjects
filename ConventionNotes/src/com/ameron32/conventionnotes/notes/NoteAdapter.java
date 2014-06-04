@@ -1,12 +1,14 @@
 package com.ameron32.conventionnotes.notes;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ameron32.conventionnotes.R;
@@ -48,8 +50,9 @@ public class NoteAdapter extends BaseAdapter {
       convertView = inflater.inflate(R.layout.standard_note, parent, false);
       holder = new NoteViewHolder();
       
+      holder.forScripture = (LinearLayout) convertView.findViewById(R.id.linearlayout_for_scripture);
       holder.noteTextView = (TextView) convertView.findViewById(R.id.textview_note);
-      holder.spacer = (View) convertView.findViewById(R.id.view_spacer);
+      holder.inputTextView = (TextView) convertView.findViewById(R.id.textview_input);
       holder.scriptureTextView = (TextView) convertView.findViewById(R.id.textview_scripture);
       
       convertView.setTag(holder);
@@ -74,16 +77,17 @@ public class NoteAdapter extends BaseAdapter {
       }
     }
     
-    holder.noteTextView.setText(noteText);
     if (note instanceof ScriptureNote) {
-      holder.spacer.setVisibility(View.VISIBLE);
-      holder.scriptureTextView.setVisibility(View.VISIBLE);
+      holder.inputTextView.setText(noteText);
+      holder.forScripture.setVisibility(View.VISIBLE);
+      holder.inputTextView.setTypeface(holder.noteTextView.getTypeface(), Typeface.ITALIC);
+      holder.scriptureTextView.setTypeface(holder.scriptureTextView.getTypeface(), Typeface.ITALIC);
       holder.scriptureTextView.setText(noteSpan);
     }
     else {
-      holder.spacer.setVisibility(View.GONE);
-      holder.scriptureTextView.setVisibility(View.GONE);
-      holder.scriptureTextView.setText("");
+      holder.noteTextView.setText(noteText);
+      holder.forScripture.setVisibility(View.GONE);
+      holder.noteTextView.setTypeface(holder.noteTextView.getTypeface(), Typeface.NORMAL);
     }
     
     return convertView;
@@ -99,7 +103,9 @@ public class NoteAdapter extends BaseAdapter {
   
   public static class NoteViewHolder {
     
+    public LinearLayout forScripture;
     public TextView noteTextView;
+    public TextView inputTextView;
     public View     spacer;
     public TextView scriptureTextView;
   }

@@ -207,6 +207,7 @@ public class TalkDetailFragment extends Fragment {
     header = (TextView) rlHeader.findViewById(R.id.textview_title);
     String multiLineTitle = ProgramList.getTalk(id).getMultiLineTitle(true);
     header.setText(multiLineTitle);
+    header.setTextColor(getResources().getColor(R.color.TextAccent));
     mNoteListView.addHeaderView(rlHeader);
   }
   

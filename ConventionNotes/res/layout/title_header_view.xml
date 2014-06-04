@@ -12,7 +12,8 @@
         android:layout_margin="8dp"
         android:padding="16dp"
         android:minHeight="65dp"
-        android:gravity="center"
+        android:gravity="center|left"
+        android:text="No Title Found"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

@@ -1,22 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@color/BGLight">
+    android:layout_height="match_parent"
+    android:background="@color/BGLight" >
 
     <android.support.v4.widget.SlidingPaneLayout
         android:id="@+id/sliding_pane_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/note_editor"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/note_editor" >
+        android:layout_alignParentTop="true" >
 
         <fragment
             android:id="@+id/talk_list"
             android:name="com.ameron32.conventionnotes.TalkListFragment"
             android:layout_width="280dp"
             android:layout_height="match_parent"
-            android:layout_gravity="left" />
+            android:layout_gravity="left"
+            android:background="@color/BGLight"
+            android:paddingRight="16dp" />
 
         <fragment
             android:id="@+id/content_pane"
@@ -34,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:paddingTop="16dp" />
 
 </RelativeLayout>
