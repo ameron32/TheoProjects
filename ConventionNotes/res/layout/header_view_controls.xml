@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:gravity="center"
+    android:padding="8dp" >
+
+    <LinearLayout
+        android:id="@+id/linearlayout_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <ImageButton
+            android:id="@+id/image_button_previous_talk"
+            style="?android:borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_previous_arrow" />
+
+        <ImageButton
+            android:id="@+id/image_button_next_talk"
+            style="?android:borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_next_arrow" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textview_stop_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/linearlayout_buttons"
+        android:layout_alignRight="@+id/linearlayout_buttons"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        android:text="Stop Time Error"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/Text"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/textview_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/linearlayout_buttons"
+        android:layout_alignLeft="@+id/linearlayout_buttons"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        android:text="Start Time Error"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/Text"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/textview_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/linearlayout_buttons"
+        android:layout_alignRight="@+id/linearlayout_buttons"
+        android:layout_below="@+id/linearlayout_buttons"
+        android:gravity="center"
+        android:text="CountDown Error"
+        android:textColor="@color/Text" />
+
+</RelativeLayout>

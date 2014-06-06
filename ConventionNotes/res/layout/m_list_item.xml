@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_width="match_parent"
+   android:layout_height="wrap_content"
+   android:minHeight="50dp"
+   android:background="@drawable/list_item_selector"
+   android:orientation="vertical" >
+
+   <TextView
+       android:id="@+id/talk_time_text"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentTop="true"
+       android:fontFamily="sans-serif-light"
+       android:paddingLeft="10dp"
+       android:text="Test"
+       android:textColor="#492d90" />
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+       android:gravity="center"
+       android:layout_below="@+id/talk_time_text" >
+
+       <TextView
+           android:id="@+id/talk_title_text"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:fontFamily="sans-serif-light"
+           android:gravity="center_vertical"
+           android:paddingLeft="25dp"
+           android:text="Test"
+           android:textSize="12sp" />
+   </LinearLayout>
+
+</RelativeLayout>

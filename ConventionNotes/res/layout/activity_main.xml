@@ -7,7 +7,7 @@
         android:id="@+id/sliding_pane_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/note_editor"
+        android:layout_above="@+id/linearlayout_fragment_holder"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
 
@@ -30,13 +30,20 @@
             android:paddingRight="16dp" />
     </android.support.v4.widget.SlidingPaneLayout>
 
-    <fragment
-        android:id="@+id/note_editor"
-        android:name="com.ameron32.conventionnotes.NotetakingFragment"
+    <LinearLayout
+        android:id="@+id/linearlayout_fragment_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:paddingTop="16dp" />
+        android:visibility="gone"
+        android:paddingTop="16dp" >
+
+        <fragment
+            android:id="@+id/note_editor"
+            android:name="com.ameron32.conventionnotes.NotetakingFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -1,5 +1,9 @@
 package com.ameron32.conventionnotes;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -8,9 +12,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.ameron32.conventionnotes.program.MExpandableListAdapter;
 import com.ameron32.conventionnotes.program.ProgramAdapter;
 import com.ameron32.conventionnotes.program.ProgramEvent;
 import com.ameron32.conventionnotes.program.ProgramList;
@@ -25,8 +35,12 @@ import com.ameron32.conventionnotes.program.Talk;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class TalkListFragment extends ListFragment {
+public class TalkListFragment extends ListFragment implements OnChildClickListener, OnGroupClickListener {
   
+	//MICAH ADDED TWO FIELDS:	
+    ExpandableListView expListView;
+    MExpandableListAdapter listAdapter;
+	
   /**
    * The serialization (saved instance state) Bundle key representing the
    * activated item position. Only used on tablets.
@@ -66,8 +80,6 @@ public class TalkListFragment extends ListFragment {
                                              @Override
                                              public void onItemSelected(String id) {}
                                            };
-
-  private ProgramAdapter mProgramAdapter;
   
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,16 +90,28 @@ public class TalkListFragment extends ListFragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    
-    mProgramAdapter = new ProgramAdapter(getActivity());
-    setListAdapter(mProgramAdapter);
+            
   }
   
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     
+	 //BEGIN UNDER CONSTRUCTION
+	  
+	  
     setHasOptionsMenu(true);
-    return super.onCreateView(inflater, container, savedInstanceState);
+    //return super.onCreateView(inflater, container, savedInstanceState);    
+    LinearLayout talkView = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.m_fragment_talk_detail, null);
+    listAdapter = new MExpandableListAdapter(getActivity());
+    
+    expListView = (ExpandableListView)talkView.findViewById(android.R.id.list);
+    expListView.setAdapter(listAdapter);
+    expListView.setOnChildClickListener(this);
+    expListView.setOnGroupClickListener(this);
+    
+    return talkView;
+    
+  //END UNDER CONSTRUCTION
   }
   
   @Override
@@ -129,6 +153,7 @@ public class TalkListFragment extends ListFragment {
     
     // Notify the active callbacks interface (the activity, if the
     // fragment is attached to one) that an item has been selected.
+    /*
     ProgramEvent event = mProgramAdapter.getItem(position);
     if (event instanceof Talk) {
       Talk talk = (Talk) event;
@@ -136,6 +161,7 @@ public class TalkListFragment extends ListFragment {
     } else {
       Toast.makeText(getActivity(), "Not a Talk", Toast.LENGTH_SHORT).show();
     }
+    */
   }
   
   @Override
@@ -158,20 +184,59 @@ public class TalkListFragment extends ListFragment {
   }
   
   public void setActivatedTalk(int talkId) {
-    int position = mProgramAdapter.getPosition(ProgramList.getTalk(talkId));
+    int position = listAdapter.getPosition(ProgramList.getTalk(talkId));
     if (position != ProgramAdapter.POSITION_NOT_FOUND) {
       setActivatedPosition(position);
     }
   }
   
-  private void setActivatedPosition(int position) {
-    if (position == ListView.INVALID_POSITION) {
+  private void setActivatedPosition(int flatPosition) {
+    if (flatPosition == ListView.INVALID_POSITION) {
       getListView().setItemChecked(mActivatedPosition, false);
     }
     else {
-      getListView().setItemChecked(position, true);
+      getListView().setItemChecked(flatPosition, true);
     }
     
-    mActivatedPosition = position;
+    mActivatedPosition = flatPosition;
   }
+  
+  
+
+  
+  
+//BEGIN UNDER CONSTRUCTION
+  
+@Override
+public boolean onChildClick(ExpandableListView parent, View v,
+		int groupPosition, int childPosition, long id) {
+	// TODO Auto-generated method stub
+	
+	ProgramEvent event = listAdapter.getItem(groupPosition, childPosition);
+    if (event instanceof Talk) {
+      Talk talk = (Talk) event;
+      int index = parent.getFlatListPosition(ExpandableListView
+          .getPackedPositionForChild(groupPosition, childPosition));
+      setActivatedPosition(index);
+      mCallbacks.onItemSelected(String.valueOf(talk.getTalkNumber()));
+      return true;
+    } else {
+      Toast.makeText(getActivity(), "Not a Talk", Toast.LENGTH_SHORT).show();
+      return false;
+    }	
+	
+}
+
+@Override
+public boolean onGroupClick(ExpandableListView parent, View v,
+		int groupPosition, long id) {
+	// TODO Auto-generated method stub
+	
+	return false;
+}
+
+//END UNDER CONSTRUCTION
+  
+  
+  
 }

@@ -7,7 +7,8 @@
     android:gravity="center_vertical"
     android:minHeight="40dp"
     android:orientation="horizontal"
-    android:padding="8dp" >
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp" >
 
     <LinearLayout
         android:id="@+id/linearlayout"
@@ -15,7 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:orientation="vertical"
-        android:padding="8dp" >
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
 
         <TextView
             android:id="@+id/textview_note"
@@ -24,21 +26,15 @@
             android:padding="8dp"
             android:text="Note Text not found"
             android:textColor="@color/Text"
-            android:typeface="sans" />
+            android:typeface="serif" />
 
         <LinearLayout
             android:id="@+id/linearlayout_for_scripture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:divider="?android:dividerVertical"
-            android:dividerPadding="8dp"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:showDividers="beginning|end"
             android:visibility="gone" >
 
-            <include layout="@layout/scripture_note" />
+            <include layout="@layout/note_scripture" />
         </LinearLayout>
     </LinearLayout>
 

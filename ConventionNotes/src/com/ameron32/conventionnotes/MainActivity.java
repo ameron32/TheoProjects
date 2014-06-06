@@ -66,7 +66,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     ((TalkListFragment) getSupportFragmentManager().findFragmentById(R.id.talk_list)).setActivateOnItemClick(true);
     
     mActionBar = getActionBar();
-    mActionBar.setCustomView(R.layout.title_view);
+    mActionBar.setCustomView(R.layout.custom_action_bar_title_view);
     mActionBar.setDisplayShowCustomEnabled(true);
     
     mSlidingLayout = (SlidingPaneLayout) findViewById(R.id.sliding_pane_layout);
@@ -182,6 +182,15 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();
     currentTalkId = id;
     talkFragment.showTalk(Integer.decode(id));
+    
+    showNotetaker();
+  }
+  
+  private void showNotetaker() {
+    TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
+    if (talkFragment.getTalkId() != -1) {
+      findViewById(R.id.linearlayout_fragment_holder).setVisibility(View.VISIBLE);;
+    }
   }
   
   /**
@@ -348,9 +357,9 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
       Exporter.exportProgramNotesAsEmail(MainActivity.this, ProgramList.getProgram());
     }
     if (item.getItemId() == R.id.action_settings) {
-//      Toast.makeText(MainActivity.this, "Settings not functional", Toast.LENGTH_SHORT).show();
-      Intent i = new Intent(MainActivity.this, SettingsActivity.class);
-      startActivityForResult(i, REQUEST_SETTINGS);
+      Toast.makeText(MainActivity.this, "Settings not functional", Toast.LENGTH_SHORT).show();
+//      Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+//      startActivityForResult(i, REQUEST_SETTINGS);
     }
     return super.onOptionsItemSelected(item);
   }

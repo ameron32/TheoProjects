@@ -30,7 +30,7 @@ public class ProgramEvent implements Serializable {
   private long                    startTime;
   private long                    stopTime;
   
-  private Program parent;
+  private Program                 parent;
   
   /**
    * 
@@ -107,6 +107,19 @@ public class ProgramEvent implements Serializable {
   
   public String getExportText() {
     return "Event: " + getId();
+  }
+  
+  // CODE BELOW
+  
+  // generates the formating for the method below
+  private static SimpleDateFormat GROUP_DATE_FORMAT = new SimpleDateFormat("EEEE',' MMMM d", Locale.getDefault());
+  
+  // use this to access the grouping date
+  // should display as:
+  // Friday, July 4
+  // tell me if it doesn't
+  public String getGroupDate() {
+    return GROUP_DATE_FORMAT.format(getStartTime());
   }
   
   public String getProgramTime() {

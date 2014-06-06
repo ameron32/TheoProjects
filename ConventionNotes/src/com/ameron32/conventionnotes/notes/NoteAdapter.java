@@ -47,7 +47,7 @@ public class NoteAdapter extends BaseAdapter {
     Note note = getItem(position);
     NoteViewHolder holder = null;
     if (convertView == null) {
-      convertView = inflater.inflate(R.layout.standard_note, parent, false);
+      convertView = inflater.inflate(R.layout.note_standard, parent, false);
       holder = new NoteViewHolder();
       
       holder.forScripture = (LinearLayout) convertView.findViewById(R.id.linearlayout_for_scripture);
@@ -72,29 +72,39 @@ public class NoteAdapter extends BaseAdapter {
       String text = sNote.scriptureText;
       if (text != null) {
         noteSpan = Html.fromHtml(text);
-      } else {
+      }
+      else {
         noteSpan = Html.fromHtml("Error parsing scripture text.");
       }
     }
     
     if (note instanceof ScriptureNote) {
+      holder.noteTextView.setText("");
+      holder.noteTextView.setVisibility(View.GONE);
       holder.inputTextView.setText(noteText);
       holder.forScripture.setVisibility(View.VISIBLE);
-      holder.inputTextView.setTypeface(holder.noteTextView.getTypeface(), Typeface.ITALIC);
-      holder.scriptureTextView.setTypeface(holder.scriptureTextView.getTypeface(), Typeface.ITALIC);
       holder.scriptureTextView.setText(noteSpan);
     }
     else {
+      holder.noteTextView.setVisibility(View.VISIBLE);
       holder.noteTextView.setText(noteText);
       holder.forScripture.setVisibility(View.GONE);
-      holder.noteTextView.setTypeface(holder.noteTextView.getTypeface(), Typeface.NORMAL);
     }
     
     return convertView;
   }
   
   public void addNote(Note note) {
-    talk.addNote(note);
+    if (note.getNote().startsWith("!")) {
+      note.setNote(note.getNote().substring(1));
+      talk.addImportantNote(new ImportantNote(note));
+    } else 
+    if (note.getNote().startsWith("$")) {
+      note.setNote(note.getNote().substring(1));
+      talk.addSpeakerNote(new SpeakerNote(note));
+    } else {
+      talk.addNote(note);
+    }
   }
   
   public void removeNote(int position) {
@@ -104,9 +114,9 @@ public class NoteAdapter extends BaseAdapter {
   public static class NoteViewHolder {
     
     public LinearLayout forScripture;
-    public TextView noteTextView;
-    public TextView inputTextView;
-    public View     spacer;
-    public TextView scriptureTextView;
+    public TextView     noteTextView;
+    public TextView     inputTextView;
+    public View         spacer;
+    public TextView     scriptureTextView;
   }
 }

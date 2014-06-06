@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+        <View
+            android:id="@+id/view_top_separator"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/include_title"
+            android:layout_margin="8dp"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp" />
+    <TextView
+        android:id="@+id/textview_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/view_top_separator"
+        android:padding="8dp"
+        android:layout_marginLeft="12dp"
+        android:text="Note Text not found"
+        android:textColor="@color/Text"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/textview_scripture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textview_input"
+android:layout_marginLeft="24dp"
+        android:padding="8dp"
+        android:text="Scripture Text not found"
+        android:textColor="@color/Text"
+        android:typeface="serif"
+        android:textStyle="italic"
+        />
+            <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textview_scripture"
+            android:layout_margin="8dp"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp" />
+
+</RelativeLayout>

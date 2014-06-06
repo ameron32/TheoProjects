@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ameron32.conventionnotes.notes.ImportantNote;
 import com.ameron32.conventionnotes.notes.Note;
+import com.ameron32.conventionnotes.notes.SpeakerNote;
 
 public class Talk extends ProgramEvent {
   
@@ -101,5 +103,36 @@ public class Talk extends ProgramEvent {
     }
     sb.append(Note.EXPORT_FOOTER);
     return sb.toString();
+  }
+  
+  public void addSpeakerNote(Note note) {
+    note.setNote("Speaker: " + note.getNote());
+    notes.add(addAtPosition(NotePriority.Speaker), note);
+  }
+  
+  public void addImportantNote(Note note) {
+    note.setNote(note.getNote());
+    notes.add(addAtPosition(NotePriority.Important), note);
+  }
+  
+  private int addAtPosition(Talk.NotePriority priority) {
+    for (int i = 0; i < notes.size(); i++) {
+      switch (priority) {
+      case Speaker:
+        if (!(notes.get(i) instanceof SpeakerNote)) { return i; }
+        break;
+      case Important:
+        if (!(notes.get(i) instanceof ImportantNote || notes.get(i) instanceof SpeakerNote)) { return i; }
+        break;
+      default:
+        // do nothing
+      }
+    }
+    
+    return notes.size();
+  }
+  
+  private enum NotePriority {
+    Speaker, Important, Standard
   }
 }

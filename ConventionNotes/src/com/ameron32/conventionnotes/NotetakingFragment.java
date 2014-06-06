@@ -7,15 +7,18 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.ameron32.conventionnotes.notes.Note;
 import com.ameron32.conventionnotes.notes.NoteAdapter;
@@ -96,9 +99,7 @@ public class NotetakingFragment extends Fragment {
       
       @Override
       public void onClick(View v) {
-        String note = editNote.getText().toString();
-        addNote(Note.createNote(note));
-        resetEditor();
+        pressAddNote();
       }
     });
     
@@ -111,10 +112,37 @@ public class NotetakingFragment extends Fragment {
       }
     });
     
-    tw = new ScriptureWatcher(getActivity());
-    editNote.addTextChangedListener(tw);
+    hw = new HintWatcher(getActivity());
+    editNote.addTextChangedListener(hw);
+    editNote.setOnKeyListener(new OnKeyListener() {
+      
+      @Override
+      public boolean onKey(View v, int keyCode, KeyEvent event) {
+        
+        if (event != null && v.getId() == R.id.edit_text_note_editor) {
+          // if shift key is down, then we want to insert the '\n' char in the
+          // TextView;
+          // otherwise, the default action is to send the message.
+          if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+              if (event.isShiftPressed()) {
+                pressAddNote();
+                return true;
+              }
+            }
+          }
+        }
+        return false;
+      }
+    });
   }
-  private ScriptureWatcher tw;
+  
+  private void pressAddNote() {
+    String note = editNote.getText().toString();
+    addNote(Note.createNote(note));
+    resetEditor();
+  }
+  private HintWatcher hw;
   
   private void restoreSavedEditorText() {
     editNote.setText(savedEditorText);
@@ -193,11 +221,11 @@ public class NotetakingFragment extends Fragment {
     mListener.onDeleteNote(position, note);
   };
   
-  public static class ScriptureWatcher implements TextWatcher {
+  public static class HintWatcher implements TextWatcher {
     
     private Activity activity;
     
-    public ScriptureWatcher(Activity activity) {
+    public HintWatcher(Activity activity) {
       this.activity = activity;
     }
     
@@ -212,30 +240,85 @@ public class NotetakingFragment extends Fragment {
        * the first character CEASES TO BE '@', switch back to Note mode. getting
        * there was a lot of if statements.
        */
+      if (s == null) return;
       
-      if (s != null) {
-        if (s.length() != 0) {
-          if (s.charAt(0) == '@') {
-            if (toggleOn()) {
-              goScriptureMode();
-            }
-          }
+      if (s.length() == 0) {
+        if (toggleOff()) {
+          goNoteMode();
         }
+        return;
       }
-      if (s != null) {
-        if (s.length() != 0) {
-          if (s.charAt(0) != '@') {
-            if (toggleOff()) {
-              goNoteMode();
-            }
-          }
+      
+      switch(s.charAt(0)) {
+      case '@':
+        if (toggleOn()) {
+          goScriptureMode();
         }
-        if (s.length() == 0) {
-          if (toggleOff()) {
-            goNoteMode();
-          }
+        return;
+      case '$':
+        if (toggleOn()) {
+          goSpeakerMode();
         }
+        return;
+      case '!':
+        if (toggleOn()) {
+          goImportantMode();
+        }
+        return;
       }
+//      
+//      if (s.charAt(0) == '@') {
+//        if (toggleOn()) {
+//          goScriptureMode();
+//        }
+//        return;
+//      }
+//      
+//      if (s.charAt(0) == '$') {
+//        if (toggleOn()) {
+//          goSpeakerMode();
+//        }
+//        return;
+//      }
+//      
+//      if (s.charAt(0) == '!') {
+//        if (toggleOn()) {
+//          goSpeakerMode();
+//        }
+//        return;
+//      }
+      
+//      if (s != null) {
+//        if (s.length() != 0) {
+//          if (s.charAt(0) == '@') {
+//            if (toggleOn()) {
+//              goScriptureMode();
+//            }
+//          } else if (s.charAt(0) == '~') {
+//            if (toggleOn()) {
+//              goSpeakerMode();
+//            }
+//          }
+//        }
+//      }
+//      if (s != null) {
+//        if (s.length() != 0) {
+//          if (s.charAt(0) != '@') {
+//            if (toggleOff()) {
+//              goNoteMode();
+//            }
+//          } else if (s.charAt(0) != '~') {
+//            if (toggleOn()) {
+//              goSpeakerMode();
+//            }
+//          }
+//        }
+//        if (s.length() == 0) {
+//          if (toggleOff()) {
+//            goNoteMode();
+//          }
+//        }
+//      }
     }
     
     @Override
@@ -270,6 +353,16 @@ public class NotetakingFragment extends Fragment {
     private void goScriptureMode() {
       TextView hintText = (TextView) activity.findViewById(R.id.text_view_note_editor_hint);
       hintText.setText("Enter a Scripture: (e.g. @HABAKKUK 2 2)");
+    }
+    
+    private void goSpeakerMode() {
+      TextView hintText = (TextView) activity.findViewById(R.id.text_view_note_editor_hint);
+      hintText.setText("Enter the name of the Speaker:");
+    }
+    
+    private void goImportantMode() {
+      TextView hintText = (TextView) activity.findViewById(R.id.text_view_note_editor_hint);
+      hintText.setText("Type your important note: (it will appear at the top)");
     }
   }
   

@@ -57,7 +57,7 @@ public class ProgramAdapter extends BaseAdapter {
     ProgramEvent event = getItem(position);
     TalkViewHolder holder = null;
     if (convertView == null) {
-      convertView = inflater.inflate(R.layout.talk_list_item, parent, false);
+      convertView = inflater.inflate(R.layout.list_item_talk, parent, false);
       holder = new TalkViewHolder();
       
       holder.time = (TextView) convertView.findViewById(R.id.talk_time_text);
@@ -77,7 +77,7 @@ public class ProgramAdapter extends BaseAdapter {
     
     String textToDisplay = "";
     if (event instanceof Talk) {
-      textToDisplay += ((Talk) event).getMultiLineTitle(true);
+      textToDisplay += ((Talk) event).getMultiLineTitle(false);
     }
     if (event instanceof Music) {
       textToDisplay += ((Music) event).getMusicText();

@@ -21,7 +21,7 @@ public class ProgramList {
 //  private static int         ONE_DAY         = 86400000;
   private static final long  JUNE_6_12AM     = 1402030800000L;
   // TODO: Change for Mikey
-  public static final long   CONVENTION_DATE = JUNE_6_12AM;
+  public static final long   CONVENTION_DATE = JULY_4_12AM;
   
   private static Program     program;
   
