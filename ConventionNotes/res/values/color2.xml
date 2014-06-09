@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="BG">#dfdfdf</color>
+    <color name="Text">#000001</color>
+    <color name="TextAccent">#492d90</color>
+    <color name="BGLight">#efefef</color>
+    <color name="Accent">#929292</color>
+    <color name="AccentBG">#E9C9A0</color>
+    <color name="AccentNoTransparent">#C3864B</color>
+    <color name="HighlightBG">#e2e2e2</color>
+    <color name="ListBG">#f4f4f4</color>
+    
+    
+    <color name="main_body_background">#dfdfdf</color>
+    <color name="note_text_and_sidebar_text">#000000</color>
+    <color name="scripture_divider_lines">#929292</color>
+    <color name="current_talk_sidebar_highlight">#e2e2e2</color>
+    <color name="background_for_sidebar_and_note_taker">#efefef</color>
+    <color name="sidebar_divider_lines">#dadada</color>
+    <color name="previous_and_next_talk_arrows">#989898</color>
+    <color name="friday_sidebar_highlight">#cec9da</color>
+    <color name="friday_sidebar_text_scripture_and_sidebar_arrow">#34245d</color>
+    <color name="friday_talk_title">#492d8f</color>
+    <color name="saturday_sidebar_highlight">#c9d0da</color>
+    <color name="saturday_sidebar_text_scripture_and_sidebar_arrow">#242c5d</color>
+    <color name="saturday_talk_title">#2d3d8f</color>
+    <color name="sunday_sidebar_highlight">#c9dad7</color>
+    <color name="sunday_sidebar_text_scripture_and_sidebar_arrow">#1f4352</color>
+    <color name="sunday_talk_title">#2d7e8f</color>
+    <color name="song_sidebar">#b56b02</color>
+
+</resources>
