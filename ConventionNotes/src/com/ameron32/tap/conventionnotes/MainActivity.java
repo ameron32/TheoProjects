@@ -221,6 +221,23 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   
   /**
    * Callback method from {@link TalkDetailFragment.Callbacks} indicating that
+   * the save button was clicked.
+   */
+  @Override
+  public void onSave() {
+    
+    boolean saved = saveProgram();
+    if (saved) {
+      Toast.makeText(MainActivity.this, "Saved successfully!", Toast.LENGTH_SHORT).show();
+    }
+    //
+    
+    // ***********************************************
+    // SwitchTalks
+  }
+
+  /**
+   * Callback method from {@link TalkDetailFragment.Callbacks} indicating that
    * the the next talk button was clicked.
    */
   @Override
@@ -270,23 +287,6 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     int prevTalkId = talkFragment.getTalkId() - 1;
     selectTalk(prevTalkId);
   };
-  
-  /**
-   * Callback method from {@link TalkDetailFragment.Callbacks} indicating that
-   * the save button was clicked.
-   */
-  @Override
-  public void onSave() {
-    
-    boolean saved = saveProgram();
-    if (saved) {
-      Toast.makeText(MainActivity.this, "Saved successfully!", Toast.LENGTH_SHORT).show();
-    }
-    //
-    
-    // ***********************************************
-    // SwitchTalks
-  }
   
   private boolean isBlocked(int talkId) {
     if (talkId >= ProgramList.getTalkCount()) {

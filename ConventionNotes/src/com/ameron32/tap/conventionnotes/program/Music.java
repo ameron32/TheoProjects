@@ -18,6 +18,9 @@ public class Music extends ProgramEvent {
     return getProgramTime() + "   " + getMusicText();
   }
   
-  
+  @Override
+  public String getTitleText() {
+    return getMusicText();
+  }
   
 }

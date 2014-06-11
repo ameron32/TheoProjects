@@ -168,4 +168,8 @@ public class ProgramEvent implements Serializable {
     return ((days > 0) ? days + "d " : "") + ((hours > 0) ? hours + ":" : "0:")
         + ((minutes > 0) ? minutes + " " : "0 ") + seconds + "s";
   }
+  
+  public String getTitleText() {
+    return "";
+  }
 }

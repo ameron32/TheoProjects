@@ -13,14 +13,10 @@ import com.ameron32.tap.conventionnotes.tools.Serializer;
 
 public class ProgramList {
   
-  /**
-   * for debug purposes, DEBUG OFFSET in ProgramEvent.class set
-   */
   public static final String CONVENTION_NAME = "Keep Seeking First God's Kingdom!";
   private static final long  JULY_4_12AM     = 1404450000000L;
 //  private static int         ONE_DAY         = 86400000;
-  private static final long  JUNE_6_12AM     = 1402030800000L;
-  // TODO: Change for Mikey
+  // private static final long JUNE_6_12AM = 1402030800000L;
   public static final long   CONVENTION_DATE = JULY_4_12AM;
   
   private static Program     program;

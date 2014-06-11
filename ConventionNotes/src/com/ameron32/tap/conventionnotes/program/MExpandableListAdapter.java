@@ -107,20 +107,23 @@ public class MExpandableListAdapter implements ExpandableListAdapter {
     TextView txtEventName = (TextView) convertView.findViewById(R.id.talk_title_text);
     
     try {
-      if (childEvent instanceof Talk) {
-        txtEventName.setText(((Talk) childEvent).getMultiLineTitle(false));
-        txtEventTime.setText(((Talk) childEvent).getProgramTime());
-      }
-      else
-        if (childEvent instanceof Song) {
-          txtEventName.setText(((Song) childEvent).getSongText());
-          txtEventTime.setText(((Song) childEvent).getProgramTime());
-        }
-        else
-          if (childEvent instanceof Music) {
-            txtEventName.setText(((Music) childEvent).getMusicText());
-            txtEventTime.setText(((Music) childEvent).getProgramTime());
-          }
+      // if (childEvent instanceof Talk) {
+      // txtEventName.setText(((Talk) childEvent).getMultiLineTitle(false));
+      // txtEventTime.setText(((Talk) childEvent).getProgramTime());
+      // }
+      // else
+      // if (childEvent instanceof Song) {
+      // txtEventName.setText(((Song) childEvent).getSongText());
+      // txtEventTime.setText(((Song) childEvent).getProgramTime());
+      // }
+      // else
+      // if (childEvent instanceof Music) {
+      // txtEventName.setText(((Music) childEvent).getMusicText());
+      // txtEventTime.setText(((Music) childEvent).getProgramTime());
+      // }
+      //
+      txtEventName.setText(childEvent.getTitleText());
+      txtEventTime.setText(childEvent.getProgramTime());
     }
     catch (NullPointerException e) {
       e.printStackTrace();

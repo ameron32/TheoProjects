@@ -1,7 +1,6 @@
 package com.ameron32.tap.conventionnotes;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -18,11 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 import com.ameron32.conventionnotes.R;
 import com.ameron32.tap.conventionnotes.notes.Note;
-import com.ameron32.tap.conventionnotes.notes.NoteAdapter;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -224,7 +221,7 @@ public class NotetakingFragment extends Fragment {
   
   public static class HintWatcher implements TextWatcher {
     
-    private Activity activity;
+    private final Activity activity;
     
     public HintWatcher(Activity activity) {
       this.activity = activity;

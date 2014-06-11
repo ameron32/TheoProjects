@@ -3,7 +3,6 @@ package com.ameron32.tap.conventionnotes.program;
 import java.util.List;
 
 import android.content.Context;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,8 @@ public class ProgramAdapter extends BaseAdapter {
   public static final int POSITION_NOT_FOUND = -777;
   
 //  private Context context;
-  private List<ProgramEvent> events;
-  private LayoutInflater inflater;
+  private final List<ProgramEvent> events;
+  private final LayoutInflater inflater;
 
   public ProgramAdapter(Context context) {
 //    this.context = context;

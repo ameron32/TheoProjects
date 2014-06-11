@@ -14,7 +14,7 @@ public class Program implements Serializable {
   private List<ProgramEvent> events           = new ArrayList<>();
   private List<Talk>         talks            = new ArrayList<>();
   
-  private String name;
+  private final String name;
   private long date;
   
   public Program(String name, long date) {
@@ -22,6 +22,10 @@ public class Program implements Serializable {
     this.setDate(date);
   }
   
+  public String getProgramName() {
+    return name;
+  }
+
   public List<Talk> getTalks() {
     return talks;
   }

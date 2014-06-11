@@ -105,6 +105,11 @@ public class Talk extends ProgramEvent {
     return sb.toString();
   }
   
+  @Override
+  public String getTitleText() {
+    return getMultiLineTitle(false);
+  }
+
   public void addSpeakerNote(Note note) {
     note.setNote("Speaker: " + note.getNote());
     notes.add(addAtPosition(NotePriority.Speaker), note);

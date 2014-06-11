@@ -3,8 +3,10 @@ package com.ameron32.tap.conventionnotes;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,7 +50,7 @@ public class TalkDetailFragment extends Fragment {
    */
   private View               mRootView;
   private ListView           mNoteListView;
-  private int                id = -1;
+  private int                id          = -1;
   private TextView           headerTitleText;
   // private RelativeLayout header2;
   private NoteAdapter        noteAdapter;
@@ -165,6 +167,12 @@ public class TalkDetailFragment extends Fragment {
     if (item.getItemId() == R.id.ic_save) {
       mCallbacks.onSave();
       return true;
+    }
+    if (item.getItemId() == R.id.action_camera) {
+      Intent toCamera = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+      Toast.makeText(getActivity(), "Shortcut to Camera. Check Gallery for Recording.", Toast.LENGTH_SHORT).show();
+      addNote(Note.createNote("---VIDEO---"));
+      startActivity(toCamera);
     }
     return super.onOptionsItemSelected(item);
   }

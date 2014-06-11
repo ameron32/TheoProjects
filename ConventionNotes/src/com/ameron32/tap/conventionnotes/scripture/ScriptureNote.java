@@ -75,7 +75,29 @@ public class ScriptureNote extends Note {
   }
   
   /**
-   * FORMAT: CCC # #-#, Examples: JAS 1 1,2 REV 21 3-5 MAT 24 3-11,14,45-47
+   * 
+   * @param note
+   *          String containing leading '@' followed by book chapter and verses,
+   *          dilimited by spaces.
+   * 
+   *          BOOK accepted as any-case abbreviation, full book name, or first
+   *          few characters for lookup.
+   * 
+   *          CHAPTER accepts 1 integer.
+   * 
+   *          VERSES accepts any combination of integer, integer series, and
+   *          integer list concatenated with commas. VERSES integer series begin
+   *          with the start verse, end with the last verse, and concatenate by
+   *          '-' hyphens.
+   * 
+   *          FORMAT: CCC # #-#, Examples: JAS 1 1,2; REVELATION 21 3-5; matt 24
+   *          3-11,14,45-47;
+   * 
+   * 
+   * @return Scripture containing proper uppercase String BOOK, int CHAPTER, and
+   *         int[] VERSES containing each and every verse int referred to in
+   *         list and series'.
+   * @throws Exception
    */
   private Scripture extractScripture(String note)
       throws Exception {
@@ -92,18 +114,18 @@ public class ScriptureNote extends Note {
       sb.append(bcv[i]);
       sb.append(" ");
     }
-    book = sb.toString().trim().substring(1).replace(".", "")
-        .toUpperCase(Locale.getDefault());
+    book = sb.toString().trim().substring(1).replace(".", "").toUpperCase(Locale.getDefault());
     
-    Log.i(this.getClass().getSimpleName(), "book was trimmed as: " + book);
-    
+    // Log.i(this.getClass().getSimpleName(), "book was trimmed as: " + book);
     book = determineBook(book);
-    Log.i(this.getClass().getSimpleName(), "book was found as: " + book);
+    // Log.i(this.getClass().getSimpleName(), "book was found as: " + book);
+    chapter = Integer.valueOf(sChapter);
     
-    Scripture scripture = new Scripture(book, Integer.valueOf(sChapter), convert(extractVerseBlocks(sVerses)));
+    verses = convert(extractVerseBlocks(sVerses));
+    
+    Scripture scripture = new Scripture(book, chapter, verses);
     Log.i("Scripture", scripture.toString());
     return scripture;
-    
   }
   
   private List<Integer> extractVerseBlocks(final String codedVerses) {

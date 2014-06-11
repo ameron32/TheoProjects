@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ameron32.conventionnotes"
+    package="com.ameron32.tap.conventionnotes"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -30,7 +30,7 @@
             android:parentActivityName="com.ameron32.tap.conventionnotes.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ameron32.conventionnotes.MainActivity" />
+                android:value="com.ameron32.tap.conventionnotes.MainActivity" />
         </activity>
     </application>
 

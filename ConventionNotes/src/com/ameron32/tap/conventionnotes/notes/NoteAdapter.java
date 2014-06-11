@@ -17,12 +17,10 @@ import com.ameron32.tap.conventionnotes.scripture.ScriptureNote;
 
 public class NoteAdapter extends BaseAdapter {
   
-  private LayoutInflater inflater;
-  // private Context context;
-  private Talk           talk;
+  private final LayoutInflater inflater;
+  private final Talk           talk;
   
   public NoteAdapter(Context context, Talk talk) {
-    // this.context = context;
     this.talk = talk;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
   }
@@ -65,10 +63,6 @@ public class NoteAdapter extends BaseAdapter {
     String noteText = talk.getNote(position).getNote();
     if (note instanceof ScriptureNote) {
       ScriptureNote sNote = ((ScriptureNote) note);
-      // String combined = sNote.getNote() + "\n" +
-      //
-      // sNote.scriptureText.toString();
-      // SpannedString spannedString = new SpannedString(combined);
       String text = sNote.scriptureText;
       if (text != null) {
         noteSpan = Html.fromHtml(text);
@@ -80,14 +74,23 @@ public class NoteAdapter extends BaseAdapter {
     
     if (note instanceof ScriptureNote) {
       holder.noteTextView.setText("");
+      holder.noteTextView.setTypeface(null, Typeface.NORMAL);
       holder.noteTextView.setVisibility(View.GONE);
       holder.inputTextView.setText(noteText);
       holder.forScripture.setVisibility(View.VISIBLE);
       holder.scriptureTextView.setText(noteSpan);
     }
+    else
+      if (note instanceof ImportantNote) {
+        holder.noteTextView.setVisibility(View.VISIBLE);
+        holder.noteTextView.setText(noteText);
+        holder.noteTextView.setTypeface(null, Typeface.BOLD);
+        holder.forScripture.setVisibility(View.GONE);
+      }
     else {
       holder.noteTextView.setVisibility(View.VISIBLE);
       holder.noteTextView.setText(noteText);
+        holder.noteTextView.setTypeface(null, Typeface.NORMAL);
       holder.forScripture.setVisibility(View.GONE);
     }
     
