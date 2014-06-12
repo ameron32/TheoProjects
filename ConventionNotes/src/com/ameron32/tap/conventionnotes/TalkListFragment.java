@@ -1,6 +1,8 @@
 package com.ameron32.tap.conventionnotes;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -11,11 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ameron32.conventionnotes.R;
 import com.ameron32.tap.conventionnotes.program.MExpandableListAdapter;
 import com.ameron32.tap.conventionnotes.program.ProgramAdapter;
 import com.ameron32.tap.conventionnotes.program.ProgramEvent;
@@ -96,14 +96,22 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
 
     setHasOptionsMenu(true);
     // return super.onCreateView(inflater, container, savedInstanceState);
-    LinearLayout talkView = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.m_fragment_talk_detail, null);
+    View talkView = LayoutInflater.from(getActivity()).inflate(R.layout.m_fragment_talk_detail, null);
+    // talkView.setOnV
     listAdapter = new MExpandableListAdapter(getActivity());
     
     expListView = (ExpandableListView) talkView.findViewById(android.R.id.list);
     expListView.setAdapter(listAdapter);
+    listAdapter.setView(expListView);
+
     expListView.setOnChildClickListener(this);
     expListView.setOnGroupClickListener(this);
     
+    expListView.setDivider(new ColorDrawable(Color.parseColor("#EFEFEF")));
+    expListView.setChildDivider(new ColorDrawable(Color.parseColor("#EFEFEF")));
+    expListView.setDividerHeight(12);
+    expListView.setBackgroundColor(Color.parseColor("#EFEFEF"));
+
     return talkView;
     
     // END UNDER CONSTRUCTION
@@ -122,6 +130,17 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
     if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
       setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
     }
+  }
+  
+  @Override
+  public void onResume() {
+    super.onResume();
+    /*
+     * TODO! check with Micah
+     * expListView.setIndicatorBoundsRelative(expListView.getWidth() - 50,
+     * expListView.getWidth() - 10);
+     */
+    
   }
   
   @Override
@@ -176,7 +195,6 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
   }
   
   public void setActivatedTalk(int talkId) {
-
     int position = listAdapter.getPosition(ProgramList.getTalk(talkId));
     if (position != ProgramAdapter.POSITION_NOT_FOUND) {
       setActivatedPosition(position);
@@ -184,7 +202,6 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
   }
   
   private void setActivatedPosition(int flatPosition) {
-
     if (flatPosition == ListView.INVALID_POSITION) {
       getListView().setItemChecked(mActivatedPosition, false);
     }
@@ -192,19 +209,23 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
       getListView().setItemChecked(flatPosition, true);
     }
     
+
     mActivatedPosition = flatPosition;
   }
+  
   
   // BEGIN UNDER CONSTRUCTION
   
   @Override
   public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+    // TODO Auto-generated method stub
     
     ProgramEvent event = listAdapter.getItem(groupPosition, childPosition);
     if (event instanceof Talk) {
       Talk talk = (Talk) event;
       int index = parent.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
       setActivatedPosition(index);
+      listAdapter.setActivatedChild(groupPosition, childPosition);
       mCallbacks.onItemSelected(String.valueOf(talk.getTalkNumber()));
       return true;
     }
@@ -217,10 +238,13 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
   
   @Override
   public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-
+    // TODO Auto-generated method stub
+    
     return false;
   }
   
   // END UNDER CONSTRUCTION
+  
+  
   
 }

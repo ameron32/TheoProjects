@@ -7,12 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ameron32.conventionnotes.R;
+import com.ameron32.tap.conventionnotes.R;
 
 public class ScriptureDialog extends DialogFragment {
 
   private OnScriptureGeneratedListener mListener;
-  private View mRootView;
+  private View                         mRootView;
   
   /**
    * Use this factory method to create a new instance of this fragment using the
@@ -27,10 +27,10 @@ public class ScriptureDialog extends DialogFragment {
   // : Rename and change types and number of parameters
   public static ScriptureDialog newInstance(String param1, String param2) {
     ScriptureDialog fragment = new ScriptureDialog();
-//    Bundle args = new Bundle();
-//    args.putString(ARG_PARAM1, param1);
-//    args.putString(ARG_PARAM2, param2);
-//    fragment.setArguments(args);
+    // Bundle args = new Bundle();
+    // args.putString(ARG_PARAM1, param1);
+    // args.putString(ARG_PARAM2, param2);
+    // fragment.setArguments(args);
     return fragment;
   }
   
@@ -83,13 +83,6 @@ public class ScriptureDialog extends DialogFragment {
     public void onScriptureGenerated(Scripture scripture);
   }
   
-  
-  
-  
-  
-  
-  
-  
   /*
    * : Rename parameter arguments, choose names that match the fragment
    * initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -111,5 +104,5 @@ public class ScriptureDialog extends DialogFragment {
       // mParam1 = getArguments().getString(ARG_PARAM1);
       // mParam2 = getArguments().getString(ARG_PARAM2);
     }
-  }  
+  }
 }

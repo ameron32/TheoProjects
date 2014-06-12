@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ameron32.conventionnotes.R;
+import com.ameron32.tap.conventionnotes.R;
 import com.ameron32.tap.conventionnotes.program.Talk;
 import com.ameron32.tap.conventionnotes.scripture.ScriptureNote;
 
@@ -87,12 +87,12 @@ public class NoteAdapter extends BaseAdapter {
         holder.noteTextView.setTypeface(null, Typeface.BOLD);
         holder.forScripture.setVisibility(View.GONE);
       }
-    else {
-      holder.noteTextView.setVisibility(View.VISIBLE);
-      holder.noteTextView.setText(noteText);
+      else {
+        holder.noteTextView.setVisibility(View.VISIBLE);
+        holder.noteTextView.setText(noteText);
         holder.noteTextView.setTypeface(null, Typeface.NORMAL);
-      holder.forScripture.setVisibility(View.GONE);
-    }
+        holder.forScripture.setVisibility(View.GONE);
+      }
     
     return convertView;
   }
@@ -101,13 +101,15 @@ public class NoteAdapter extends BaseAdapter {
     if (note.getNote().startsWith("!")) {
       note.setNote(note.getNote().substring(1));
       talk.addImportantNote(new ImportantNote(note));
-    } else 
-    if (note.getNote().startsWith("$")) {
-      note.setNote(note.getNote().substring(1));
-      talk.addSpeakerNote(new SpeakerNote(note));
-    } else {
-      talk.addNote(note);
     }
+    else
+      if (note.getNote().startsWith("$")) {
+        note.setNote(note.getNote().substring(1));
+        talk.addSpeakerNote(new SpeakerNote(note));
+      }
+      else {
+        talk.addNote(note);
+      }
   }
   
   public void removeNote(int position) {

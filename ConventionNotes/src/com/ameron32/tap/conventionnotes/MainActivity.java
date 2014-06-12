@@ -22,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ameron32.conventionnotes.R;
 import com.ameron32.tap.conventionnotes.notes.Note;
 import com.ameron32.tap.conventionnotes.program.ProgramList;
 import com.ameron32.tap.conventionnotes.scripture.Scripture;
@@ -42,7 +41,8 @@ import com.ameron32.tap.conventionnotes.tools.Testing;
  * interface to listen for item selections.
  */
 public class MainActivity extends FragmentActivity implements TalkListFragment.Callbacks, TalkDetailFragment.Callbacks,
-    NotetakingFragment.NoteCallbacks, ScriptureDialog.OnScriptureGeneratedListener, SharedPreferences.OnSharedPreferenceChangeListener {
+    NotetakingFragment.NoteCallbacks, ScriptureDialog.OnScriptureGeneratedListener,
+    SharedPreferences.OnSharedPreferenceChangeListener {
   
   private static final String KEY_CURRENT_TALK_ID = "keycurrenttalkid";
   private String              currentTalkId;
@@ -85,7 +85,8 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   public static final String FONT_SIZE = "FONT_SIZE";
-  private String fontSizePref;
+  private String             fontSizePref;
+
   @Override
   protected void onStart() {
     super.onStart();
@@ -125,7 +126,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   private void saveSettings() {
-    SharedPreferences settings = getSharedPreferences("com.ameron32.conventionnotes", Context.MODE_PRIVATE);
+    SharedPreferences settings = getSharedPreferences("com.ameron32.tap.conventionnotes", Context.MODE_PRIVATE);
     SharedPreferences.Editor settingsEdit = settings.edit();
     settingsEdit.putString("FONT_SIZE", fontSizePref);
     settingsEdit.commit();
@@ -199,7 +200,8 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   private void showNotetaker() {
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
     if (talkFragment.getTalkId() != -1) {
-      findViewById(R.id.linearlayout_fragment_holder).setVisibility(View.VISIBLE);;
+      findViewById(R.id.linearlayout_fragment_holder).setVisibility(View.VISIBLE);
+      ;
     }
   }
   
@@ -343,6 +345,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   public static final int REQUEST_SETTINGS = 3;
+
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     /*
@@ -360,17 +363,17 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     }
     if (item.getItemId() == R.id.action_settings) {
       Toast.makeText(MainActivity.this, "Settings not functional", Toast.LENGTH_SHORT).show();
-//      Intent i = new Intent(MainActivity.this, SettingsActivity.class);
-//      startActivityForResult(i, REQUEST_SETTINGS);
+      // Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+      // startActivityForResult(i, REQUEST_SETTINGS);
     }
     return super.onOptionsItemSelected(item);
   }
   
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-//    super.onActivityResult(requestCode, resultCode, data);
     
+    // super.onActivityResult(requestCode, resultCode, data);
+
     if (requestCode == REQUEST_SETTINGS) {
       if (resultCode == RESULT_OK) {
         onSettingsClosed();
@@ -383,8 +386,6 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // TODO++ need doing?
   }
   
-  
-
   /**
    * This panel slide listener updates the action bar accordingly for each panel
    * state.
@@ -490,7 +491,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // use the default view if anything goes wrong.
     try {
       // Get the font size value from SharedPreferences.
-      SharedPreferences settings = getSharedPreferences("com.ameron32.conventionnotes", Context.MODE_PRIVATE);
+      SharedPreferences settings = getSharedPreferences("com.ameron32.tap.conventionnotes", Context.MODE_PRIVATE);
       
       // Get the font size option. We use "FONT_SIZE" as the key.
       // Make sure to use this key when you set the value in SharedPreferences.
@@ -520,7 +521,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
       setTheme(themeID);
     }
     catch (Exception ex) {
-        ex.printStackTrace();
+      ex.printStackTrace();
     }
   }
 }

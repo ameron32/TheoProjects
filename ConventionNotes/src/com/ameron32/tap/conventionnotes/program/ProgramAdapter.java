@@ -9,18 +9,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.ameron32.conventionnotes.R;
+import com.ameron32.tap.conventionnotes.R;
 
 public class ProgramAdapter extends BaseAdapter {
-  public static final int IDTAG = 426842684;
-  public static final int POSITION_NOT_FOUND = -777;
   
-//  private Context context;
+  public static final int          IDTAG              = 426842684;
+  public static final int          POSITION_NOT_FOUND = -777;
+  
+  // private Context context;
   private final List<ProgramEvent> events;
-  private final LayoutInflater inflater;
+  private final LayoutInflater     inflater;
 
   public ProgramAdapter(Context context) {
-//    this.context = context;
+    // this.context = context;
     events = ProgramList.getEvents();
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
   }
@@ -43,13 +44,10 @@ public class ProgramAdapter extends BaseAdapter {
   public int getPosition(ProgramEvent event) {
     int size = events.size();
     for (int i = 0; i < size; i++) {
-      if (events.get(i).hashCode() == event.hashCode()) {
-        return i;
-      }
+      if (events.get(i).hashCode() == event.hashCode()) { return i; }
     }
     return POSITION_NOT_FOUND;
   }
-
   
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
@@ -64,13 +62,15 @@ public class ProgramAdapter extends BaseAdapter {
       
       convertView.setTag(holder);
       convertView.setTag(IDTAG, getItem(position).getId());
-    } else {
+    }
+    else {
       holder = (TalkViewHolder) convertView.getTag();
     }
     
     if (event instanceof Talk) {
       convertView.setMinimumHeight(120);
-    } else {
+    }
+    else {
       convertView.setMinimumHeight(50);
     }
     
@@ -92,6 +92,7 @@ public class ProgramAdapter extends BaseAdapter {
   }
   
   public static class TalkViewHolder {
+
     public TextView title;
     public TextView time;
   }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativelayout_controls_frame"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
     android:gravity="center"
-    android:padding="8dp" >
+    android:visibility="visible" >
 
     <LinearLayout
         android:id="@+id/linearlayout_buttons"
@@ -57,10 +57,10 @@
         android:id="@+id/textview_countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignLeft="@+id/linearlayout_buttons"
         android:layout_alignRight="@+id/linearlayout_buttons"
         android:layout_below="@+id/linearlayout_buttons"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="CountDown Error"
         android:textColor="@color/Text" />

@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.ameron32.conventionnotes.R;
 import com.ameron32.tap.conventionnotes.notes.Note;
 
 /**
@@ -247,7 +246,7 @@ public class NotetakingFragment extends Fragment {
         return;
       }
       
-      switch(s.charAt(0)) {
+      switch (s.charAt(0)) {
       case '@':
         if (toggleOn()) {
           goScriptureMode();
@@ -264,59 +263,59 @@ public class NotetakingFragment extends Fragment {
         }
         return;
       }
-//      
-//      if (s.charAt(0) == '@') {
-//        if (toggleOn()) {
-//          goScriptureMode();
-//        }
-//        return;
-//      }
-//      
-//      if (s.charAt(0) == '$') {
-//        if (toggleOn()) {
-//          goSpeakerMode();
-//        }
-//        return;
-//      }
-//      
-//      if (s.charAt(0) == '!') {
-//        if (toggleOn()) {
-//          goSpeakerMode();
-//        }
-//        return;
-//      }
+      //
+      // if (s.charAt(0) == '@') {
+      // if (toggleOn()) {
+      // goScriptureMode();
+      // }
+      // return;
+      // }
+      //
+      // if (s.charAt(0) == '$') {
+      // if (toggleOn()) {
+      // goSpeakerMode();
+      // }
+      // return;
+      // }
+      //
+      // if (s.charAt(0) == '!') {
+      // if (toggleOn()) {
+      // goSpeakerMode();
+      // }
+      // return;
+      // }
       
-//      if (s != null) {
-//        if (s.length() != 0) {
-//          if (s.charAt(0) == '@') {
-//            if (toggleOn()) {
-//              goScriptureMode();
-//            }
-//          } else if (s.charAt(0) == '~') {
-//            if (toggleOn()) {
-//              goSpeakerMode();
-//            }
-//          }
-//        }
-//      }
-//      if (s != null) {
-//        if (s.length() != 0) {
-//          if (s.charAt(0) != '@') {
-//            if (toggleOff()) {
-//              goNoteMode();
-//            }
-//          } else if (s.charAt(0) != '~') {
-//            if (toggleOn()) {
-//              goSpeakerMode();
-//            }
-//          }
-//        }
-//        if (s.length() == 0) {
-//          if (toggleOff()) {
-//            goNoteMode();
-//          }
-//        }
-//      }
+      // if (s != null) {
+      // if (s.length() != 0) {
+      // if (s.charAt(0) == '@') {
+      // if (toggleOn()) {
+      // goScriptureMode();
+      // }
+      // } else if (s.charAt(0) == '~') {
+      // if (toggleOn()) {
+      // goSpeakerMode();
+      // }
+      // }
+      // }
+      // }
+      // if (s != null) {
+      // if (s.length() != 0) {
+      // if (s.charAt(0) != '@') {
+      // if (toggleOff()) {
+      // goNoteMode();
+      // }
+      // } else if (s.charAt(0) != '~') {
+      // if (toggleOn()) {
+      // goSpeakerMode();
+      // }
+      // }
+      // }
+      // if (s.length() == 0) {
+      // if (toggleOff()) {
+      // goNoteMode();
+      // }
+      // }
+      // }
     }
     
     @Override

@@ -24,7 +24,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ameron32.conventionnotes.R;
 import com.ameron32.tap.conventionnotes.notes.Note;
 import com.ameron32.tap.conventionnotes.notes.NoteAdapter;
 import com.ameron32.tap.conventionnotes.program.ProgramEvent;
@@ -170,7 +169,7 @@ public class TalkDetailFragment extends Fragment {
     }
     if (item.getItemId() == R.id.action_camera) {
       Intent toCamera = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-      Toast.makeText(getActivity(), "Shortcut to Camera. Check Gallery for Recording.", Toast.LENGTH_SHORT).show();
+      Toast.makeText(getActivity(), "[Video Camera] Recordings stored in Gallery.", Toast.LENGTH_LONG).show();
       addNote(Note.createNote("---VIDEO---"));
       startActivity(toCamera);
     }
@@ -262,6 +261,9 @@ public class TalkDetailFragment extends Fragment {
     });
     setText(talk);
     
+    View controls = mRootView.findViewById(R.id.relativelayout_controls_frame);
+    controls.setVisibility(View.VISIBLE);
+
     cdt = new CountDownTimer(ProgramEvent.timeFromNow(System.currentTimeMillis(), talk), 1000) {
       
       @Override

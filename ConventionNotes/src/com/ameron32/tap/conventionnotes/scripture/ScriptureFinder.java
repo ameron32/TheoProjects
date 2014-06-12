@@ -34,13 +34,7 @@ public class ScriptureFinder {
   
   public String findScriptures(Context c, String bookName, int chapter, int[] verses)
       throws ScriptureNotFoundError {
-    
-    // String result = new ScriptureFinderKris().findScriptures(c, bookName,
-    // chapter, verses);
-    // if (result != null) {
-    // return result;
-    // }
-    
+
     allowedTags = defaultAllowedTags;
     
     Testing.startTest("wholeVerseReadA");
@@ -261,7 +255,7 @@ public class ScriptureFinder {
     if (abbrevBookName.equals("2CO")) return 47;
     if (abbrevBookName.equals("GAL")) return 48;
     if (abbrevBookName.equals("EPH")) return 49;
-    if (abbrevBookName.equals("PHI")) return 50;
+    if (abbrevBookName.equals("PHP")) return 50;
     if (abbrevBookName.equals("COL")) return 51;
     if (abbrevBookName.equals("1TH")) return 52;
     if (abbrevBookName.equals("2TH")) return 53;
@@ -291,6 +285,7 @@ public class ScriptureFinder {
         verseArray.add(currentVerseInLoop);
     }
     catch (IOException e) {
+      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
@@ -328,13 +323,6 @@ public class ScriptureFinder {
   }
   
   private String cleanupVerse(String rawVerse, int v) {
-    
-    String rep1 = "<sup>";
-    String rep2 = "</sup>";
-    String with1 = "<sup><small>";
-    String with2 = "</small></sup>";
-    rawVerse = rawVerse.replaceAll(rep1, with1);
-    rawVerse = rawVerse.replaceAll(rep2, with2);
     
     int start = rawVerse.indexOf(getStartVerseMarkerString(v));
     if (start > -1) {
@@ -397,101 +385,17 @@ public class ScriptureFinder {
       sb.append(finalPart);
     }
     
-    return sb.toString();
-    
-  }
-  
-  private String cleanupVerseC(String rawVerse, int v) {
-    
-    boolean inATag = true;
-    String prevChar = "";
-    String currentChar = "";
-    boolean[] removeChar = new boolean[rawVerse.length()];
-    
-    for (int i = 0; i < rawVerse.length(); i++) {
-      
-      if (i > 0) {
-        prevChar = rawVerse.substring(i - 1, i);
-      }
-      currentChar = rawVerse.substring(i, i + 1);
-      
-      if (currentChar.equals("<")) {
-        inATag = true;
-      }
-      else
-        if (prevChar.equals(">") && (!currentChar.equals("<"))) {
-          inATag = false;
-        }
-      
-      if (inATag) {
-        removeChar[i] = true;
-      }
-      else removeChar[i] = false;
-      
-    }
-    
-    StringBuilder sb = new StringBuilder();
-    
-    for (int i = 0; i < removeChar.length; i++) {
-      if (!removeChar[i]) {
-        sb.append(rawVerse.charAt(i));
-      }
-    }
-    
-    return sb.toString();
-  }
-  
-  private String cleanupVerseB(String rawVerse, int v) {
-    
-    int frontStartIndex = rawVerse.indexOf("<p id");
-    int frontEndIndex = rawVerse.indexOf("verse" + String.valueOf(v) + "\"></span>");
-    
-    char[] frontCharsToRemove = new char[frontEndIndex - frontStartIndex];
-    rawVerse.getChars(frontStartIndex, frontEndIndex, frontCharsToRemove, 0);
-    String frontStringToRemove = String.valueOf(frontCharsToRemove);
-    
-    rawVerse = rawVerse.replace(frontStringToRemove, "");
-    rawVerse = rawVerse.replace("verse" + String.valueOf(v) + "\"></span>", "");
+    String s = sb.toString();
     
     String rep1 = "<sup>";
     String rep2 = "</sup>";
     String with1 = "<sup><small>";
     String with2 = "</small></sup>";
-    rawVerse = rawVerse.replaceAll(rep1, with1);
-    rawVerse = rawVerse.replaceAll(rep2, with2);
+    s = s.replaceAll(rep1, with1);
+    s = s.replaceAll(rep2, with2);
     
-    if (rawVerse.contains(getEndVerseMarkerString(v))) {
-      int endStartIndex = rawVerse.indexOf(getEndVerseMarkerString(v));
-      int endEndIndex = rawVerse.length();
-      char[] endCharsToRemove = new char[endEndIndex - endStartIndex];
-      rawVerse.getChars(endStartIndex, endEndIndex, endCharsToRemove, 0);
-      String endStringToRemove = String.valueOf(endCharsToRemove);
-      rawVerse = rawVerse.replace(endStringToRemove, "");
-      // verseText = verseText.replace("<span id=", "");
-    }
+    return s.toString();
     
-    // Remove footnote tags.
-    while (rawVerse.indexOf("\"footnote") != -1) {
-      int startF = rawVerse.indexOf("\"footnote");
-      int endF = rawVerse.substring(startF).indexOf("\">");
-      rawVerse = rawVerse.replace(rawVerse.substring(startF, startF + endF + 2), "");
-    }
-    
-    // Remove footnote href tags.
-    while (rawVerse.indexOf("<a epub") != -1) {
-      int startF = rawVerse.indexOf("<a epub");
-      int endF = rawVerse.substring(startF).indexOf("\">");
-      rawVerse = rawVerse.replace(rawVerse.substring(startF, startF + endF + 2), "");
-    }
-    
-    // Remove page tags.
-    while (rawVerse.indexOf("<span id=\"page") != -1) {
-      int startP = rawVerse.indexOf("<span id=\"page");
-      int endP = rawVerse.substring(startP).indexOf("\">");
-      rawVerse = rawVerse.replace(rawVerse.substring(startP, startP + endP + 2), "");
-    }
-    rawVerse = rawVerse.replace("<span id=", "");
-    return rawVerse;
   }
   
   private String insertGap() {
@@ -509,67 +413,5 @@ public class ScriptureFinder {
     return s;
     
   }
-  
-  // Start Kris's methods:
-  /*
-   * private void readChapterTextA() { Testing.startTest("readChapterTextA");
-   * 
-   * InputStreamReader is = new InputStreamReader(openBibleFile());
-   * BufferedReader bsr = new BufferedReader(is); StringBuilder sb = new
-   * StringBuilder(); try { while (loop(sb.toString(), endFileMarker)) {
-   * Testing.startTest("rct/bsr.read"); sb.append((char) bsr.read()); //
-   * Testing.endTest("rct/bsr.read"); } bsr.close(); is.close(); } catch
-   * (IOException e) { e.printStackTrace(); } chapterText = sb.toString();
-   * 
-   * Testing.endTest("readChapterTextA"); }
-   * 
-   * private void readChapterTextB() { Testing.startTest("readChapterTextB");
-   * 
-   * InputStreamReader is = new InputStreamReader(openBibleFile());
-   * BufferedReader bsr = new BufferedReader(is); StringBuilder sb = new
-   * StringBuilder(); String aux = ""; try { // while (loop(sb.toString(),
-   * endFileMarker)) { // Testing.startTest("rct/bsr.read"); // sb.append((char)
-   * bsr.read()); // Testing.endTest("rct/bsr.read"); // } while ((aux =
-   * bsr.readLine()) != null) { sb.append(aux); } bsr.close(); is.close(); }
-   * catch (IOException e) { e.printStackTrace(); } chapterText = sb.toString();
-   * 
-   * Testing.endTest("readChapterTextB"); }
-   * 
-   * private boolean loop(String from, String endFileMarker) {
-   * Testing.startTest("loop"); boolean a = !from.contains(endFileMarker);
-   * 
-   * // Testing.endTest("loop"); return a; }
-   * 
-   * private String getVerseB(int v) throws ScriptureNotFoundError {
-   * Testing.startTest("getVerseB");
-   * 
-   * final String startVerseMark = getStartVerseMarkerString(v); final String
-   * endVerseMark = getEndVerseMarkerString(v); final StringBuilder
-   * verseTextBuilder = new StringBuilder(); String verseText = ""; int
-   * verseCharMarker = 0; // Read to the start of the verse. // edit Kris int
-   * LOCATION_FAILED = -1; int startLocation =
-   * chapterText.indexOf(startVerseMark); if (startLocation == LOCATION_FAILED)
-   * { VerseNotFoundError vnf = new VerseNotFoundError(); vnf.verse = v; throw
-   * vnf; } startLocation += startVerseMark.length(); verseCharMarker =
-   * startLocation ;
-   * 
-   * 
-   * // * Otherwise, clear the string, and now read from where you are to the //
-   * * beginning of the verse.
-   * 
-   * verseCharMarker++; verseText = ""; verseTextBuilder.replace(0,
-   * verseTextBuilder.length(), ""); // edit Kris final String substring =
-   * chapterText.substring(startLocation); int endLocation =
-   * substring.indexOf(endVerseMark); if (endLocation == LOCATION_FAILED) {
-   * VerseNotFoundError vnf = new VerseNotFoundError(); vnf.verse = v; throw
-   * vnf; } endLocation -= 10; verseCharMarker = endLocation;
-   * 
-   * verseText = substring.substring(0, endLocation);
-   * 
-   * // verseText.replaceAll(endVerseMark, ""); Log.i("Verse Text",
-   * verseText.toString());
-   * 
-   * Testing.endTest("getVerseB"); return verseText; }
-   */
   
 }

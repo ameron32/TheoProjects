@@ -99,8 +99,8 @@ public class Books {
     
     public static final int PRIMARY_ABBREVIATION = 0;
     
-    private String   bookTitle;
-    private String[] knownAbbreviations;
+    private final String   bookTitle;
+    private final String[] knownAbbreviations;
     
     public Book(String bookTitle, String... knownAbbreviations) {
       initBooks();
