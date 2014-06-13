@@ -41,7 +41,7 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
    * The serialization (saved instance state) Bundle key representing the
    * activated item position. Only used on tablets.
    */
-  private static final String STATE_ACTIVATED_POSITION = "activated_position";
+  private static final String STATE_ACTIVATED_Talk = "activated_position";
   
   /**
    * The fragment's current callback object, which is notified of list item
@@ -52,7 +52,7 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
   /**
    * The current activated item position. Only used on tablets.
    */
-  private int                 mActivatedPosition       = ListView.INVALID_POSITION;
+  private int                 mActivatedTalk       = ListView.INVALID_POSITION;
   
   /**
    * A callback interface that all activities containing this fragment must
@@ -127,8 +127,9 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
     super.onViewCreated(view, savedInstanceState);
     
     // Restore the previously serialized activated item position.
-    if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-      setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+    if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_Talk)) {
+      // setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_Talk));
+      setActivatedTalk(savedInstanceState.getInt(STATE_ACTIVATED_Talk));
     }
   }
   
@@ -178,9 +179,9 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
   @Override
   public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    if (mActivatedPosition != ListView.INVALID_POSITION) {
+    if (mActivatedTalk != ListView.INVALID_POSITION) {
       // Serialize and persist the activated item position.
-      outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+      outState.putInt(STATE_ACTIVATED_Talk, mActivatedTalk);
     }
   }
   
@@ -191,27 +192,29 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
   public void setActivateOnItemClick(boolean activateOnItemClick) {
     // When setting CHOICE_MODE_SINGLE, ListView will automatically
     // give items the 'activated' state when touched.
+    
     getListView().setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
   }
   
   public void setActivatedTalk(int talkId) {
     int position = listAdapter.getPosition(ProgramList.getTalk(talkId));
     if (position != ProgramAdapter.POSITION_NOT_FOUND) {
-      setActivatedPosition(position);
+      // setActivatedPosition(position);
+      setCurrentTalk(talkId);
     }
   }
   
-  private void setActivatedPosition(int flatPosition) {
-    if (flatPosition == ListView.INVALID_POSITION) {
-      getListView().setItemChecked(mActivatedPosition, false);
-    }
-    else {
-      getListView().setItemChecked(flatPosition, true);
-    }
-    
-
-    mActivatedPosition = flatPosition;
-  }
+  // private void setActivatedPosition(int flatPosition) {
+  // if (flatPosition == ListView.INVALID_POSITION) {
+  // getListView().setItemChecked(mActivatedPosition, false);
+  // }
+  // else {
+  // getListView().setItemChecked(flatPosition, true);
+  // }
+  //
+  //
+  // mActivatedPosition = flatPosition;
+  // }
   
   
   // BEGIN UNDER CONSTRUCTION
@@ -223,9 +226,12 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
     ProgramEvent event = listAdapter.getItem(groupPosition, childPosition);
     if (event instanceof Talk) {
       Talk talk = (Talk) event;
-      int index = parent.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
-      setActivatedPosition(index);
-      listAdapter.setActivatedChild(groupPosition, childPosition);
+      // int index =
+      // parent.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition,
+      // childPosition));
+      // setActivatedPosition(index);
+      setCurrentTalk(talk);
+      // listAdapter.setActivatedChild(groupPosition, childPosition);
       mCallbacks.onItemSelected(String.valueOf(talk.getTalkNumber()));
       return true;
     }
@@ -245,6 +251,14 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
   
   // END UNDER CONSTRUCTION
   
+  private void setCurrentTalk(int talkId) {
+    mActivatedTalk = talkId;
+    listAdapter.setCurrentTalk(ProgramList.getTalk(talkId));
+  }
   
-  
+  private void setCurrentTalk(Talk talk) {
+    mActivatedTalk = talk.getTalkNumber();
+    listAdapter.setCurrentTalk(talk);
+  }
+
 }

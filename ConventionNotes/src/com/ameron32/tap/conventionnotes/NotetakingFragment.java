@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.ameron32.tap.conventionnotes.notes.Note;
+import com.ameron32.tap.conventionnotes.tools.Testing;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -122,7 +122,7 @@ public class NotetakingFragment extends Fragment {
           // otherwise, the default action is to send the message.
           if (event.getAction() == KeyEvent.ACTION_DOWN) {
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
-              if (event.isShiftPressed()) {
+              if (!event.isShiftPressed()) {
                 pressAddNote();
                 return true;
               }
@@ -154,7 +154,7 @@ public class NotetakingFragment extends Fragment {
       mListener.onAddNote(note);
     }
     else {
-      Log.d(this.getClass().getSimpleName(), "mListener failed: null");
+      Testing.Log.d(this.getClass().getSimpleName(), "mListener failed: null");
     }
   }
   
@@ -163,7 +163,7 @@ public class NotetakingFragment extends Fragment {
       mListener.onAddScripture();
     }
     else {
-      Log.d(this.getClass().getSimpleName(), "mListener failed: null");
+      Testing.Log.d(this.getClass().getSimpleName(), "mListener failed: null");
     }
   }
   
@@ -189,16 +189,17 @@ public class NotetakingFragment extends Fragment {
     final View selectorLL = mRootView.findViewById(R.id.selector_parent_ll);
     selectorLL.setVisibility(View.VISIBLE);
     
-    Button edit = (Button) selectorLL.findViewById(R.id.selector_edit_button);
+    // Button edit = (Button)
+    // selectorLL.findViewById(R.id.selector_edit_button);
     Button delete = (Button) selectorLL.findViewById(R.id.selector_delete_button);
     OnClickListener ocl = new View.OnClickListener() {
       
       @Override
       public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.selector_edit_button:
-          editNote(note);
-          break;
+        // case R.id.selector_edit_button:
+        // editNote(note);
+        // break;
         case R.id.selector_delete_button:
           deleteNote((int) id, note);
           break;
@@ -206,7 +207,7 @@ public class NotetakingFragment extends Fragment {
         selectorLL.setVisibility(View.GONE);
       }
     };
-    edit.setOnClickListener(ocl);
+    // edit.setOnClickListener(ocl);
     delete.setOnClickListener(ocl);
   }
   
@@ -230,7 +231,7 @@ public class NotetakingFragment extends Fragment {
     
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-      Log.i("onTextChanged", "s=" + s + " start=" + start + " before=" + before + " count=" + count);
+      Testing.Log.i("onTextChanged", "s=" + s + " start=" + start + " before=" + before + " count=" + count);
       
       /**
        * Logic: if the first character BECOMES '@', switch to Scripture mode. if
@@ -327,7 +328,7 @@ public class NotetakingFragment extends Fragment {
     private boolean toggleOn() {
       if (!toggle) {
         toggle = true;
-        Log.i("onTextChanged", "ON");
+        Testing.Log.i("onTextChanged", "ON");
         return true;
       }
       return false;
@@ -336,7 +337,7 @@ public class NotetakingFragment extends Fragment {
     private boolean toggleOff() {
       if (toggle) {
         toggle = false;
-        Log.i("onTextChanged", "OFF");
+        Testing.Log.i("onTextChanged", "OFF");
         return true;
       }
       return false;

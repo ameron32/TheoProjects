@@ -9,7 +9,6 @@ import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ameron32.tap.conventionnotes.CustomApplication;
 import com.ameron32.tap.conventionnotes.notes.Program;
@@ -27,7 +26,7 @@ public class Serializer {
     ObjectOutputStream oos = new ObjectOutputStream(fos);
     oos.writeObject(program);
     oos.close();
-    Log.i(Serializer.class.getSimpleName(), "save successful");
+    Testing.Log.i(Serializer.class.getSimpleName(), "save successful");
   }
   
   public static Program loadProgram() throws FileNotFoundException, StreamCorruptedException, IOException, ClassNotFoundException, ClassCastException {
@@ -36,7 +35,7 @@ public class Serializer {
     ObjectInputStream ois = new ObjectInputStream(fis);
     Object readObject = ois.readObject();
     Program program = (Program) readObject;
-    Log.i(Serializer.class.getSimpleName(), "load successful");
+    Testing.Log.i(Serializer.class.getSimpleName(), "load successful");
     return program;
   }
 }

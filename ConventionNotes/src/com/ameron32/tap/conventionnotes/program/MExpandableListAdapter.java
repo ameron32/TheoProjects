@@ -10,13 +10,13 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.ameron32.tap.conventionnotes.R;
 
-public class MExpandableListAdapter implements ExpandableListAdapter {
+public class MExpandableListAdapter extends BaseExpandableListAdapter {
   
   private final Context                       _context;
   private List<String>                        listDataHeader;                  // header
@@ -48,7 +48,29 @@ public class MExpandableListAdapter implements ExpandableListAdapter {
     this._context = context;
   }
   
-  // ////////////
+  public void setCurrentTalk(ProgramEvent e) {
+    
+    if (e instanceof Talk) {
+      int talkNumber = ((Talk) e).getTalkNumber();
+      int groupCount = getGroupCount();
+      for (int i = 0; i < groupCount; i++) {
+        int childCount = getChildrenCount(i);
+        for (int j = 0; j < childCount; j++) {
+          if ((ProgramEvent) getChild(i, j) instanceof Talk) {
+            if (((Talk) getChild(i, j)).getTalkNumber() == talkNumber) {
+              setActivatedChild(currentGroup, currentChild);
+            }
+          }
+        }
+      }
+    }
+    
+  }
+  
+  public void setListPosition(int childPosition, int groupPosition) {
+    this.currentChild = childPosition;
+    this.currentGroup = groupPosition;
+  }
   
   public void setView(ExpandableListView thisInstance) {
     expListView = thisInstance;
@@ -140,8 +162,6 @@ public class MExpandableListAdapter implements ExpandableListAdapter {
     txtEventTime.setText(childEvent.getProgramTime());
     try {
       if (childEvent instanceof Talk) {
-        // txtEventName.setText(((Talk) childEvent).getMultiLineTitle(false));
-        // txtEventTime.setText(((Talk) childEvent).getProgramTime());
         txtEventTime.setTextColor(getGroupColor(groupPosition));
         
         if ((childPosition == currentChild) && (groupPosition == currentGroup)) {
@@ -150,15 +170,11 @@ public class MExpandableListAdapter implements ExpandableListAdapter {
       }
       
       if (childEvent instanceof Song) {
-        // txtEventName.setText(((Song) childEvent).getSongText());
-        // txtEventTime.setText(((Song) childEvent).getProgramTime());
         txtEventTime.setTextColor(Color.parseColor(songColor));
         
       }
       
       if (childEvent instanceof Music) {
-        // txtEventName.setText(((Music) childEvent).getMusicText());
-        // txtEventTime.setText(((Music) childEvent).getProgramTime());
         txtEventTime.setTextColor(getGroupColor(groupPosition));
       }
     }
@@ -222,12 +238,12 @@ public class MExpandableListAdapter implements ExpandableListAdapter {
       if (groupPosition == 1) {
         convertView.setBackgroundColor(Color.parseColor(heading2Color));
         lblListHeader.setTextColor(Color.parseColor(group2TextColor));
-        expListView.setGroupIndicator(_context.getResources().getDrawable(R.drawable.list_item_selector2));
+
       }
       else {
         convertView.setBackgroundColor(Color.parseColor(heading3Color));
         lblListHeader.setTextColor(Color.parseColor(group3TextColor));
-        expListView.setGroupIndicator(_context.getResources().getDrawable(R.drawable.list_item_selector3));
+
       }
     return convertView;
   }
@@ -236,11 +252,11 @@ public class MExpandableListAdapter implements ExpandableListAdapter {
     boolean highlightON = true;
     
     if (highlightON) {
-    TextView txtEventTime = (TextView) convertView.findViewById(R.id.talk_time_text);
-    TextView txtEventName = (TextView) convertView.findViewById(R.id.talk_title_text);
-    
-    txtEventName.setBackgroundColor(Color.parseColor(highlightedItemColor));
-    txtEventTime.setBackgroundColor(Color.parseColor(highlightedItemColor));
+      TextView txtEventTime = (TextView) convertView.findViewById(R.id.talk_time_text);
+      TextView txtEventName = (TextView) convertView.findViewById(R.id.talk_title_text);
+      
+      txtEventName.setBackgroundColor(Color.parseColor(highlightedItemColor));
+      txtEventTime.setBackgroundColor(Color.parseColor(highlightedItemColor));
     }
   }
 
@@ -302,4 +318,5 @@ public class MExpandableListAdapter implements ExpandableListAdapter {
     
   }
   
+
 }

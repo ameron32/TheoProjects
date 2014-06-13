@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +29,7 @@ import com.ameron32.tap.conventionnotes.program.ProgramEvent;
 import com.ameron32.tap.conventionnotes.program.ProgramList;
 import com.ameron32.tap.conventionnotes.program.Talk;
 import com.ameron32.tap.conventionnotes.scripture.ScriptureNote;
+import com.ameron32.tap.conventionnotes.tools.Testing;
 
 /**
  * A fragment representing a single Talk detail screen.
@@ -105,8 +105,8 @@ public class TalkDetailFragment extends Fragment {
    */
   private Callbacks             mCallbacks      = sDummyCallbacks;
   
-  private TextView              startTime;
-  private TextView              stopTime;
+  // private TextView startTime;
+  // private TextView stopTime;
   
   /**
    * A dummy implementation of the {@link Callbacks} interface that does
@@ -198,8 +198,8 @@ public class TalkDetailFragment extends Fragment {
   
   private void initOtherViews(View rootView) {
     
-    startTime = (TextView) rootView.findViewById(R.id.textview_start_time);
-    stopTime = (TextView) rootView.findViewById(R.id.textview_stop_time);
+    // startTime = (TextView) rootView.findViewById(R.id.textview_start_time);
+    // stopTime = (TextView) rootView.findViewById(R.id.textview_stop_time);
     countDown = (TextView) rootView.findViewById(R.id.textview_countdown);
   }
   
@@ -278,8 +278,8 @@ public class TalkDetailFragment extends Fragment {
     };
     cdt.start();
     
-    startTime.setText(talk.getStartTimeFormatted());
-    stopTime.setText(talk.getStopTimeFormatted());
+    // startTime.setText(talk.getStartTimeFormatted());
+    // stopTime.setText(talk.getStopTimeFormatted());
   }
   
   private void setText(Talk talk) {
@@ -290,10 +290,10 @@ public class TalkDetailFragment extends Fragment {
   }
   
   private void setTalkTitleInHeader(Talk talk) {
-    Log.i("TalkTitleColor", "start");
+    Testing.Log.i("TalkTitleColor", "start");
     headerTitleText.setText(talk.getMultiLineTitle(false));
     
-    Log.i("TalkTitleColor", "talk.getGroupDate(): " + talk.getGroupDate());
+    Testing.Log.i("TalkTitleColor", "talk.getGroupDate(): " + talk.getGroupDate());
 
     int talkTitleColor = 0;
     switch (talk.getGroupDate()) {
@@ -310,7 +310,7 @@ public class TalkDetailFragment extends Fragment {
       talkTitleColor = getResources().getColor(R.color.sunday_talk_title);
       // break;
     }
-    Log.i("TalkTitleColor", "color: " + talkTitleColor);
+    Testing.Log.i("TalkTitleColor", "color: " + talkTitleColor);
     
     headerTitleText.setTextColor(talkTitleColor);
   }

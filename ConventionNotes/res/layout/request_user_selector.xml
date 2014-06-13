@@ -22,6 +22,7 @@
                 android:orientation="horizontal"
                 android:showDividers="middle" >
 
+                <!-- 
                 <Button
                     android:id="@+id/selector_edit_button"
                     style="?android:attr/borderlessButtonStyle"
@@ -29,6 +30,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Edit" />
+                     -->
 
                 <Button
                     android:id="@+id/selector_delete_button"

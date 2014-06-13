@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.ameron32.tap.conventionnotes.tools.Testing;
@@ -389,7 +388,7 @@ public class ScriptureFinderKris {
     verseText = verseText.replaceAll(rep1, with1);
     verseText = verseText.replaceAll(rep2, with2);
     Testing.endTest("getVerseB/replaceText");
-    Log.i("Verse Text", verseText.toString());
+    Testing.Log.i("Verse Text", verseText.toString());
     
     Testing.endTest("getVerseB");
     return verseText;
@@ -435,7 +434,7 @@ public class ScriptureFinderKris {
       verseText = verseTextBuilder.toString();
     }
     verseText.replaceAll(endVerseMark, "");
-    Log.i("Verse Text", verseText.toString());
+    Testing.Log.i("Verse Text", verseText.toString());
     
     Testing.endTest("getVerseA");
     return verseText;

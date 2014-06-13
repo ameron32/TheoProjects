@@ -2,10 +2,9 @@ package com.ameron32.tap.conventionnotes.notes;
 
 import java.io.Serializable;
 
-import android.util.Log;
-
 import com.ameron32.tap.conventionnotes.scripture.Scripture;
 import com.ameron32.tap.conventionnotes.scripture.ScriptureNote;
+import com.ameron32.tap.conventionnotes.tools.Testing;
 
 public class Note implements Serializable {
   
@@ -45,7 +44,7 @@ public class Note implements Serializable {
   }
   
   public String getNote() {
-    Log.d(this.getClass().getSimpleName(), this.toString());
+    Testing.Log.d(this.getClass().getSimpleName(), this.toString());
     return note;
   }
   

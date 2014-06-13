@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ameron32.tap.conventionnotes.CustomApplication;
 import com.ameron32.tap.conventionnotes.notes.Program;
 import com.ameron32.tap.conventionnotes.tools.Serializer;
+import com.ameron32.tap.conventionnotes.tools.Testing;
 
 public class ProgramList {
   
@@ -66,7 +66,7 @@ public class ProgramList {
       return;
     }
     
-    Log.i("STATIC", "begin! -- context= " + c);
+    Testing.Log.i("STATIC", "begin! -- context= " + c);
     
     program = new Program(CONVENTION_NAME, CONVENTION_DATE);
     
@@ -196,7 +196,7 @@ public class ProgramList {
     
     try {
       program = Serializer.loadProgram();
-      Log.i(ProgramList.class.getSimpleName(), "found program successfully");
+      Testing.Log.i(ProgramList.class.getSimpleName(), "found program successfully");
       return true;
     }
     catch (Exception e) {

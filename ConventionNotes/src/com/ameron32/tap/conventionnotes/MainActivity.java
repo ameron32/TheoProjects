@@ -13,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SlidingPaneLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -180,10 +179,12 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   private void selectItem(String id) {
-    TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
+    // TalkDetailFragment talkFragment = ((TalkDetailFragment)
+    // getSupportFragmentManager().findFragmentById(R.id.content_pane));
     // Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();
-    currentTalkId = id;
-    talkFragment.showTalk(Integer.decode(id));
+    // currentTalkId = id;
+    // talkFragment.showTalk(Integer.decode(id));
+    selectTalk(Integer.decode(id));
     
     showNotetaker();
   }
@@ -191,9 +192,12 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   private void selectTalk(int newTalkId) {
     if (!isBlocked(newTalkId)) {
       TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
+      TalkListFragment programFragment = ((TalkListFragment) getSupportFragmentManager().findFragmentById(R.id.talk_list));
       // ((TalkListFragment)
       // getSupportFragmentManager().findFragmentById(R.id.talk_list)).setActivatedTalk(newTalkId);
+      currentTalkId = String.valueOf(newTalkId);
       talkFragment.showTalk(newTalkId);
+      programFragment.setActivatedTalk(newTalkId);
     }
   }
 
@@ -201,7 +205,6 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     TalkDetailFragment talkFragment = ((TalkDetailFragment) getSupportFragmentManager().findFragmentById(R.id.content_pane));
     if (talkFragment.getTalkId() != -1) {
       findViewById(R.id.linearlayout_fragment_holder).setVisibility(View.VISIBLE);
-      ;
     }
   }
   
@@ -361,11 +364,12 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
       saveProgram();
       Exporter.exportProgramNotesAsEmail(MainActivity.this, ProgramList.getProgram());
     }
-    if (item.getItemId() == R.id.action_settings) {
-      Toast.makeText(MainActivity.this, "Settings not functional", Toast.LENGTH_SHORT).show();
+    // if (item.getItemId() == R.id.action_settings) {
+    // Toast.makeText(MainActivity.this, "Settings not functional",
+    // Toast.LENGTH_SHORT).show();
       // Intent i = new Intent(MainActivity.this, SettingsActivity.class);
       // startActivityForResult(i, REQUEST_SETTINGS);
-    }
+    // }
     return super.onOptionsItemSelected(item);
   }
   
@@ -475,12 +479,12 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   public static void log(String tag, String message) {
-    Log.d("MainActivity|" + tag, message);
+    Testing.Log.d("MainActivity|" + tag, message);
   }
 
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-    Log.v("PREFERENCE CHANGE", "[" + key + "]");
+    Testing.Log.v("PREFERENCE CHANGE", "[" + key + "]");
     if (key.equalsIgnoreCase(FONT_SIZE)) {
       setFont();
     }

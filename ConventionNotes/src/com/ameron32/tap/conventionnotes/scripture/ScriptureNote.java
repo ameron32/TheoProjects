@@ -8,11 +8,10 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
-import android.util.Log;
-
 import com.ameron32.tap.conventionnotes.MainActivity;
 import com.ameron32.tap.conventionnotes.notes.Note;
 import com.ameron32.tap.conventionnotes.scripture.Books.Book;
+import com.ameron32.tap.conventionnotes.tools.Testing;
 
 public class ScriptureNote extends Note {
   
@@ -116,15 +115,17 @@ public class ScriptureNote extends Note {
     }
     book = sb.toString().trim().substring(1).replace(".", "").toUpperCase(Locale.getDefault());
     
-    // Log.i(this.getClass().getSimpleName(), "book was trimmed as: " + book);
+    // Testing.Log.i(this.getClass().getSimpleName(), "book was trimmed as: " +
+    // book);
     book = determineBook(book);
-    // Log.i(this.getClass().getSimpleName(), "book was found as: " + book);
+    // Testing.Log.i(this.getClass().getSimpleName(), "book was found as: " +
+    // book);
     chapter = Integer.valueOf(sChapter);
     
     verses = convert(extractVerseBlocks(sVerses));
     
     Scripture scripture = new Scripture(book, chapter, verses);
-    Log.i("Scripture", scripture.toString());
+    Testing.Log.i("Scripture", scripture.toString());
     return scripture;
   }
   

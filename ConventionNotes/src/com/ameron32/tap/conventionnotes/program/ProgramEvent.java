@@ -17,6 +17,7 @@ public class ProgramEvent implements Serializable {
   private static SimpleDateFormat FULL_FORMAT          = new SimpleDateFormat("M/d/yy h:mm a", Locale.getDefault());
   private static SimpleDateFormat FORMAT               = new SimpleDateFormat("H:mm", Locale.getDefault());
   private static SimpleDateFormat PROGRAM_FORMAT       = new SimpleDateFormat("h:mm a", Locale.getDefault());
+  private static SimpleDateFormat GROUP_DATE_FORMAT    = new SimpleDateFormat("EEEE',' MMMM d", Locale.getDefault());
   
   private static long             ONE_DAY              = 86400000L;
   
@@ -104,15 +105,6 @@ public class ProgramEvent implements Serializable {
     return "Event: " + getId();
   }
   
-  // CODE BELOW
-  
-  // generates the formating for the method below
-  private static SimpleDateFormat GROUP_DATE_FORMAT = new SimpleDateFormat("EEEE',' MMMM d", Locale.getDefault());
-  
-  // use this to access the grouping date
-  // should display as:
-  // Friday, July 4
-  // tell me if it doesn't
   public String getGroupDate() {
     return GROUP_DATE_FORMAT.format(getStartTime());
   }
@@ -165,8 +157,8 @@ public class ProgramEvent implements Serializable {
     }
     seconds = secondsRemaining;
     
-    return ((days > 0) ? days + "d " : "") + ((hours > 0) ? hours + ":" : "0:")
-        + ((minutes > 0) ? minutes + " " : "0 ") + seconds + "s";
+    return ((days > 0) ? days + " days\n" : "") + ((hours > 0) ? hours + " hours\n" : "")
+        + ((minutes > 0) ? minutes + " m " : "0 m ") + ((seconds > 0) ? seconds + " s" : "");
   }
   
   public String getTitleText() {

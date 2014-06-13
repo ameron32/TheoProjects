@@ -36,8 +36,7 @@
         android:layout_alignRight="@+id/linearlayout_buttons"
         android:layout_below="@+id/linearlayout_buttons"
         android:gravity="right"
-        android:layout_marginRight="8dp"
-        android:textSize="12sp"
+        android:layout_marginRight="24dp"
         android:text="CountDown Error"
         android:textColor="@color/Text" />
 

@@ -180,7 +180,7 @@ public class ScriptureFinder {
     if (bookName.equals("ROMANS")) return "RO";
     if (bookName.equals("1 CORINTHIANS")) return "1CO";
     if (bookName.equals("2 CORINTHIANS")) return "2CO";
-    if (bookName.equals("GALATIANS")) return "GAL";
+    if (bookName.equals("GALATIANS")) return "GA";
     if (bookName.equals("EPHESIANS")) return "EPH";
     if (bookName.equals("PHILIPPIANS")) return "PHP";
     if (bookName.equals("COLOSSIANS")) return "COL";
@@ -253,7 +253,7 @@ public class ScriptureFinder {
     if (abbrevBookName.equals("RO")) return 45;
     if (abbrevBookName.equals("1CO")) return 46;
     if (abbrevBookName.equals("2CO")) return 47;
-    if (abbrevBookName.equals("GAL")) return 48;
+    if (abbrevBookName.equals("GA")) return 48;
     if (abbrevBookName.equals("EPH")) return 49;
     if (abbrevBookName.equals("PHP")) return 50;
     if (abbrevBookName.equals("COL")) return 51;
