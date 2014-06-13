@@ -3,32 +3,48 @@
     android:layout_height="match_parent"
     android:background="@color/BGLight" >
 
-    <android.support.v4.widget.SlidingPaneLayout
-        android:id="@+id/sliding_pane_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linearlayout_fragment_holder"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
 
-        <fragment
-            android:id="@+id/talk_list"
-            android:name="com.ameron32.tap.conventionnotes.TalkListFragment"
-            android:layout_width="280dp"
+        <android.support.v4.widget.SlidingPaneLayout
+            android:id="@+id/sliding_pane_layout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:background="@color/BGLight"
-            android:paddingRight="16dp" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" >
 
-        <fragment
-            android:id="@+id/content_pane"
-            android:name="com.ameron32.tap.conventionnotes.TalkDetailFragment"
-            android:layout_width="450dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp" />
-    </android.support.v4.widget.SlidingPaneLayout>
+            <fragment
+                android:id="@+id/talk_list"
+                android:name="com.ameron32.tap.conventionnotes.TalkListFragment"
+                android:layout_width="280dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:background="@color/BGLight"
+                android:paddingRight="16dp" />
+
+            <fragment
+                android:id="@+id/content_pane"
+                android:name="com.ameron32.tap.conventionnotes.TalkDetailFragment"
+                android:layout_width="450dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp" />
+        </android.support.v4.widget.SlidingPaneLayout>
+
+        <ImageView
+            android:id="@+id/shadow_of_notetaking_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="9dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/shadowtop" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/linearlayout_fragment_holder"
@@ -36,8 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:visibility="gone"
-        android:paddingTop="16dp" >
+        android:paddingTop="16dp"
+        android:visibility="gone" >
 
         <fragment
             android:id="@+id/note_editor"

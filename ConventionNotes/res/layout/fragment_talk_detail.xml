@@ -18,7 +18,7 @@
         layout="@layout/header_view_controls" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/shadow_of_talk_list_fragment"
         android:layout_width="15dp"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"

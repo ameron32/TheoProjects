@@ -4,6 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="right"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
     android:visibility="visible" >
 
     <LinearLayout
@@ -35,8 +37,8 @@
         android:layout_alignLeft="@+id/linearlayout_buttons"
         android:layout_alignRight="@+id/linearlayout_buttons"
         android:layout_below="@+id/linearlayout_buttons"
-        android:gravity="right"
         android:layout_marginRight="24dp"
+        android:gravity="right"
         android:text="CountDown Error"
         android:textColor="@color/Text" />
 
