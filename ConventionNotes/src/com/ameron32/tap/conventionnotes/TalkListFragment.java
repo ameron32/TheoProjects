@@ -111,6 +111,8 @@ public class TalkListFragment extends ListFragment implements OnChildClickListen
     expListView.setChildDivider(new ColorDrawable(Color.parseColor("#EFEFEF")));
     expListView.setDividerHeight(12);
     expListView.setBackgroundColor(Color.parseColor("#EFEFEF"));
+    
+    expListView.setGroupIndicator(getActivity().getResources().getDrawable(R.drawable.list_item_selector1));
 
     return talkView;
     

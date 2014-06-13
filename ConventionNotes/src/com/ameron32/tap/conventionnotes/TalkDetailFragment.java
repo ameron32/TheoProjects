@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.MediaStore;
@@ -201,6 +202,8 @@ public class TalkDetailFragment extends Fragment {
     // startTime = (TextView) rootView.findViewById(R.id.textview_start_time);
     // stopTime = (TextView) rootView.findViewById(R.id.textview_stop_time);
     countDown = (TextView) rootView.findViewById(R.id.textview_countdown);
+    countDown.setTextColor(Color.parseColor("#989898"));
+    
   }
   
   private void createListView() {
