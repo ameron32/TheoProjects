@@ -77,12 +77,19 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     mSlidingLayout.getViewTreeObserver().addOnGlobalLayoutListener(new FirstLayoutListener());
     
     if (savedInstanceState != null) {
-      // restore current talk
       currentTalkId = savedInstanceState.getString(KEY_CURRENT_TALK_ID);
     }
     // TODO: If exposing deep links into your app, handle intents here.
   }
   
+  // @Override
+  // protected void onRestoreInstanceState(Bundle savedInstanceState) {
+  // super.onRestoreInstanceState(savedInstanceState);
+  // // restore current talk
+  // Testing.Log.v(getClass().getSimpleName(), "onRestoreInstanceState");
+  // currentTalkId = savedInstanceState.getString(KEY_CURRENT_TALK_ID);
+  // }
+
   public static final String FONT_SIZE = "FONT_SIZE";
   private String             fontSizePref;
 
@@ -134,6 +141,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
+    Testing.Log.v(getClass().getSimpleName(), "onSaveInstanceState");
     outState.putString(KEY_CURRENT_TALK_ID, currentTalkId);
   }
   
@@ -367,8 +375,8 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     // if (item.getItemId() == R.id.action_settings) {
     // Toast.makeText(MainActivity.this, "Settings not functional",
     // Toast.LENGTH_SHORT).show();
-      // Intent i = new Intent(MainActivity.this, SettingsActivity.class);
-      // startActivityForResult(i, REQUEST_SETTINGS);
+    // Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+    // startActivityForResult(i, REQUEST_SETTINGS);
     // }
     return super.onOptionsItemSelected(item);
   }
