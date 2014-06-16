@@ -6,7 +6,7 @@
     android:gravity="right"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    android:visibility="visible" >
+    android:visibility="gone" >
 
     <LinearLayout
         android:id="@+id/linearlayout_buttons"
