@@ -81,14 +81,6 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     }
     // TODO: If exposing deep links into your app, handle intents here.
   }
-  
-  // @Override
-  // protected void onRestoreInstanceState(Bundle savedInstanceState) {
-  // super.onRestoreInstanceState(savedInstanceState);
-  // // restore current talk
-  // Testing.Log.v(getClass().getSimpleName(), "onRestoreInstanceState");
-  // currentTalkId = savedInstanceState.getString(KEY_CURRENT_TALK_ID);
-  // }
 
   public static final String FONT_SIZE = "FONT_SIZE";
   private String             fontSizePref;
@@ -187,13 +179,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   }
   
   private void selectItem(String id) {
-    // TalkDetailFragment talkFragment = ((TalkDetailFragment)
-    // getSupportFragmentManager().findFragmentById(R.id.content_pane));
-    // Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();
-    // currentTalkId = id;
-    // talkFragment.showTalk(Integer.decode(id));
     selectTalk(Integer.decode(id));
-    
     showNotetaker();
   }
   

@@ -9,8 +9,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:textSize="9sp"
         android:text="Talk Title Unknown"
+        android:textSize="9sp"
         android:textStyle="bold"
         android:fontFamily="sans"
         android:gravity="center_vertical" />

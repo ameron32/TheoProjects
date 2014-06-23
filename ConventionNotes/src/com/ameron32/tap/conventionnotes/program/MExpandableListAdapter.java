@@ -58,13 +58,14 @@ public class MExpandableListAdapter extends BaseExpandableListAdapter {
         for (int j = 0; j < childCount; j++) {
           if ((ProgramEvent) getChild(i, j) instanceof Talk) {
             if (((Talk) getChild(i, j)).getTalkNumber() == talkNumber) {
-              setActivatedChild(currentGroup, currentChild);
+              setActivatedChild(i, j);
+              i = groupCount + 1;
+              j = childCount + 1;
             }
           }
         }
       }
     }
-    
   }
   
   public void setListPosition(int childPosition, int groupPosition) {
@@ -126,6 +127,10 @@ public class MExpandableListAdapter extends BaseExpandableListAdapter {
   public void setActivatedChild(int groupPosition, int childPosition) {
     currentGroup = groupPosition;
     currentChild = childPosition;
+  }
+  
+  public void setActivatedChild(int talkID) {
+    setCurrentTalk(ProgramList.getTalk(talkID));
   }
 
   // ///////////
