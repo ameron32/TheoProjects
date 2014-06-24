@@ -1306,9 +1306,9 @@ containing a value of this type.
         public static final int action_bar_root=0x7f06001a;
         public static final int action_bar_subtitle=0x7f060023;
         public static final int action_bar_title=0x7f060022;
-        public static final int action_camera=0x7f060060;
+        public static final int action_camera=0x7f060061;
         public static final int action_context_bar=0x7f06001d;
-        public static final int action_export=0x7f060061;
+        public static final int action_export=0x7f060062;
         public static final int action_menu_divider=0x7f060016;
         public static final int action_menu_presenter=0x7f060017;
         public static final int action_mode_close_button=0x7f060024;
@@ -1330,7 +1330,7 @@ containing a value of this type.
         public static final int gridview=0x7f06004a;
         public static final int home=0x7f060014;
         public static final int homeAsUp=0x7f060005;
-        public static final int ic_save=0x7f06005f;
+        public static final int ic_save=0x7f060060;
         public static final int icon=0x7f06002a;
         public static final int ifRoom=0x7f06000a;
         public static final int image=0x7f060027;
@@ -1366,7 +1366,8 @@ containing a value of this type.
         public static final int search_plate=0x7f060036;
         public static final int search_src_text=0x7f060037;
         public static final int search_voice_btn=0x7f06003b;
-        public static final int selector_delete_button=0x7f06005e;
+        public static final int selector_cancel_button=0x7f06005e;
+        public static final int selector_delete_button=0x7f06005f;
         public static final int selector_parent_ll=0x7f06005d;
         public static final int shadow_of_notetaking_fragment=0x7f060040;
         public static final int shadow_of_talk_list_fragment=0x7f060049;

@@ -191,6 +191,7 @@ public class NotetakingFragment extends Fragment {
     
     // Button edit = (Button)
     // selectorLL.findViewById(R.id.selector_edit_button);
+    Button cancel = (Button) selectorLL.findViewById(R.id.selector_cancel_button);
     Button delete = (Button) selectorLL.findViewById(R.id.selector_delete_button);
     OnClickListener ocl = new View.OnClickListener() {
       
@@ -208,6 +209,7 @@ public class NotetakingFragment extends Fragment {
       }
     };
     // edit.setOnClickListener(ocl);
+    cancel.setOnClickListener(ocl);
     delete.setOnClickListener(ocl);
   }
   

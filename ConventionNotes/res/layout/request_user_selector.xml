@@ -22,7 +22,16 @@
                 android:orientation="horizontal"
                 android:showDividers="middle" >
 
-                <!-- 
+                
+                <Button
+                    android:id="@+id/selector_cancel_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Cancel" />
+                
+                <!--                                 
                 <Button
                     android:id="@+id/selector_edit_button"
                     style="?android:attr/borderlessButtonStyle"
@@ -30,14 +39,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Edit" />
-                     -->
+                    -->
+                     
 
                 <Button
                     android:id="@+id/selector_delete_button"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="4"
                     android:text="Delete" />
             </LinearLayout>
         </LinearLayout>

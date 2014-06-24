@@ -4,7 +4,9 @@ import java.util.HashMap;
 
 public class Testing {
 
-  static final HashMap<String, Timer> times = new HashMap<>();
+  private static final boolean        DEBUG = false;
+
+  private static final HashMap<String, Timer> times = new HashMap<>();
 
   public static void startTest(String methodName) {
     Timer timer = times.get(methodName);
@@ -49,7 +51,6 @@ public class Testing {
   
   public static class Log {
     
-    private static final boolean DEBUG = false;
     public static void e(String fromClass, String msg) {
       if (DEBUG) Log.e(Testing.class.getSimpleName() + "|" + fromClass, msg);
     }

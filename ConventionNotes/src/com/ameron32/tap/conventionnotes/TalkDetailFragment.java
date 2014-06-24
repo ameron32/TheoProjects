@@ -37,7 +37,7 @@ import com.ameron32.tap.conventionnotes.tools.Testing;
  */
 public class TalkDetailFragment extends Fragment {
   
-  private static boolean     DEBUG       = true;
+  private static boolean     DEBUG       = false;
   
   /**
    * The fragment argument representing the item ID that this fragment

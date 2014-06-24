@@ -207,7 +207,7 @@ public class TalkListFragment extends Fragment implements OnChildClickListener, 
       return true;
     }
     else {
-      Toast.makeText(getActivity(), "Not a Talk", Toast.LENGTH_SHORT).show();
+      Toast.makeText(getActivity(), "Only Talks can be selected.", Toast.LENGTH_SHORT).show();
       return false;
     }
   }
