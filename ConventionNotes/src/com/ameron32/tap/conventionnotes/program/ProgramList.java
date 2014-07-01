@@ -200,7 +200,7 @@ public class ProgramList {
       return true;
     }
     catch (Exception e) {
-      e.printStackTrace();
+      Testing.Exception.printStackTrace(e);
     }
     
     // TODO-- fix this

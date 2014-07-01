@@ -15,6 +15,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.ameron32.tap.conventionnotes.R;
+import com.ameron32.tap.conventionnotes.tools.Testing;
 
 public class MExpandableListAdapter extends BaseExpandableListAdapter {
   
@@ -184,7 +185,7 @@ public class MExpandableListAdapter extends BaseExpandableListAdapter {
       }
     }
     catch (NullPointerException e) {
-      e.printStackTrace();
+      Testing.Exception.printStackTrace(e);
     }
 
     return convertView;

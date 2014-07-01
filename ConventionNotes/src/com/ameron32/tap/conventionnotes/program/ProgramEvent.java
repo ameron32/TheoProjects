@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import com.ameron32.tap.conventionnotes.notes.Program;
+import com.ameron32.tap.conventionnotes.tools.Testing;
 
 public class ProgramEvent implements Serializable {
   
@@ -62,7 +63,7 @@ public class ProgramEvent implements Serializable {
       lTime = FORMAT.parse(time).getTime();
     }
     catch (ParseException e) {
-      e.printStackTrace();
+      Testing.Exception.printStackTrace(e);
     }
     return lTime - 21600000L;
   }

@@ -31,7 +31,7 @@ public class ScriptureNote extends Note {
       s = extractScripture(note);
     }
     catch (Exception e) {
-      e.printStackTrace();
+      Testing.Exception.printStackTrace(e);
     }
     
     loadScriptureText(s);
@@ -58,17 +58,17 @@ public class ScriptureNote extends Note {
       try {
         scriptureText = sf.findScriptures(MainActivity.getContext(), s.book, s.chapter, s.verses);
       }
-      catch (BookNotFoundError e) {
-        e.printStackTrace();
+      catch (BookNotFoundException e) {
+        Testing.Exception.printStackTrace(e);
       }
-      catch (ChapterNotFoundError e) {
-        e.printStackTrace();
+      catch (ChapterNotFoundException e) {
+        Testing.Exception.printStackTrace(e);
       }
-      catch (VerseNotFoundError e) {
-        e.printStackTrace();
+      catch (VerseNotFoundException e) {
+        Testing.Exception.printStackTrace(e);
       }
       catch (Exception e) {
-        e.printStackTrace();
+        Testing.Exception.printStackTrace(e);
       }
     }
   }

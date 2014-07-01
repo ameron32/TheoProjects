@@ -204,6 +204,9 @@ public class NotetakingFragment extends Fragment {
         case R.id.selector_delete_button:
           deleteNote((int) id, note);
           break;
+        case R.id.selector_cancel_button:
+          Testing.crash();
+          break;
         }
         selectorLL.setVisibility(View.GONE);
       }

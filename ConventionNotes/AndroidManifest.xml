@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ameron32.tap.conventionnotes"
-    android:versionCode="0111"
-    android:versionName="1.0" >
+    android:versionCode="0113"
+    android:versionName="1.00" >
 
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="19" />
-
+    
     <application
         android:name="com.ameron32.tap.conventionnotes.CustomApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name="com.ameron32.tap.conventionnotes.MainActivity"
             android:label="@string/app_name"

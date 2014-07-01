@@ -58,6 +58,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    
     setContentView(R.layout.activity_main);
     context = CustomApplication.getCustomAppContext();
     
@@ -118,7 +119,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
     }
     catch (IOException e) {
       Toast.makeText(getContext(), "Save failed.", Toast.LENGTH_SHORT).show();
-      e.printStackTrace();
+      Testing.Exception.printStackTrace(e);
     }
     return false;
   }
@@ -518,8 +519,8 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
       // Set the theme for the activity.
       setTheme(themeID);
     }
-    catch (Exception ex) {
-      ex.printStackTrace();
+    catch (Exception e) {
+      Testing.Exception.printStackTrace(e);
     }
   }
 }

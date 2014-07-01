@@ -33,7 +33,7 @@ public class ScriptureFinder {
   private static final String endFileMarker = "<div class=\"groupFootnote\">";
   
   public String findScriptures(Context c, String bookName, int chapter, int[] verses)
-      throws ScriptureNotFoundError {
+      throws ScriptureNotFoundException {
 
     allowedTags = defaultAllowedTags;
     
@@ -69,13 +69,13 @@ public class ScriptureFinder {
         //
       }
     }
-    catch (ScriptureNotFoundError e) {
-      if (e instanceof ChapterNotFoundError) {
+    catch (ScriptureNotFoundException e) {
+      if (e instanceof ChapterNotFoundException) {
         Toast.makeText(c, "Chapter not found.", Toast.LENGTH_LONG).show();
         throw e;
       }
       else
-        if (e instanceof BookNotFoundError) {
+        if (e instanceof BookNotFoundException) {
           Toast.makeText(c, "Book not found.", Toast.LENGTH_LONG).show();
           throw e;
         }
@@ -94,23 +94,23 @@ public class ScriptureFinder {
   }
   
   private InputStream openBibleFile()
-      throws ChapterNotFoundError {
+      throws ChapterNotFoundException {
     InputStream epubInputStream = null;
     AssetManager am = c.getAssets();
     try {
       epubInputStream = am.open(fileName);
     }
     catch (IOException e) {
-      ChapterNotFoundError cnf = new ChapterNotFoundError();
+      ChapterNotFoundException cnf = new ChapterNotFoundException();
       cnf.chapter = chapter;
-      e.printStackTrace();
+      Testing.Exception.printStackTrace(e);
       throw cnf;
     }
     return epubInputStream;
   }
   
   private String getFileName()
-      throws ScriptureNotFoundError {
+      throws ScriptureNotFoundException {
     String fileName = "";
     String bookAbbrev = getBookAbbrev(bookName);
     int bookNumber = getBookNumber(bookAbbrev);
@@ -131,7 +131,7 @@ public class ScriptureFinder {
   }
   
   private String getBookAbbrev(String bookName)
-      throws BookNotFoundError {
+      throws BookNotFoundException {
     
     if (bookName.equals("GENESIS")) return "GE";
     if (bookName.equals("EXODUS")) return "EX";
@@ -200,7 +200,7 @@ public class ScriptureFinder {
     if (bookName.equals("JUDE")) return "JUD";
     if (bookName.equals("REVELATION")) return "RE";
     
-    BookNotFoundError bnf = new BookNotFoundError();
+    BookNotFoundException bnf = new BookNotFoundException();
     bnf.book = bookName;
     throw bnf;
   }
@@ -274,7 +274,8 @@ public class ScriptureFinder {
     return 66;
   }
   
-  private void readChapterText() {
+  private void readChapterText()
+      throws ChapterNotFoundException {
     
     InputStreamReader is = new InputStreamReader(openBibleFile());
     BufferedReader bsr = new BufferedReader(is);
@@ -285,13 +286,12 @@ public class ScriptureFinder {
         verseArray.add(currentVerseInLoop);
     }
     catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      Testing.Exception.printStackTrace(e);
     }
   }
   
   private String getVerse(int v)
-      throws ScriptureNotFoundError {
+      throws ScriptureNotFoundException {
     
     ArrayList<Integer> included = new ArrayList<Integer>();
     String start = getStartVerseMarkerString(v);

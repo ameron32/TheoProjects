@@ -3,8 +3,8 @@ package com.ameron32.tap.conventionnotes.tools;
 import java.util.HashMap;
 
 public class Testing {
-
-  private static final boolean        DEBUG = false;
+  
+  private static final boolean                DEBUG = false;
 
   private static final HashMap<String, Timer> times = new HashMap<>();
 
@@ -66,5 +66,18 @@ public class Testing {
     public static void v(String fromClass, String msg) {
       if (DEBUG) Log.v(Testing.class.getSimpleName() + "|" + fromClass, msg);
     }
+  }
+  
+  public static class Exception {
+    
+    public static void printStackTrace(java.lang.Exception e) {
+      e.printStackTrace();
+    }
+  }
+  
+  private static boolean justKidding = true;
+
+  public static void crash() {
+    if (!justKidding) { throw new RuntimeException("This is a crash!"); }
   }
 }
