@@ -1,5 +1,6 @@
 package com.ameron32.tap.conventionnotes;
 
+import com.crashlytics.android.Crashlytics;
 import java.io.IOException;
 
 import android.annotation.SuppressLint;
@@ -59,6 +60,7 @@ public class MainActivity extends FragmentActivity implements TalkListFragment.C
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     
+    Crashlytics.start(this);
     setContentView(R.layout.activity_main);
     context = CustomApplication.getCustomAppContext();
     

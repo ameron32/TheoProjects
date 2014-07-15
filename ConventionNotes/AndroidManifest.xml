@@ -7,6 +7,10 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="19" />
+
+
+    
+    <uses-permission android:name="android.permission.INTERNET"/>
     
     <application
         android:name="com.ameron32.tap.conventionnotes.CustomApplication"
@@ -33,6 +37,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ameron32.tap.conventionnotes.MainActivity" />
         </activity>
+
+    
+    
+    
+    <meta-data android:name="com.crashlytics.ApiKey" android:value="451a4e784d66f9e46edd52c2e4fe58e0ba5f1f4c"/>
     </application>
 
 </manifest>

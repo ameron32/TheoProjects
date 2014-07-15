@@ -249,5 +249,12 @@ proguard/
 ## CRASHLYTICS
 ##############
 
+crashlytics.properties
 crashlytics-build.properties
 com_crashlytics_export_strings.xml
+
+##############
+## OTHER
+##############
+
+project.properties
